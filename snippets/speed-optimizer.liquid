@@ -1,0 +1,90 @@
+<script>
+(function() {
+  const delayedDomains = [
+    'facebook.net',
+    'google-analytics.com',
+    'googletagmanager.com',
+    'elfsight.com',
+    'klaviyo.com',
+    'hotjar.com',
+    'judgeme.com',
+    'yotpo.com'
+  ];
+
+  const delayedScripts = [];
+  let userInteracted = false;
+
+  // Intercept dynamically created scripts
+  const orgCreateElement = document.createElement;
+  document.createElement = function(tagName, ...args) {
+    const el = orgCreateElement.call(document, tagName, ...args);
+    if (tagName.toLowerCase() === 'script') {
+      const orgSetAttribute = el.setAttribute;
+      el.setAttribute = function(name, value) {
+        if (name === 'src' && !userInteracted && delayedDomains.some(d => value.includes(d))) {
+          el.dataset.delayedSrc = value;
+          delayedScripts.push(el);
+          return;
+        }
+        orgSetAttribute.call(el, name, value);
+      };
+      
+      Object.defineProperty(el, 'src', {
+        get() { return el.getAttribute('src') || ''; },
+        set(value) {
+          if (!userInteracted && delayedDomains.some(d => value.includes(d))) {
+            el.dataset.delayedSrc = value;
+            delayedScripts.push(el);
+          } else {
+            el.setAttribute('src', value);
+          }
+        }
+      });
+    }
+    return el;
+  };
+
+  function loadDelayedScripts() {
+    if (userInteracted) return;
+    userInteracted = true;
+    
+    // Restore original createElement
+    document.createElement = orgCreateElement;
+
+    // 1. Load dynamically delayed scripts
+    delayedScripts.forEach(el => {
+      const src = el.dataset.delayedSrc;
+      if (src) {
+        el.setAttribute('src', src);
+        document.head.appendChild(el);
+      }
+    });
+
+    // 2. Load static delayed scripts (type="text/lazy-script")
+    document.querySelectorAll('script[type="text/lazy-script"]').forEach(oldScript => {
+      const newScript = document.createElement('script');
+      newScript.type = 'text/javascript';
+      newScript.src = oldScript.dataset.src || oldScript.getAttribute('data-src');
+      
+      // Copy other attributes
+      Array.from(oldScript.attributes).forEach(attr => {
+        if (attr.name !== 'type' && attr.name !== 'data-src' && attr.name !== 'src') {
+          newScript.setAttribute(attr.name, attr.value);
+        }
+      });
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+    
+    console.log('All deferred PageSpeed scripts loaded.');
+  }
+
+  // Listen for first user interaction to load scripts
+  const interactionEvents = ['touchstart', 'scroll', 'mousemove', 'keydown'];
+  interactionEvents.forEach(event => {
+    window.addEventListener(event, loadDelayedScripts, { once: true, passive: true });
+  });
+  
+  // Fallback: load scripts after 6 seconds if no interaction
+  setTimeout(loadDelayedScripts, 6000);
+})();
+</script>
