@@ -57,6 +57,146 @@
   background-color: #f1f5f9 !important;
 }
 
+/* boAt Active Offers Styling (Dynamic Cards) */
+.boat-active-offers-block {
+  margin: 18px 0;
+  width: 100%;
+}
+
+.boat-offers-heading {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+}
+
+.boat-offers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .boat-offers-grid {
+    grid-template-columns: repeat(3, 1fr);
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+}
+
+.boat-offer-card {
+  position: relative;
+  background: linear-gradient(180deg, #eaf8f5 0%, #ffffff 100%);
+  border: 1.5px solid #00c68c;
+  border-radius: 12px;
+  padding: 24px 8px 12px 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 120px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.boat-offer-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 198, 140, 0.15);
+}
+
+.boat-offer-badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #00c68c;
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.boat-offer-badge--2 {
+  background: #1c252c;
+}
+
+.boat-offer-badge--3 {
+  background: #1c252c;
+}
+
+.boat-offer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.boat-offer-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1c252c;
+  line-height: 1.2;
+}
+
+.boat-offer-divider {
+  width: 80%;
+  height: 1px;
+  background: rgba(0, 198, 140, 0.25);
+  margin: 4px 0;
+}
+
+.boat-offer-discount {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0077b6;
+}
+
+.boat-offer-code-btn {
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #1c252c;
+  background: transparent;
+  border: 1px dashed rgba(28, 37, 44, 0.4);
+  padding: 2px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.boat-offer-code-btn:hover {
+  background: rgba(0, 198, 140, 0.1);
+  border-color: #00c68c;
+}
+
+.boat-offer-code-btn .copied-tooltip {
+  display: none;
+  position: absolute;
+  top: -24px;
+  background: #1c252c;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.boat-offer-code-btn.copied .copied-tooltip {
+  display: block;
+}
+
 /* Hide Wishlist & Share side boxes */
 .product-form__buttons .product-wishlist-button,
 .product-form__buttons .social-share-button,

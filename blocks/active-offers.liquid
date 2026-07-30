@@ -1,0 +1,206 @@
+<div class="boat-active-offers-block" {{ block.shopify_attributes }}>
+  {% if block.settings.title != blank %}
+    <h3 class="boat-offers-heading">{{ block.settings.title }}</h3>
+  {% endif %}
+
+  <div class="boat-offers-grid">
+    <!-- Card 1 -->
+    {% if block.settings.enable_card_1 %}
+      <div class="boat-offer-card">
+        {% if block.settings.badge_1 != blank %}
+          <div class="boat-offer-badge boat-offer-badge--1">{{ block.settings.badge_1 }}</div>
+        {% endif %}
+        <div class="boat-offer-content">
+          <div class="boat-offer-title">{{ block.settings.title_1 }}</div>
+          <div class="boat-offer-divider"></div>
+          <div class="boat-offer-discount">{{ block.settings.discount_1 }}</div>
+          {% if block.settings.code_1 != blank %}
+            <button type="button" class="boat-offer-code-btn" onclick="copyOfferCode(this, '{{ block.settings.code_1 }}')">
+              <span>Code: <strong>{{ block.settings.code_1 }}</strong></span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span class="copied-tooltip">Copied!</span>
+            </button>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Card 2 -->
+    {% if block.settings.enable_card_2 %}
+      <div class="boat-offer-card">
+        {% if block.settings.badge_2 != blank %}
+          <div class="boat-offer-badge boat-offer-badge--2">{{ block.settings.badge_2 }}</div>
+        {% endif %}
+        <div class="boat-offer-content">
+          <div class="boat-offer-title">{{ block.settings.title_2 }}</div>
+          <div class="boat-offer-divider"></div>
+          <div class="boat-offer-discount">{{ block.settings.discount_2 }}</div>
+          {% if block.settings.code_2 != blank %}
+            <button type="button" class="boat-offer-code-btn" onclick="copyOfferCode(this, '{{ block.settings.code_2 }}')">
+              <span>Code: <strong>{{ block.settings.code_2 }}</strong></span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span class="copied-tooltip">Copied!</span>
+            </button>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Card 3 -->
+    {% if block.settings.enable_card_3 %}
+      <div class="boat-offer-card">
+        {% if block.settings.badge_3 != blank %}
+          <div class="boat-offer-badge boat-offer-badge--3">{{ block.settings.badge_3 }}</div>
+        {% endif %}
+        <div class="boat-offer-content">
+          <div class="boat-offer-title">{{ block.settings.title_3 }}</div>
+          <div class="boat-offer-divider"></div>
+          <div class="boat-offer-discount">{{ block.settings.discount_3 }}</div>
+          {% if block.settings.code_3 != blank %}
+            <button type="button" class="boat-offer-code-btn" onclick="copyOfferCode(this, '{{ block.settings.code_3 }}')">
+              <span>Code: <strong>{{ block.settings.code_3 }}</strong></span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span class="copied-tooltip">Copied!</span>
+            </button>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  function copyOfferCode(btn, code) {
+    if (!code) return;
+    navigator.clipboard.writeText(code).then(function() {
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.classList.remove('copied');
+      }, 1500);
+    }).catch(function(err) {
+      console.error('Failed to copy code: ', err);
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "boAt Active Offers",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Active Offers"
+    },
+    {
+      "type": "header",
+      "content": "Card 1 Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_card_1",
+      "label": "Enable Card 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_1",
+      "label": "Badge Tag",
+      "default": "MOST POPULAR"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Offer Title",
+      "default": "Buy 2 or more"
+    },
+    {
+      "type": "text",
+      "id": "discount_1",
+      "label": "Discount Subtitle",
+      "default": "Get 6% Off"
+    },
+    {
+      "type": "text",
+      "id": "code_1",
+      "label": "Promo Code",
+      "default": "BOAT6"
+    },
+    {
+      "type": "header",
+      "content": "Card 2 Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_card_2",
+      "label": "Enable Card 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_2",
+      "label": "Badge Tag",
+      "default": "BEST VALUE"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Offer Title",
+      "default": "Buy 5 or more"
+    },
+    {
+      "type": "text",
+      "id": "discount_2",
+      "label": "Discount Subtitle",
+      "default": "Get 7% Off"
+    },
+    {
+      "type": "text",
+      "id": "code_2",
+      "label": "Promo Code",
+      "default": "BOAT7"
+    },
+    {
+      "type": "header",
+      "content": "Card 3 Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_card_3",
+      "label": "Enable Card 3",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_3",
+      "label": "Badge Tag",
+      "default": "MOST SAVINGS"
+    },
+    {
+      "type": "text",
+      "id": "title_3",
+      "label": "Offer Title",
+      "default": "Buy 10 or more"
+    },
+    {
+      "type": "text",
+      "id": "discount_3",
+      "label": "Discount Subtitle",
+      "default": "Get 10% Off"
+    },
+    {
+      "type": "text",
+      "id": "code_3",
+      "label": "Promo Code",
+      "default": "BOAT10"
+    }
+  ],
+  "presets": [
+    {
+      "name": "boAt Active Offers"
+    }
+  ]
+}
+{% endschema %}
