@@ -1,4 +1,9 @@
-/* boAt Styled Product Card Container */
+/* boAt Lifestyle Product Page Custom Styles */
+
+/* General Container & Spacing */
+.product-details {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
 
 /* Hide Wishlist & Share side boxes */
 .product-form__buttons .product-wishlist-button,
@@ -32,14 +37,88 @@
   box-sizing: border-box !important;
 }
 
-/* Quantity Selector & Subtotal Text Inside Box */
-.product-form__buttons quantity-popover,
-.product-form__buttons quantity-input,
+/* Fix Quantity Selector Input Box (Preventing + sign overflow) */
+quantity-input.quantity,
+.quantity-input,
+.quantity-popover,
+.product-form__quantity .quantity,
 .product-form__buttons .quantity,
-.product-form__buttons .product-form__quantity,
-.product-form__buttons [data-testid="quantity"] {
-  display: block !important;
+.product-form__buttons quantity-input {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 135px !important;
+  min-width: 135px !important;
+  max-width: 135px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  border: 1.5px solid #d1d5db !important;
+  border-radius: 22px !important;
+  padding: 0 10px !important;
+  background: #ffffff !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  flex-wrap: nowrap !important;
+}
+
+quantity-input.quantity .quantity__button,
+.quantity-input .quantity__button,
+.quantity .quantity__button,
+.product-form__buttons .quantity__button {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+  color: #1c252c !important;
+  flex-shrink: 0 !important;
+}
+
+quantity-input.quantity .quantity__input,
+.quantity-input .quantity__input,
+.quantity .quantity__input,
+.product-form__buttons .quantity__input {
+  width: 35px !important;
+  height: 30px !important;
+  border: none !important;
+  background: transparent !important;
+  text-align: center !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #1c252c !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  -moz-appearance: textfield !important;
+  flex-shrink: 0 !important;
+}
+
+quantity-input.quantity .quantity__input::-webkit-outer-spin-button,
+quantity-input.quantity .quantity__input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+/* Quantity Label & Subtotal Text */
+.product-form__buttons .form__label,
+.product-form__buttons label[for*="Quantity"] {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #1c252c !important;
   margin-bottom: 4px !important;
+  display: block !important;
 }
 
 .product-form__buttons subtotal-component,
