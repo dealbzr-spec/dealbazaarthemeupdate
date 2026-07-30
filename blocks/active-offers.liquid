@@ -143,7 +143,13 @@
 </div>
 
 <script>
+  window.boatActiveOfferDiscountPct = 0;
+  window.boatBasePrice = 0;
+
   function applyOfferCard(cardEl, qty, code, pct, basePrice) {
+    window.boatActiveOfferDiscountPct = pct;
+    window.boatBasePrice = basePrice;
+
     // 1. Highlight clicked card
     const parent = cardEl.closest('.boat-offers-grid');
     if (parent) {
@@ -159,19 +165,10 @@
       input.dispatchEvent(new Event('input', { bubbles: true }));
     });
 
-    // 3. Calculate discounted subtotal & update subtotal display text on page
-    if (basePrice && pct) {
-      const discountedUnitPrice = (basePrice * (100 - pct)) / 100;
-      const totalDiscSubtotalCents = Math.round(discountedUnitPrice * qty);
-      
-      // Format money in Rs.
-      const formattedSubtotal = 'Rs.' + (totalDiscSubtotalCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      
-      const subtotalEls = document.querySelectorAll('subtotal-component, .product-subtotal, [data-testid="subtotal"]');
-      subtotalEls.forEach(el => {
-        el.innerHTML = 'Product subtotal: <strong>' + formattedSubtotal + '</strong> <span style="color:#00c68c; font-size:12px; font-weight:700;">(' + pct + '% Off Applied)</span>';
-      });
-    }
+    // 3. Update Subtotal with Discounted Amount
+    setTimeout(function() {
+      updateDiscountedSubtotalDisplay(qty, pct, basePrice);
+    }, 60);
 
     // 4. Apply Discount Code to session
     if (code) {
@@ -190,6 +187,30 @@
       }, 2000);
     }
   }
+
+  function updateDiscountedSubtotalDisplay(qty, pct, basePrice) {
+    if (!basePrice || !pct) return;
+    const discountedUnitPrice = (basePrice * (100 - pct)) / 100;
+    const totalDiscSubtotalCents = Math.round(discountedUnitPrice * qty);
+    const formattedSubtotal = 'Rs.' + (totalDiscSubtotalCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    
+    const subtotalEls = document.querySelectorAll('subtotal-component, .product-subtotal, [data-testid="subtotal"]');
+    subtotalEls.forEach(el => {
+      el.innerHTML = 'Product subtotal: <strong style="color:#00c68c; font-size:16px;">' + formattedSubtotal + '</strong> <span style="font-size:12px; color:#00c68c; font-weight:700;">(' + pct + '% Off)</span>';
+    });
+  }
+
+  // Keep subtotal synced if quantity input is manually changed while card is active
+  document.addEventListener('change', function(e) {
+    if (e.target && (e.target.name === 'quantity' || e.target.classList.contains('quantity__input'))) {
+      if (window.boatActiveOfferDiscountPct > 0 && window.boatBasePrice > 0) {
+        const newQty = parseInt(e.target.value) || 1;
+        setTimeout(function() {
+          updateDiscountedSubtotalDisplay(newQty, window.boatActiveOfferDiscountPct, window.boatBasePrice);
+        }, 60);
+      }
+    }
+  });
 </script>
 {%- endif -%}
 
