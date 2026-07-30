@@ -1327,7 +1327,19 @@
                                                                                                                                     "discount_3":  "Get 10% Off",
                                                                                                                                     "code_3":  "BOAT10"
                                                                                                                                 }
-                                                                                                               }
+                                                                                                               },
+                                                                                        "collection_picker_block":  {
+                                                                                                                        "type":  "collection-products-picker",
+                                                                                                                        "settings":  {
+                                                                                                                                         "label":  "Select Option :",
+                                                                                                                                         "picker_type":  "custom",
+                                                                                                                                         "option1_title":  "Standard Pack (1 Item)",
+                                                                                                                                         "option1_price":  "Rs.1,798.00",
+                                                                                                                                         "enable_option2":  true,
+                                                                                                                                         "option2_title":  "Double Pack (2 Items - Best Value)",
+                                                                                                                                         "option2_price":  "Rs.3,198.00"
+                                                                                                                                     }
+                                                                                                                    }
                                                                                     },
                                                                          "block_order":  [
                                                                                              "group_icgrde",
@@ -1337,6 +1349,7 @@
                                                                                              "product_hot_stock_PQa77U",
                                                                                              "perks_PXqft4",
                                                                                              "customization_option_GtKNKe",
+                                                                                             "collection_picker_block",
                                                                                              "active_offers_boat",
                                                                                              "buy_buttons_eYQEYi"
                                                                                          ]

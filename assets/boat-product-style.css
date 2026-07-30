@@ -19,9 +19,87 @@
   margin-right: 4px !important;
 }
 
-.boat-selected-value {
+.boat-selected-value,
+.boat-selected-option-title {
   font-weight: 500 !important;
   color: #1c252c !important;
+}
+
+/* Collection & Dual-Option Products Selector Styling */
+.collection-products-picker-block {
+  margin: 16px 0;
+  width: 100%;
+}
+
+.collection-picker-options-grid {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+
+.collection-picker-option-card {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  border: 1.5px solid #cbd5e1 !important;
+  border-radius: 10px !important;
+  padding: 8px 12px !important;
+  background: #ffffff !important;
+  text-decoration: none !important;
+  color: #1c252c !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  flex: 1 1 calc(50% - 10px) !important;
+  min-width: 140px !important;
+  box-sizing: border-box !important;
+}
+
+.collection-picker-option-card:hover {
+  border-color: #0056b3 !important;
+}
+
+.collection-picker-option-card.is-selected {
+  border: 2px solid #0056b3 !important;
+  background-color: #f1f5f9 !important;
+  box-shadow: 0 0 0 1px #0056b3 !important;
+}
+
+.collection-picker-img-wrapper {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  border: 1px solid #e2e8f0 !important;
+  flex-shrink: 0 !important;
+}
+
+.collection-picker-img-wrapper img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.collection-picker-info {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+
+.collection-picker-title {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #1c252c !important;
+  line-height: 1.2 !important;
+}
+
+.collection-picker-price {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #00c68c !important;
 }
 
 /* Square Swatch Buttons (boAt 44px x 44px style matching reference image) */

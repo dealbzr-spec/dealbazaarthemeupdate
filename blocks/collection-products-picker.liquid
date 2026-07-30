@@ -1,0 +1,184 @@
+<div class="collection-products-picker-block" {{ block.shopify_attributes }}>
+  {% if block.settings.label != blank %}
+    <label class="form__label boat-option-label">
+      <span class="boat-choose-prefix">{{ block.settings.label }}</span>
+      <span class="boat-selected-option-title" id="selected-collection-option-title-{{ block.id }}">
+        {% if block.settings.picker_type == 'collection' and block.settings.collection != blank %}
+          {{ block.settings.collection.products.first.title | default: product.title }}
+        {% else %}
+          {{ block.settings.option1_title }}
+        {% endif %}
+      </span>
+    </label>
+  {% endif %}
+
+  <div class="collection-picker-options-grid">
+    {% if block.settings.picker_type == 'collection' and block.settings.collection != blank %}
+      <!-- Render products from selected Collection -->
+      {% for collection_product in block.settings.collection.products limit: block.settings.products_limit %}
+        <a 
+          href="{{ collection_product.url }}" 
+          class="collection-picker-option-card{% if collection_product.id == product.id %} is-selected{% endif %}"
+          title="{{ collection_product.title | escape }}"
+        >
+          {% if collection_product.featured_image %}
+            <div class="collection-picker-img-wrapper">
+              <img src="{{ collection_product.featured_image | img_url: '100x100', crop: 'center' }}" alt="{{ collection_product.title | escape }}" loading="lazy" width="50" height="50">
+            </div>
+          {% endif %}
+          <div class="collection-picker-info">
+            <span class="collection-picker-title">{{ collection_product.title }}</span>
+            <span class="collection-picker-price">{{ collection_product.price | money }}</span>
+          </div>
+        </a>
+      {% endfor %}
+
+    {% else %}
+      <!-- Render 2 Custom Product Options -->
+      <div 
+        class="collection-picker-option-card is-selected" 
+        onclick="selectCustomOption(this, '{{ block.settings.option1_title | escape }}')"
+      >
+        {% if block.settings.option1_image %}
+          <div class="collection-picker-img-wrapper">
+            <img src="{{ block.settings.option1_image | img_url: '100x100', crop: 'center' }}" alt="{{ block.settings.option1_title | escape }}" loading="lazy" width="50" height="50">
+          </div>
+        {% endif %}
+        <div class="collection-picker-info">
+          <span class="collection-picker-title">{{ block.settings.option1_title }}</span>
+          {% if block.settings.option1_price != blank %}
+            <span class="collection-picker-price">{{ block.settings.option1_price }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if block.settings.enable_option2 %}
+        <div 
+          class="collection-picker-option-card" 
+          onclick="selectCustomOption(this, '{{ block.settings.option2_title | escape }}')"
+        >
+          {% if block.settings.option2_image %}
+            <div class="collection-picker-img-wrapper">
+              <img src="{{ block.settings.option2_image | img_url: '100x100', crop: 'center' }}" alt="{{ block.settings.option2_title | escape }}" loading="lazy" width="50" height="50">
+            </div>
+          {% endif %}
+          <div class="collection-picker-info">
+            <span class="collection-picker-title">{{ block.settings.option2_title }}</span>
+            {% if block.settings.option2_price != blank %}
+              <span class="collection-picker-price">{{ block.settings.option2_price }}</span>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  function selectCustomOption(el, title) {
+    const parent = el.closest('.collection-picker-options-grid');
+    if (!parent) return;
+    parent.querySelectorAll('.collection-picker-option-card').forEach(card => card.classList.remove('is-selected'));
+    el.classList.add('is-selected');
+    const labelTitle = document.getElementById('selected-collection-option-title-{{ block.id }}');
+    if (labelTitle) labelTitle.textContent = title;
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Collection Product Picker",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Option Group Label",
+      "default": "Select Option :"
+    },
+    {
+      "type": "select",
+      "id": "picker_type",
+      "label": "Picker Type",
+      "options": [
+        {
+          "value": "custom",
+          "label": "Custom 2-Option Selector"
+        },
+        {
+          "value": "collection",
+          "label": "Collection Products Selector"
+        }
+      ],
+      "default": "custom"
+    },
+    {
+      "type": "header",
+      "content": "Collection Mode Settings"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "label": "Max Products to Display",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Custom 2-Option Mode Settings"
+    },
+    {
+      "type": "text",
+      "id": "option1_title",
+      "label": "Option 1 Title",
+      "default": "Standard Pack (1 Item)"
+    },
+    {
+      "type": "text",
+      "id": "option1_price",
+      "label": "Option 1 Price (Optional)",
+      "default": "Rs.1,798.00"
+    },
+    {
+      "type": "image_picker",
+      "id": "option1_image",
+      "label": "Option 1 Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_option2",
+      "label": "Enable Option 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "option2_title",
+      "label": "Option 2 Title",
+      "default": "Double Pack (2 Items - Best Value)"
+    },
+    {
+      "type": "text",
+      "id": "option2_price",
+      "label": "Option 2 Price (Optional)",
+      "default": "Rs.3,198.00"
+    },
+    {
+      "type": "image_picker",
+      "id": "option2_image",
+      "label": "Option 2 Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Product Picker"
+    }
+  ]
+}
+{% endschema %}
