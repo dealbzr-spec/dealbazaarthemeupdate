@@ -1,104 +1,36 @@
+{%- liquid
+  assign show_block = false
+  assign visibility = block.settings.visibility | default: 'all'
+
+  if request.visual_preview_mode
+    assign show_block = true
+  elsif visibility == 'all'
+    assign show_block = true
+  elsif visibility == 'specific_products'
+    if block.settings.target_product_1.id == product.id or block.settings.target_product_2.id == product.id or block.settings.target_product_3.id == product.id or block.settings.target_product_4.id == product.id or block.settings.target_product_5.id == product.id
+      assign show_block = true
+    endif
+  elsif visibility == 'collection' and block.settings.target_collection != blank
+    for col in product.collections
+      if col.handle == block.settings.target_collection.handle
+        assign show_block = true
+        break
+      endif
+    endfor
+  elsif visibility == 'tag' and block.settings.target_tag != blank
+    assign tag_lower = block.settings.target_tag | downcase | strip
+    for tag in product.tags
+      assign ptag_lower = tag | downcase | strip
+      if ptag_lower == tag_lower
+        assign show_block = true
+        break
+      endif
+    endfor
+  endif
+-%}
+
+{%- if show_block -%}
 <div class="boat-active-offers-block" {{ block.shopify_attributes }}>
-
-  <!-- Native Product & Collection Selector Inside Active Offers -->
-  {% if block.settings.enable_option_picker %}
-    <div class="boat-active-offers-picker-section">
-      {% if block.settings.picker_label != blank %}
-        <label class="form__label boat-option-label">
-          <span class="boat-choose-prefix">{{ block.settings.picker_label }}</span>
-          <span class="boat-selected-option-title" id="active-offers-selected-option-{{ block.id }}">
-            {{ product.title }}
-          </span>
-        </label>
-      {% endif %}
-
-      <div class="collection-picker-options-grid">
-        {% if block.settings.picker_mode == 'products' %}
-          <!-- Native Shopify Product Pickers (Product 1, 2, 3, 4) -->
-          {% assign p1 = block.settings.product_1 %}
-          {% assign p2 = block.settings.product_2 %}
-          {% assign p3 = block.settings.product_3 %}
-          {% assign p4 = block.settings.product_4 %}
-
-          {% if p1 != blank %}
-            <a href="{{ p1.url }}" class="collection-picker-option-card{% if p1.id == product.id %} is-selected{% endif %}">
-              {% if p1.featured_image %}
-                <div class="collection-picker-img-wrapper">
-                  <img src="{{ p1.featured_image | img_url: '100x100', crop: 'center' }}" alt="{{ p1.title | escape }}" width="50" height="50" loading="lazy">
-                </div>
-              {% endif %}
-              <div class="collection-picker-info">
-                <span class="collection-picker-title">{{ p1.title }}</span>
-                <span class="collection-picker-price">{{ p1.price | money }}</span>
-              </div>
-            </a>
-          {% endif %}
-
-          {% if p2 != blank %}
-            <a href="{{ p2.url }}" class="collection-picker-option-card{% if p2.id == product.id %} is-selected{% endif %}">
-              {% if p2.featured_image %}
-                <div class="collection-picker-img-wrapper">
-                  <img src="{{ p2.featured_image | img_url: '100x100', crop: 'center' }}" alt="{{ p2.title | escape }}" width="50" height="50" loading="lazy">
-                </div>
-              {% endif %}
-              <div class="collection-picker-info">
-                <span class="collection-picker-title">{{ p2.title }}</span>
-                <span class="collection-picker-price">{{ p2.price | money }}</span>
-              </div>
-            </a>
-          {% endif %}
-
-          {% if p3 != blank %}
-            <a href="{{ p3.url }}" class="collection-picker-option-card{% if p3.id == product.id %} is-selected{% endif %}">
-              {% if p3.featured_image %}
-                <div class="collection-picker-img-wrapper">
-                  <img src="{{ p3.featured_image | img_url: '100x100', crop: 'center' }}" alt="{{ p3.title | escape }}" width="50" height="50" loading="lazy">
-                </div>
-              {% endif %}
-              <div class="collection-picker-info">
-                <span class="collection-picker-title">{{ p3.title }}</span>
-                <span class="collection-picker-price">{{ p3.price | money }}</span>
-              </div>
-            </a>
-          {% endif %}
-
-          {% if p4 != blank %}
-            <a href="{{ p4.url }}" class="collection-picker-option-card{% if p4.id == product.id %} is-selected{% endif %}">
-              {% if p4.featured_image %}
-                <div class="collection-picker-img-wrapper">
-                  <img src="{{ p4.featured_image | img_url: '100x100', crop: 'center' }}" alt="{{ p4.title | escape }}" width="50" height="50" loading="lazy">
-                </div>
-              {% endif %}
-              <div class="collection-picker-info">
-                <span class="collection-picker-title">{{ p4.title }}</span>
-                <span class="collection-picker-price">{{ p4.price | money }}</span>
-              </div>
-            </a>
-          {% endif %}
-
-        {% elsif block.settings.picker_mode == 'collection' and block.settings.collection != blank %}
-          <!-- Native Shopify Collection Picker Mode -->
-          {% for collection_product in block.settings.collection.products limit: block.settings.products_limit %}
-            <a 
-              href="{{ collection_product.url }}" 
-              class="collection-picker-option-card{% if collection_product.id == product.id %} is-selected{% endif %}"
-              title="{{ collection_product.title | escape }}"
-            >
-              {% if collection_product.featured_image %}
-                <div class="collection-picker-img-wrapper">
-                  <img src="{{ collection_product.featured_image | img_url: '100x100', crop: 'center' }}" alt="{{ collection_product.title | escape }}" width="50" height="50" loading="lazy">
-                </div>
-              {% endif %}
-              <div class="collection-picker-info">
-                <span class="collection-picker-title">{{ collection_product.title }}</span>
-                <span class="collection-picker-price">{{ collection_product.price | money }}</span>
-              </div>
-            </a>
-          {% endfor %}
-        {% endif %}
-      </div>
-    </div>
-  {% endif %}
 
   <!-- Active Offers Cards Section -->
   {% if block.settings.title != blank %}
@@ -184,6 +116,7 @@
     });
   }
 </script>
+{%- endif -%}
 
 {% schema %}
 {
@@ -191,77 +124,76 @@
   "settings": [
     {
       "type": "header",
-      "content": "Product & Collection Selector Settings"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_option_picker",
-      "label": "Enable Product / Collection Selector",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "picker_label",
-      "label": "Option Group Label",
-      "default": "Select Product / Pack :"
+      "content": "Where to Display Active Offers?"
     },
     {
       "type": "select",
-      "id": "picker_mode",
-      "label": "Selection Source",
+      "id": "visibility",
+      "label": "Display Active Offers On:",
       "options": [
         {
-          "value": "products",
-          "label": "Select Individual Products"
+          "value": "all",
+          "label": "All Products"
+        },
+        {
+          "value": "specific_products",
+          "label": "Only Specific Selected Products"
         },
         {
           "value": "collection",
-          "label": "Select a Collection"
+          "label": "Only Products in a Specific Collection"
+        },
+        {
+          "value": "tag",
+          "label": "Only Products with Specific Tag"
         }
       ],
-      "default": "products"
+      "default": "specific_products"
     },
     {
       "type": "header",
-      "content": "Individual Products Picker Mode"
+      "content": "Specific Selected Products Mode"
     },
     {
       "type": "product",
-      "id": "product_1",
-      "label": "Select Product 1"
+      "id": "target_product_1",
+      "label": "Show on Product 1"
     },
     {
       "type": "product",
-      "id": "product_2",
-      "label": "Select Product 2"
+      "id": "target_product_2",
+      "label": "Show on Product 2"
     },
     {
       "type": "product",
-      "id": "product_3",
-      "label": "Select Product 3"
+      "id": "target_product_3",
+      "label": "Show on Product 3"
     },
     {
       "type": "product",
-      "id": "product_4",
-      "label": "Select Product 4"
+      "id": "target_product_4",
+      "label": "Show on Product 4"
+    },
+    {
+      "type": "product",
+      "id": "target_product_5",
+      "label": "Show on Product 5"
     },
     {
       "type": "header",
-      "content": "Collection Picker Mode"
+      "content": "Collection / Tag Filter Settings"
     },
     {
       "type": "collection",
-      "id": "collection",
-      "label": "Select Collection"
+      "id": "target_collection",
+      "label": "Select Collection (Collection Filter Mode)"
     },
     {
-      "type": "range",
-      "id": "products_limit",
-      "min": 2,
-      "max": 8,
-      "step": 1,
-      "label": "Max Products from Collection",
-      "default": 4
+      "type": "text",
+      "id": "target_tag",
+      "label": "Product Tag (Tag Filter Mode)",
+      "default": "active-offers",
+      "info": "Example: active-offers"
     },
     {
       "type": "header",
