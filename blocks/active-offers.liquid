@@ -27,6 +27,21 @@
       endif
     endfor
   endif
+
+  # Calculate discounted prices per card based on product price
+  assign p_price = product.price | default: 0
+
+  assign pct_1 = block.settings.pct_1 | default: 6
+  assign mult_1 = 100 | minus: pct_1
+  assign unit_price_1 = p_price | times: mult_1 | divided_by: 100
+
+  assign pct_2 = block.settings.pct_2 | default: 7
+  assign mult_2 = 100 | minus: pct_2
+  assign unit_price_2 = p_price | times: mult_2 | divided_by: 100
+
+  assign pct_3 = block.settings.pct_3 | default: 10
+  assign mult_3 = 100 | minus: pct_3
+  assign unit_price_3 = p_price | times: mult_3 | divided_by: 100
 -%}
 
 {%- if show_block -%}
@@ -42,7 +57,7 @@
     {% if block.settings.enable_card_1 %}
       <div 
         class="boat-offer-card" 
-        onclick="applyOfferCard(this, {{ block.settings.qty_1 | default: 2 }}, '{{ block.settings.code_1 | escape }}')"
+        onclick="applyOfferCard(this, {{ block.settings.qty_1 | default: 2 }}, '{{ block.settings.code_1 | escape }}', {{ pct_1 }}, {{ p_price }})"
       >
         {% if block.settings.badge_1 != blank %}
           <div class="boat-offer-badge boat-offer-badge--1">{{ block.settings.badge_1 }}</div>
@@ -51,11 +66,16 @@
           <div class="boat-offer-title">{{ block.settings.title_1 }}</div>
           <div class="boat-offer-divider"></div>
           <div class="boat-offer-discount">{{ block.settings.discount_1 }}</div>
+          {% if p_price > 0 %}
+            <div class="boat-offer-calc-price">
+              {{ unit_price_1 | money }}/ea
+            </div>
+          {% endif %}
           {% if block.settings.code_1 != blank %}
             <button type="button" class="boat-offer-code-btn">
               <span>Code: <strong>{{ block.settings.code_1 }}</strong></span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span class="copied-tooltip">Selected!</span>
+              <span class="copied-tooltip">Applied!</span>
             </button>
           {% endif %}
         </div>
@@ -66,7 +86,7 @@
     {% if block.settings.enable_card_2 %}
       <div 
         class="boat-offer-card" 
-        onclick="applyOfferCard(this, {{ block.settings.qty_2 | default: 5 }}, '{{ block.settings.code_2 | escape }}')"
+        onclick="applyOfferCard(this, {{ block.settings.qty_2 | default: 5 }}, '{{ block.settings.code_2 | escape }}', {{ pct_2 }}, {{ p_price }})"
       >
         {% if block.settings.badge_2 != blank %}
           <div class="boat-offer-badge boat-offer-badge--2">{{ block.settings.badge_2 }}</div>
@@ -75,11 +95,16 @@
           <div class="boat-offer-title">{{ block.settings.title_2 }}</div>
           <div class="boat-offer-divider"></div>
           <div class="boat-offer-discount">{{ block.settings.discount_2 }}</div>
+          {% if p_price > 0 %}
+            <div class="boat-offer-calc-price">
+              {{ unit_price_2 | money }}/ea
+            </div>
+          {% endif %}
           {% if block.settings.code_2 != blank %}
             <button type="button" class="boat-offer-code-btn">
               <span>Code: <strong>{{ block.settings.code_2 }}</strong></span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span class="copied-tooltip">Selected!</span>
+              <span class="copied-tooltip">Applied!</span>
             </button>
           {% endif %}
         </div>
@@ -90,7 +115,7 @@
     {% if block.settings.enable_card_3 %}
       <div 
         class="boat-offer-card" 
-        onclick="applyOfferCard(this, {{ block.settings.qty_3 | default: 10 }}, '{{ block.settings.code_3 | escape }}')"
+        onclick="applyOfferCard(this, {{ block.settings.qty_3 | default: 10 }}, '{{ block.settings.code_3 | escape }}', {{ pct_3 }}, {{ p_price }})"
       >
         {% if block.settings.badge_3 != blank %}
           <div class="boat-offer-badge boat-offer-badge--3">{{ block.settings.badge_3 }}</div>
@@ -99,11 +124,16 @@
           <div class="boat-offer-title">{{ block.settings.title_3 }}</div>
           <div class="boat-offer-divider"></div>
           <div class="boat-offer-discount">{{ block.settings.discount_3 }}</div>
+          {% if p_price > 0 %}
+            <div class="boat-offer-calc-price">
+              {{ unit_price_3 | money }}/ea
+            </div>
+          {% endif %}
           {% if block.settings.code_3 != blank %}
             <button type="button" class="boat-offer-code-btn">
               <span>Code: <strong>{{ block.settings.code_3 }}</strong></span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span class="copied-tooltip">Selected!</span>
+              <span class="copied-tooltip">Applied!</span>
             </button>
           {% endif %}
         </div>
@@ -113,7 +143,7 @@
 </div>
 
 <script>
-  function applyOfferCard(cardEl, qty, code) {
+  function applyOfferCard(cardEl, qty, code, pct, basePrice) {
     // 1. Highlight clicked card
     const parent = cardEl.closest('.boat-offers-grid');
     if (parent) {
@@ -129,7 +159,21 @@
       input.dispatchEvent(new Event('input', { bubbles: true }));
     });
 
-    // 3. Apply Discount Code
+    // 3. Calculate discounted subtotal & update subtotal display text on page
+    if (basePrice && pct) {
+      const discountedUnitPrice = (basePrice * (100 - pct)) / 100;
+      const totalDiscSubtotalCents = Math.round(discountedUnitPrice * qty);
+      
+      // Format money in Rs.
+      const formattedSubtotal = 'Rs.' + (totalDiscSubtotalCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      
+      const subtotalEls = document.querySelectorAll('subtotal-component, .product-subtotal, [data-testid="subtotal"]');
+      subtotalEls.forEach(el => {
+        el.innerHTML = 'Product subtotal: <strong>' + formattedSubtotal + '</strong> <span style="color:#00c68c; font-size:12px; font-weight:700;">(' + pct + '% Off Applied)</span>';
+      });
+    }
+
+    // 4. Apply Discount Code to session
     if (code) {
       fetch('/discount/' + encodeURIComponent(code)).catch(function(){});
       if (navigator.clipboard) {
@@ -137,7 +181,7 @@
       }
     }
 
-    // 4. Visual Feedback
+    // 5. Visual Feedback
     const btn = cardEl.querySelector('.boat-offer-code-btn');
     if (btn) {
       btn.classList.add('copied');
@@ -267,6 +311,15 @@
       "default": 2
     },
     {
+      "type": "range",
+      "id": "pct_1",
+      "min": 1,
+      "max": 50,
+      "step": 1,
+      "label": "Card 1 Discount % Off",
+      "default": 6
+    },
+    {
       "type": "text",
       "id": "discount_1",
       "label": "Discount Subtitle",
@@ -310,6 +363,15 @@
       "default": 5
     },
     {
+      "type": "range",
+      "id": "pct_2",
+      "min": 1,
+      "max": 50,
+      "step": 1,
+      "label": "Card 2 Discount % Off",
+      "default": 7
+    },
+    {
       "type": "text",
       "id": "discount_2",
       "label": "Discount Subtitle",
@@ -350,6 +412,15 @@
       "max": 20,
       "step": 1,
       "label": "Card 3 Quantity",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "pct_3",
+      "min": 1,
+      "max": 50,
+      "step": 1,
+      "label": "Card 3 Discount % Off",
       "default": 10
     },
     {
