@@ -40,7 +40,10 @@
   <div class="boat-offers-grid">
     <!-- Card 1 -->
     {% if block.settings.enable_card_1 %}
-      <div class="boat-offer-card">
+      <div 
+        class="boat-offer-card" 
+        onclick="applyOfferCard(this, {{ block.settings.qty_1 | default: 2 }}, '{{ block.settings.code_1 | escape }}')"
+      >
         {% if block.settings.badge_1 != blank %}
           <div class="boat-offer-badge boat-offer-badge--1">{{ block.settings.badge_1 }}</div>
         {% endif %}
@@ -49,10 +52,10 @@
           <div class="boat-offer-divider"></div>
           <div class="boat-offer-discount">{{ block.settings.discount_1 }}</div>
           {% if block.settings.code_1 != blank %}
-            <button type="button" class="boat-offer-code-btn" onclick="copyOfferCode(this, '{{ block.settings.code_1 }}')">
+            <button type="button" class="boat-offer-code-btn">
               <span>Code: <strong>{{ block.settings.code_1 }}</strong></span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span class="copied-tooltip">Copied!</span>
+              <span class="copied-tooltip">Selected!</span>
             </button>
           {% endif %}
         </div>
@@ -61,7 +64,10 @@
 
     <!-- Card 2 -->
     {% if block.settings.enable_card_2 %}
-      <div class="boat-offer-card">
+      <div 
+        class="boat-offer-card" 
+        onclick="applyOfferCard(this, {{ block.settings.qty_2 | default: 5 }}, '{{ block.settings.code_2 | escape }}')"
+      >
         {% if block.settings.badge_2 != blank %}
           <div class="boat-offer-badge boat-offer-badge--2">{{ block.settings.badge_2 }}</div>
         {% endif %}
@@ -70,10 +76,10 @@
           <div class="boat-offer-divider"></div>
           <div class="boat-offer-discount">{{ block.settings.discount_2 }}</div>
           {% if block.settings.code_2 != blank %}
-            <button type="button" class="boat-offer-code-btn" onclick="copyOfferCode(this, '{{ block.settings.code_2 }}')">
+            <button type="button" class="boat-offer-code-btn">
               <span>Code: <strong>{{ block.settings.code_2 }}</strong></span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span class="copied-tooltip">Copied!</span>
+              <span class="copied-tooltip">Selected!</span>
             </button>
           {% endif %}
         </div>
@@ -82,7 +88,10 @@
 
     <!-- Card 3 -->
     {% if block.settings.enable_card_3 %}
-      <div class="boat-offer-card">
+      <div 
+        class="boat-offer-card" 
+        onclick="applyOfferCard(this, {{ block.settings.qty_3 | default: 10 }}, '{{ block.settings.code_3 | escape }}')"
+      >
         {% if block.settings.badge_3 != blank %}
           <div class="boat-offer-badge boat-offer-badge--3">{{ block.settings.badge_3 }}</div>
         {% endif %}
@@ -91,10 +100,10 @@
           <div class="boat-offer-divider"></div>
           <div class="boat-offer-discount">{{ block.settings.discount_3 }}</div>
           {% if block.settings.code_3 != blank %}
-            <button type="button" class="boat-offer-code-btn" onclick="copyOfferCode(this, '{{ block.settings.code_3 }}')">
+            <button type="button" class="boat-offer-code-btn">
               <span>Code: <strong>{{ block.settings.code_3 }}</strong></span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span class="copied-tooltip">Copied!</span>
+              <span class="copied-tooltip">Selected!</span>
             </button>
           {% endif %}
         </div>
@@ -104,16 +113,38 @@
 </div>
 
 <script>
-  function copyOfferCode(btn, code) {
-    if (!code) return;
-    navigator.clipboard.writeText(code).then(function() {
+  function applyOfferCard(cardEl, qty, code) {
+    // 1. Highlight clicked card
+    const parent = cardEl.closest('.boat-offers-grid');
+    if (parent) {
+      parent.querySelectorAll('.boat-offer-card').forEach(c => c.classList.remove('is-selected'));
+    }
+    cardEl.classList.add('is-selected');
+
+    // 2. Set Quantity Input on Product Form
+    const qtyInputs = document.querySelectorAll('input[name="quantity"], input.quantity__input, input[name*="updates"]');
+    qtyInputs.forEach(input => {
+      input.value = qty;
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    // 3. Apply Discount Code
+    if (code) {
+      fetch('/discount/' + encodeURIComponent(code)).catch(function(){});
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(code).catch(function(){});
+      }
+    }
+
+    // 4. Visual Feedback
+    const btn = cardEl.querySelector('.boat-offer-code-btn');
+    if (btn) {
       btn.classList.add('copied');
       setTimeout(function() {
         btn.classList.remove('copied');
-      }, 1500);
-    }).catch(function(err) {
-      console.error('Failed to copy code: ', err);
-    });
+      }, 2000);
+    }
   }
 </script>
 {%- endif -%}
@@ -192,8 +223,7 @@
       "type": "text",
       "id": "target_tag",
       "label": "Product Tag (Tag Filter Mode)",
-      "default": "active-offers",
-      "info": "Example: active-offers"
+      "default": "active-offers"
     },
     {
       "type": "header",
@@ -226,6 +256,15 @@
       "id": "title_1",
       "label": "Offer Title",
       "default": "Buy 2 or more"
+    },
+    {
+      "type": "range",
+      "id": "qty_1",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Card 1 Quantity",
+      "default": 2
     },
     {
       "type": "text",
@@ -262,6 +301,15 @@
       "default": "Buy 5 or more"
     },
     {
+      "type": "range",
+      "id": "qty_2",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Card 2 Quantity",
+      "default": 5
+    },
+    {
       "type": "text",
       "id": "discount_2",
       "label": "Discount Subtitle",
@@ -294,6 +342,15 @@
       "id": "title_3",
       "label": "Offer Title",
       "default": "Buy 10 or more"
+    },
+    {
+      "type": "range",
+      "id": "qty_3",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Card 3 Quantity",
+      "default": 10
     },
     {
       "type": "text",
