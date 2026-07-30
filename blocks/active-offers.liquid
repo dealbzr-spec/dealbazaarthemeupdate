@@ -57,7 +57,7 @@
     {% if block.settings.enable_card_1 %}
       <div 
         class="boat-offer-card" 
-        onclick="applyOfferCard(this, {{ block.settings.qty_1 | default: 2 }}, '{{ block.settings.code_1 | escape }}', {{ pct_1 }}, {{ p_price }})"
+        onclick="applyOfferCard(this, {{ block.settings.qty_1 | default: 2 }}, '{{ block.settings.code_1 | default: 'DEAL6' | escape }}', {{ pct_1 }}, {{ p_price }})"
       >
         {% if block.settings.badge_1 != blank %}
           <div class="boat-offer-badge boat-offer-badge--1">{{ block.settings.badge_1 }}</div>
@@ -86,7 +86,7 @@
     {% if block.settings.enable_card_2 %}
       <div 
         class="boat-offer-card" 
-        onclick="applyOfferCard(this, {{ block.settings.qty_2 | default: 5 }}, '{{ block.settings.code_2 | escape }}', {{ pct_2 }}, {{ p_price }})"
+        onclick="applyOfferCard(this, {{ block.settings.qty_2 | default: 5 }}, '{{ block.settings.code_2 | default: 'DEAL7' | escape }}', {{ pct_2 }}, {{ p_price }})"
       >
         {% if block.settings.badge_2 != blank %}
           <div class="boat-offer-badge boat-offer-badge--2">{{ block.settings.badge_2 }}</div>
@@ -115,7 +115,7 @@
     {% if block.settings.enable_card_3 %}
       <div 
         class="boat-offer-card" 
-        onclick="applyOfferCard(this, {{ block.settings.qty_3 | default: 10 }}, '{{ block.settings.code_3 | escape }}', {{ pct_3 }}, {{ p_price }})"
+        onclick="applyOfferCard(this, {{ block.settings.qty_3 | default: 10 }}, '{{ block.settings.code_3 | default: 'DEAL10' | escape }}', {{ pct_3 }}, {{ p_price }})"
       >
         {% if block.settings.badge_3 != blank %}
           <div class="boat-offer-badge boat-offer-badge--3">{{ block.settings.badge_3 }}</div>
@@ -172,7 +172,7 @@
       updateDiscountedSubtotalDisplay(qty, pct, basePrice);
     }, 60);
 
-    // 4. Apply Discount Code to session
+    // 4. Pre-fetch discount URL so Shopify session saves code
     if (code) {
       fetch('/discount/' + encodeURIComponent(code)).catch(function(){});
       if (navigator.clipboard) {
@@ -214,6 +214,30 @@
       el.appendChild(badge);
     });
   }
+
+  // Intercept Buy Now button click to redirect via /discount/CODE?redirect=/checkout
+  document.addEventListener('click', function(e) {
+    const buyNowBtn = e.target.closest('.shopify-payment-button__button, .shopify-payment-button__button--unbranded, [data-testid="Checkout-button"]');
+    if (buyNowBtn && window.boatActiveOfferCode) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const form = buyNowBtn.closest('form') || document.querySelector('form[action*="/cart/add"]');
+      if (form) {
+        const formData = new FormData(form);
+        fetch('/cart/add.js', {
+          method: 'POST',
+          body: formData
+        }).then(() => {
+          window.location.href = '/discount/' + encodeURIComponent(window.boatActiveOfferCode) + '?redirect=/checkout';
+        }).catch(() => {
+          window.location.href = '/discount/' + encodeURIComponent(window.boatActiveOfferCode) + '?redirect=/checkout';
+        });
+      } else {
+        window.location.href = '/discount/' + encodeURIComponent(window.boatActiveOfferCode) + '?redirect=/checkout';
+      }
+    }
+  }, true);
 
   // Keep subtotal synced if quantity input is manually changed while card is active
   document.addEventListener('change', function(e) {
