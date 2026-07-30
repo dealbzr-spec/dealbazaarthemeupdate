@@ -74,7 +74,12 @@
         const selectedVariant = variants.find((variant) => String(variant.id) === selectedVariantId);
         if (!selectedVariant) return;
 
-        const formattedSubtotal = formatMoney(selectedVariant.price * quantity);
+        let unitPrice = selectedVariant.price;
+        if (window.boatActiveOfferDiscountPct && window.boatActiveOfferDiscountPct > 0) {
+          unitPrice = (selectedVariant.price * (100 - window.boatActiveOfferDiscountPct)) / 100;
+        }
+
+        const formattedSubtotal = formatMoney(Math.round(unitPrice * quantity));
         if (!formattedSubtotal) return;
         subtotalPriceEl.textContent = formattedSubtotal;
       };

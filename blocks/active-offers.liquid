@@ -194,9 +194,22 @@
     const totalDiscSubtotalCents = Math.round(discountedUnitPrice * qty);
     const formattedSubtotal = 'Rs.' + (totalDiscSubtotalCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     
-    const subtotalEls = document.querySelectorAll('subtotal-component, .product-subtotal, [data-testid="subtotal"]');
-    subtotalEls.forEach(el => {
-      el.innerHTML = 'Product subtotal: <strong style="color:#00c68c; font-size:16px;">' + formattedSubtotal + '</strong> <span style="font-size:12px; color:#00c68c; font-weight:700;">(' + pct + '% Off)</span>';
+    const priceEls = document.querySelectorAll('[data-subtotal-price]');
+    if (priceEls.length > 0) {
+      priceEls.forEach(el => {
+        el.textContent = formattedSubtotal;
+      });
+    }
+
+    const containerEls = document.querySelectorAll('subtotal-component, .product-subtotal, [data-testid="subtotal"], .product-form__subtotal');
+    containerEls.forEach(el => {
+      const existingBadge = el.querySelector('.boat-discount-badge');
+      if (existingBadge) existingBadge.remove();
+      const badge = document.createElement('span');
+      badge.className = 'boat-discount-badge';
+      badge.style.cssText = 'font-size:12px; color:#00c68c; font-weight:700; margin-left:6px;';
+      badge.textContent = '(' + pct + '% Off Applied)';
+      el.appendChild(badge);
     });
   }
 
