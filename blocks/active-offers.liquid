@@ -143,12 +143,18 @@
 </div>
 
 <script>
-  window.boatActiveOfferDiscountPct = 0;
-  window.boatBasePrice = 0;
+  window.boatActiveOfferDiscountPct = parseInt(sessionStorage.getItem('active_offer_pct')) || 0;
+  window.boatActiveOfferCode = sessionStorage.getItem('active_offer_code') || '';
+  window.boatBasePrice = parseFloat(sessionStorage.getItem('active_offer_base_price')) || 0;
 
   function applyOfferCard(cardEl, qty, code, pct, basePrice) {
     window.boatActiveOfferDiscountPct = pct;
+    window.boatActiveOfferCode = code;
     window.boatBasePrice = basePrice;
+
+    sessionStorage.setItem('active_offer_pct', pct);
+    sessionStorage.setItem('active_offer_code', code);
+    sessionStorage.setItem('active_offer_base_price', basePrice);
 
     // 1. Highlight clicked card
     const parent = cardEl.closest('.boat-offers-grid');
@@ -165,10 +171,11 @@
       input.dispatchEvent(new Event('input', { bubbles: true }));
     });
 
-    // 3. Update Subtotal with Discounted Amount
+    // 3. Update Subtotal on Page & in Cart Drawer
     setTimeout(function() {
       updateDiscountedSubtotalDisplay(qty, pct, basePrice);
-    }, 60);
+      updateCartDrawerDiscountDisplay();
+    }, 80);
 
     // 4. Apply Discount Code to session
     if (code) {
@@ -213,6 +220,51 @@
     });
   }
 
+  function updateCartDrawerDiscountDisplay() {
+    const pct = window.boatActiveOfferDiscountPct || parseInt(sessionStorage.getItem('active_offer_pct')) || 0;
+    if (!pct) return;
+
+    const cartDrawer = document.querySelector('#CartDrawer, cart-drawer, .cart-drawer');
+    if (!cartDrawer) return;
+
+    // Update Line Item Prices in Cart Drawer
+    const itemPrices = cartDrawer.querySelectorAll('.cart-item__totals, .cart-item__price-wrapper, .cart-item__price');
+    itemPrices.forEach(priceEl => {
+      const match = priceEl.textContent.match(/Rs\.?\s*([\d,]+(\.\d+)?)/i);
+      if (match) {
+        const rawPrice = parseFloat(match[1].replace(/,/g, ''));
+        if (rawPrice > 0) {
+          const discPrice = (rawPrice * (100 - pct)) / 100;
+          const formattedDisc = 'Rs.' + discPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          const oldStr = 'Rs.' + rawPrice.toLocaleString('en-US', { minimumFractionDigits: 2 });
+          priceEl.innerHTML = '<s style="color:#888; font-size:12px; margin-right:4px;">' + oldStr + '</s><strong style="color:#00c68c;">' + formattedDisc + '</strong> <span style="font-size:11px; color:#00c68c;">(' + pct + '% Off)</span>';
+        }
+      }
+    });
+
+    // Update Estimated Total in Cart Drawer
+    const totalValueEl = cartDrawer.querySelector('.totals__total-value');
+    if (totalValueEl) {
+      const totalMatch = totalValueEl.textContent.match(/Rs\.?\s*([\d,]+(\.\d+)?)/i);
+      if (totalMatch) {
+        const rawTotal = parseFloat(totalMatch[1].replace(/,/g, ''));
+        if (rawTotal > 0) {
+          const discTotal = (rawTotal * (100 - pct)) / 100;
+          const formattedTotal = 'Rs.' + discTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' PKR';
+          const oldTotalStr = 'Rs.' + rawTotal.toLocaleString('en-US', { minimumFractionDigits: 2 }) + ' PKR';
+          totalValueEl.innerHTML = '<s style="color:#888; font-size:13px; font-weight:normal; margin-right:6px;">' + oldTotalStr + '</s><strong style="color:#00c68c; font-size:16px;">' + formattedTotal + '</strong> <span style="font-size:12px; color:#00c68c; font-weight:bold;">(' + pct + '% Off)</span>';
+        }
+      }
+    }
+
+    // Bind Checkout button to apply promo code at checkout
+    const code = window.boatActiveOfferCode || sessionStorage.getItem('active_offer_code');
+    const checkoutBtn = cartDrawer.querySelector('#CartDrawer-Checkout, button[name="checkout"], .cart__checkout-button');
+    if (checkoutBtn && code) {
+      checkoutBtn.setAttribute('onclick', "window.location.href='/discount/" + encodeURIComponent(code) + "?redirect=/checkout'; return false;");
+    }
+  }
+
   // Keep subtotal synced if quantity input is manually changed while card is active
   document.addEventListener('change', function(e) {
     if (e.target && (e.target.name === 'quantity' || e.target.classList.contains('quantity__input'))) {
@@ -220,9 +272,22 @@
         const newQty = parseInt(e.target.value) || 1;
         setTimeout(function() {
           updateDiscountedSubtotalDisplay(newQty, window.boatActiveOfferDiscountPct, window.boatBasePrice);
-        }, 60);
+        }, 80);
       }
     }
+  });
+
+  // Observe Cart Drawer mutations when cart drawer opens or updates
+  const cartObserver = new MutationObserver(function() {
+    updateCartDrawerDiscountDisplay();
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const cartDrawer = document.querySelector('#CartDrawer, cart-drawer, .cart-drawer');
+    if (cartDrawer) {
+      cartObserver.observe(cartDrawer, { childList: true, subtree: true });
+    }
+    setTimeout(updateCartDrawerDiscountDisplay, 500);
   });
 </script>
 {%- endif -%}
