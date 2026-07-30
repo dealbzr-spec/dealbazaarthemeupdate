@@ -88,9 +88,14 @@
       -%}
       {%- if variant_style == 'pills' or variant_style == 'swatch' -%}
         <fieldset  class="js product-form__input variant-option variant-option--buttons{% if is_color %} product-form__input--swatch variant-option--swatches{% else %} product-form__input--pill variant-option--pill{% endif %}">
-          <legend class="form__label">
-            {{ product_option.name  | escape }}:
-            <span data-selected-value>
+          <legend class="form__label boat-option-label">
+            {% assign name_lower = product_option.name | downcase %}
+            {% if name_lower contains 'color' or name_lower contains 'colour' %}
+              <span class="boat-choose-prefix">Choose your color :</span>
+            {% else %}
+              <span class="boat-choose-prefix">Choose your {{ product_option.name | escape }} :</span>
+            {% endif %}
+            <span data-selected-value class="boat-selected-value">
               {{- product_option.selected_value -}}
             </span>
           </legend>

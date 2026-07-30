@@ -5,6 +5,58 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* boAt Option Label (Choose your color : SelectedValue) */
+.boat-option-label {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  color: #1c252c !important;
+  margin-bottom: 10px !important;
+}
+
+.boat-choose-prefix {
+  font-weight: 800 !important;
+  color: #1c252c !important;
+  margin-right: 4px !important;
+}
+
+.boat-selected-value {
+  font-weight: 500 !important;
+  color: #1c252c !important;
+}
+
+/* Square Swatch Buttons (boAt 44px x 44px style matching reference image) */
+.variant-option--swatches label,
+.variant-option label.swatch,
+.swatch-input__label,
+.swatch-item .swatch,
+.variant-option--buttons label {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  border-radius: 10px !important;
+  border: 1.5px solid #cbd5e1 !important;
+  background-size: cover !important;
+  background-position: center !important;
+  padding: 3px !important;
+  box-sizing: border-box !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Selected Active Swatch (Active Blue Border Box #0056b3) */
+.variant-option input:checked + label,
+.swatch-input__input:checked + .swatch-input__label,
+.swatch-item.active .swatch {
+  border: 2px solid #0056b3 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 0 0 1px #0056b3 !important;
+  background-color: #f1f5f9 !important;
+}
+
 /* Hide Wishlist & Share side boxes */
 .product-form__buttons .product-wishlist-button,
 .product-form__buttons .social-share-button,
