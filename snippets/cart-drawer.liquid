@@ -361,9 +361,47 @@
                 {%- endif -%}
               </div>
 
+              {%- liquid
+                assign calc_cart_total = 0
+                assign cart_disc_applied = false
+                assign active_code = ''
+                for item in cart.items
+                  assign item_disc_pct = 0
+                  if item.quantity >= 10
+                    assign item_disc_pct = 10
+                    assign cart_disc_applied = true
+                    assign active_code = 'BOAT10'
+                  elsif item.quantity >= 5
+                    assign item_disc_pct = 7
+                    assign cart_disc_applied = true
+                    assign active_code = 'BOAT7'
+                  elsif item.quantity >= 2
+                    assign item_disc_pct = 6
+                    assign cart_disc_applied = true
+                    assign active_code = 'BOAT6'
+                  endif
+
+                  if item_disc_pct > 0
+                    assign item_mult = 100 | minus: item_disc_pct
+                    assign item_unit_p = item.original_price | times: item_mult | divided_by: 100
+                    assign item_line_p = item_unit_p | times: item.quantity
+                  else
+                    assign item_line_p = item.final_line_price
+                  endif
+                  assign calc_cart_total = calc_cart_total | plus: item_line_p
+                endfor
+              -%}
+
               <div class="totals" role="status">
                 <h2 class="totals__total">{{ 'content.estimated_total' | t }}</h2>
-                <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+                <p class="totals__total-value">
+                  {%- if cart_disc_applied -%}
+                    <s style="font-size:13px; color:#888; font-weight:normal; margin-right:6px;">{{ cart.total_price | money_with_currency }}</s>
+                    <strong style="color:#00c68c; font-size:16px;">{{ calc_cart_total | money_with_currency }}</strong>
+                  {%- else -%}
+                    {{ cart.total_price | money_with_currency }}
+                  {%- endif -%}
+                </p>
               </div>
 
               <small class="tax-note caption-large rte">
@@ -416,6 +454,9 @@
                 form="CartDrawer-Form"
                 {% if cart == empty %}
                   disabled
+                {% endif %}
+                {% if cart_disc_applied and active_code != blank %}
+                  onclick="window.location.href='/discount/{{ active_code }}?redirect=/checkout'; return false;"
                 {% endif %}
               >
                 <span class="button-overflow relative overflow-hidden" data-button-text="{{ 'content.checkout' | t }}">

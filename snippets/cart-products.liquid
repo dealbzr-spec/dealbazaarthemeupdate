@@ -236,11 +236,31 @@
                         <text-loader-component>
                           {%- render 'loading-spinner' -%}
                           <div class="cart-item__price-wrapper">
-                            {%- assign compare_price = item.variant.compare_at_price -%}
-                            {%- assign regular_price = item.original_price -%}
-                            {%- assign final_price = item.final_price -%}
+                            {%- liquid
+                              assign item_disc_pct = 0
+                              if item.quantity >= 10
+                                assign item_disc_pct = 10
+                              elsif item.quantity >= 5
+                                assign item_disc_pct = 7
+                              elsif item.quantity >= 2
+                                assign item_disc_pct = 6
+                              endif
 
-                            {%- if compare_price > regular_price or regular_price > final_price -%}
+                              assign compare_price = item.variant.compare_at_price
+                              assign regular_price = item.original_price
+
+                              if item_disc_pct > 0
+                                assign mult = 100 | minus: item_disc_pct
+                                assign final_price = item.original_price | times: mult | divided_by: 100
+                                if compare_price == nil or compare_price == 0
+                                  assign compare_price = regular_price
+                                endif
+                              else
+                                assign final_price = item.final_price
+                              endif
+                            -%}
+
+                            {%- if compare_price > final_price or regular_price > final_price -%}
                               <dl class="cart-item__discounted-prices">
                                 <dt class="visually-hidden">
                                   {{ 'products.product.price.regular_price' | t }}
@@ -289,11 +309,31 @@
                       <text-loader-component>
                         {%- render 'loading-spinner' -%}
                         <div class="cart-item__price-wrapper">
-                          {%- assign compare_price = item.variant.compare_at_price -%}
-                          {%- assign regular_price = item.original_price -%}
-                          {%- assign final_price = item.final_price -%}
+                          {%- liquid
+                            assign item_disc_pct = 0
+                            if item.quantity >= 10
+                              assign item_disc_pct = 10
+                            elsif item.quantity >= 5
+                              assign item_disc_pct = 7
+                            elsif item.quantity >= 2
+                              assign item_disc_pct = 6
+                            endif
 
-                          {%- if compare_price > regular_price or regular_price > final_price -%}
+                            assign compare_price = item.variant.compare_at_price
+                            assign regular_price = item.original_price
+
+                            if item_disc_pct > 0
+                              assign mult = 100 | minus: item_disc_pct
+                              assign final_price = item.original_price | times: mult | divided_by: 100
+                              if compare_price == nil or compare_price == 0
+                                assign compare_price = regular_price
+                              endif
+                            else
+                              assign final_price = item.final_price
+                            endif
+                          -%}
+
+                          {%- if compare_price > final_price or regular_price > final_price -%}
                             <dl class="cart-item__discounted-prices">
                               <dt class="visually-hidden">
                                 {{ 'products.product.price.regular_price' | t }}
@@ -419,9 +459,30 @@
                       <text-loader-component>
                         {%- render 'loading-spinner' -%}
                         <div class="cart-item__price-wrapper">
-                          {% assign compare_line_price = item.variant.compare_at_price | times: item.quantity %}
-                          {% assign regular_line_price = item.original_price | times: item.quantity %}
-                          {% assign final_line_price = item.final_line_price %}
+                          {%- liquid
+                            assign item_disc_pct = 0
+                            if item.quantity >= 10
+                              assign item_disc_pct = 10
+                            elsif item.quantity >= 5
+                              assign item_disc_pct = 7
+                            elsif item.quantity >= 2
+                              assign item_disc_pct = 6
+                            endif
+
+                            assign compare_line_price = item.variant.compare_at_price | times: item.quantity
+                            assign regular_line_price = item.original_price | times: item.quantity
+
+                            if item_disc_pct > 0
+                              assign mult = 100 | minus: item_disc_pct
+                              assign final_unit_p = item.original_price | times: mult | divided_by: 100
+                              assign final_line_price = final_unit_p | times: item.quantity
+                              if compare_line_price == 0 or compare_line_price == nil
+                                assign compare_line_price = regular_line_price
+                              endif
+                            else
+                              assign final_line_price = item.final_line_price
+                            endif
+                          -%}
 
                           {% if compare_line_price > final_line_price or regular_line_price > final_line_price %}
                             <dl class="cart-item__discounted-prices">
