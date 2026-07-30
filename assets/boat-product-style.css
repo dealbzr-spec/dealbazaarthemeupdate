@@ -5,6 +5,14 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* Hide Shopping Bag Icon inside Quantity Label */
+.quantity__label .quantity__rules-cart,
+.quantity__label .icon-cart,
+.quantity__label .svg-wrapper,
+.quantity__tooltip-trigger {
+  display: none !important;
+}
+
 /* boAt Option Label (Choose your color : SelectedValue) */
 .boat-option-label {
   font-size: 15px !important;
