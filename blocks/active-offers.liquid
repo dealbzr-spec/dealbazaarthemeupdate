@@ -1,23 +1,83 @@
 <div class="boat-active-offers-block" {{ block.shopify_attributes }}>
 
-  <!-- Optional Collection / 2-Option Selector Section inside Active Offers -->
+  <!-- Native Product & Collection Selector Inside Active Offers -->
   {% if block.settings.enable_option_picker %}
     <div class="boat-active-offers-picker-section">
       {% if block.settings.picker_label != blank %}
         <label class="form__label boat-option-label">
           <span class="boat-choose-prefix">{{ block.settings.picker_label }}</span>
           <span class="boat-selected-option-title" id="active-offers-selected-option-{{ block.id }}">
-            {% if block.settings.picker_type == 'collection' and block.settings.collection != blank %}
-              {{ block.settings.collection.products.first.title | default: product.title }}
-            {% else %}
-              {{ block.settings.opt1_title }}
-            {% endif %}
+            {{ product.title }}
           </span>
         </label>
       {% endif %}
 
       <div class="collection-picker-options-grid">
-        {% if block.settings.picker_type == 'collection' and block.settings.collection != blank %}
+        {% if block.settings.picker_mode == 'products' %}
+          <!-- Native Shopify Product Pickers (Product 1, 2, 3, 4) -->
+          {% assign p1 = block.settings.product_1 %}
+          {% assign p2 = block.settings.product_2 %}
+          {% assign p3 = block.settings.product_3 %}
+          {% assign p4 = block.settings.product_4 %}
+
+          {% if p1 != blank %}
+            <a href="{{ p1.url }}" class="collection-picker-option-card{% if p1.id == product.id %} is-selected{% endif %}">
+              {% if p1.featured_image %}
+                <div class="collection-picker-img-wrapper">
+                  <img src="{{ p1.featured_image | img_url: '100x100', crop: 'center' }}" alt="{{ p1.title | escape }}" width="50" height="50" loading="lazy">
+                </div>
+              {% endif %}
+              <div class="collection-picker-info">
+                <span class="collection-picker-title">{{ p1.title }}</span>
+                <span class="collection-picker-price">{{ p1.price | money }}</span>
+              </div>
+            </a>
+          {% endif %}
+
+          {% if p2 != blank %}
+            <a href="{{ p2.url }}" class="collection-picker-option-card{% if p2.id == product.id %} is-selected{% endif %}">
+              {% if p2.featured_image %}
+                <div class="collection-picker-img-wrapper">
+                  <img src="{{ p2.featured_image | img_url: '100x100', crop: 'center' }}" alt="{{ p2.title | escape }}" width="50" height="50" loading="lazy">
+                </div>
+              {% endif %}
+              <div class="collection-picker-info">
+                <span class="collection-picker-title">{{ p2.title }}</span>
+                <span class="collection-picker-price">{{ p2.price | money }}</span>
+              </div>
+            </a>
+          {% endif %}
+
+          {% if p3 != blank %}
+            <a href="{{ p3.url }}" class="collection-picker-option-card{% if p3.id == product.id %} is-selected{% endif %}">
+              {% if p3.featured_image %}
+                <div class="collection-picker-img-wrapper">
+                  <img src="{{ p3.featured_image | img_url: '100x100', crop: 'center' }}" alt="{{ p3.title | escape }}" width="50" height="50" loading="lazy">
+                </div>
+              {% endif %}
+              <div class="collection-picker-info">
+                <span class="collection-picker-title">{{ p3.title }}</span>
+                <span class="collection-picker-price">{{ p3.price | money }}</span>
+              </div>
+            </a>
+          {% endif %}
+
+          {% if p4 != blank %}
+            <a href="{{ p4.url }}" class="collection-picker-option-card{% if p4.id == product.id %} is-selected{% endif %}">
+              {% if p4.featured_image %}
+                <div class="collection-picker-img-wrapper">
+                  <img src="{{ p4.featured_image | img_url: '100x100', crop: 'center' }}" alt="{{ p4.title | escape }}" width="50" height="50" loading="lazy">
+                </div>
+              {% endif %}
+              <div class="collection-picker-info">
+                <span class="collection-picker-title">{{ p4.title }}</span>
+                <span class="collection-picker-price">{{ p4.price | money }}</span>
+              </div>
+            </a>
+          {% endif %}
+
+        {% elsif block.settings.picker_mode == 'collection' and block.settings.collection != blank %}
+          <!-- Native Shopify Collection Picker Mode -->
           {% for collection_product in block.settings.collection.products limit: block.settings.products_limit %}
             <a 
               href="{{ collection_product.url }}" 
@@ -26,7 +86,7 @@
             >
               {% if collection_product.featured_image %}
                 <div class="collection-picker-img-wrapper">
-                  <img src="{{ collection_product.featured_image | img_url: '100x100', crop: 'center' }}" alt="{{ collection_product.title | escape }}" loading="lazy" width="50" height="50">
+                  <img src="{{ collection_product.featured_image | img_url: '100x100', crop: 'center' }}" alt="{{ collection_product.title | escape }}" width="50" height="50" loading="lazy">
                 </div>
               {% endif %}
               <div class="collection-picker-info">
@@ -35,42 +95,6 @@
               </div>
             </a>
           {% endfor %}
-        {% else %}
-          <div 
-            class="collection-picker-option-card is-selected" 
-            onclick="selectActiveOfferOption(this, '{{ block.settings.opt1_title | escape }}')"
-          >
-            {% if block.settings.opt1_image %}
-              <div class="collection-picker-img-wrapper">
-                <img src="{{ block.settings.opt1_image | img_url: '100x100', crop: 'center' }}" alt="{{ block.settings.opt1_title | escape }}" loading="lazy" width="50" height="50">
-              </div>
-            {% endif %}
-            <div class="collection-picker-info">
-              <span class="collection-picker-title">{{ block.settings.opt1_title }}</span>
-              {% if block.settings.opt1_price != blank %}
-                <span class="collection-picker-price">{{ block.settings.opt1_price }}</span>
-              {% endif %}
-            </div>
-          </div>
-
-          {% if block.settings.enable_opt2 %}
-            <div 
-              class="collection-picker-option-card" 
-              onclick="selectActiveOfferOption(this, '{{ block.settings.opt2_title | escape }}')"
-            >
-              {% if block.settings.opt2_image %}
-                <div class="collection-picker-img-wrapper">
-                  <img src="{{ block.settings.opt2_image | img_url: '100x100', crop: 'center' }}" alt="{{ block.settings.opt2_title | escape }}" loading="lazy" width="50" height="50">
-                </div>
-              {% endif %}
-              <div class="collection-picker-info">
-                <span class="collection-picker-title">{{ block.settings.opt2_title }}</span>
-                {% if block.settings.opt2_price != blank %}
-                  <span class="collection-picker-price">{{ block.settings.opt2_price }}</span>
-                {% endif %}
-              </div>
-            </div>
-          {% endif %}
         {% endif %}
       </div>
     </div>
@@ -159,15 +183,6 @@
       console.error('Failed to copy code: ', err);
     });
   }
-
-  function selectActiveOfferOption(el, title) {
-    const parent = el.closest('.collection-picker-options-grid');
-    if (!parent) return;
-    parent.querySelectorAll('.collection-picker-option-card').forEach(card => card.classList.remove('is-selected'));
-    el.classList.add('is-selected');
-    const labelTitle = document.getElementById('active-offers-selected-option-{{ block.id }}');
-    if (labelTitle) labelTitle.textContent = title;
-  }
 </script>
 
 {% schema %}
@@ -176,89 +191,77 @@
   "settings": [
     {
       "type": "header",
-      "content": "Collection / Option Selector Settings"
+      "content": "Product & Collection Selector Settings"
     },
     {
       "type": "checkbox",
       "id": "enable_option_picker",
-      "label": "Enable Option / Collection Picker",
+      "label": "Enable Product / Collection Selector",
       "default": true
     },
     {
       "type": "text",
       "id": "picker_label",
       "label": "Option Group Label",
-      "default": "Select Option :"
+      "default": "Select Product / Pack :"
     },
     {
       "type": "select",
-      "id": "picker_type",
-      "label": "Picker Type",
+      "id": "picker_mode",
+      "label": "Selection Source",
       "options": [
         {
-          "value": "custom",
-          "label": "Custom 2-Option Selector"
+          "value": "products",
+          "label": "Select Individual Products"
         },
         {
           "value": "collection",
-          "label": "Collection Products Selector"
+          "label": "Select a Collection"
         }
       ],
-      "default": "custom"
+      "default": "products"
+    },
+    {
+      "type": "header",
+      "content": "Individual Products Picker Mode"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Select Product 1"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Select Product 2"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Select Product 3"
+    },
+    {
+      "type": "product",
+      "id": "product_4",
+      "label": "Select Product 4"
+    },
+    {
+      "type": "header",
+      "content": "Collection Picker Mode"
     },
     {
       "type": "collection",
       "id": "collection",
-      "label": "Select Collection (Collection Mode)"
+      "label": "Select Collection"
     },
     {
       "type": "range",
       "id": "products_limit",
       "min": 2,
-      "max": 10,
+      "max": 8,
       "step": 1,
-      "label": "Max Products to Display",
+      "label": "Max Products from Collection",
       "default": 4
-    },
-    {
-      "type": "text",
-      "id": "opt1_title",
-      "label": "Option 1 Title",
-      "default": "Standard Pack (1 Item)"
-    },
-    {
-      "type": "text",
-      "id": "opt1_price",
-      "label": "Option 1 Price",
-      "default": "Rs.1,798.00"
-    },
-    {
-      "type": "image_picker",
-      "id": "opt1_image",
-      "label": "Option 1 Image"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_opt2",
-      "label": "Enable Option 2",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "opt2_title",
-      "label": "Option 2 Title",
-      "default": "Double Pack (2 Items - Best Value)"
-    },
-    {
-      "type": "text",
-      "id": "opt2_price",
-      "label": "Option 2 Price",
-      "default": "Rs.3,198.00"
-    },
-    {
-      "type": "image_picker",
-      "id": "opt2_image",
-      "label": "Option 2 Image"
     },
     {
       "type": "header",
