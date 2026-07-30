@@ -26,8 +26,9 @@
 }
 
 /* Collection & Dual-Option Products Selector Styling */
-.collection-products-picker-block {
-  margin: 16px 0;
+.collection-products-picker-block,
+.boat-active-offers-picker-section {
+  margin: 14px 0;
   width: 100%;
 }
 
