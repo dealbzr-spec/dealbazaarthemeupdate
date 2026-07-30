@@ -370,15 +370,15 @@
                   if item.quantity >= 10
                     assign item_disc_pct = 10
                     assign cart_disc_applied = true
-                    assign active_code = 'BOAT10'
+                    assign active_code = 'DEAL10'
                   elsif item.quantity >= 5
                     assign item_disc_pct = 7
                     assign cart_disc_applied = true
-                    assign active_code = 'BOAT7'
+                    assign active_code = 'DEAL7'
                   elsif item.quantity >= 2
                     assign item_disc_pct = 6
                     assign cart_disc_applied = true
-                    assign active_code = 'BOAT6'
+                    assign active_code = 'DEAL6'
                   endif
 
                   if item_disc_pct > 0
