@@ -135,12 +135,38 @@ share-button.share-button,
   color: #1c252c !important;
 }
 
+/* Variant Option Pill Buttons (SS 1 Style) */
+.variant-option--buttons label,
+.product-form__input--pill label,
+.product-option-item label,
+fieldset.product-form__input label {
+  border: 1.5px solid #d0d5dd !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #1c252c !important;
+  background-color: #ffffff !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: inline-block !important;
+  margin: 4px 6px 4px 0 !important;
+}
+
+.variant-option--buttons input:checked + label,
+.product-form__input--pill input:checked + label,
+.product-option-item input:checked + label,
+fieldset.product-form__input input:checked + label {
+  border: 2px solid #0056b3 !important;
+  background-color: #f1f5f9 !important;
+  color: #0056b3 !important;
+}
+
 /* Square Swatch Buttons (boAt 44px x 44px style matching reference image) */
 .variant-option--swatches label,
 .variant-option label.swatch,
 .swatch-input__label,
-.swatch-item .swatch,
-.variant-option--buttons label {
+.swatch-item .swatch {
   width: 44px !important;
   height: 44px !important;
   min-width: 44px !important;
@@ -159,7 +185,7 @@ share-button.share-button,
 }
 
 /* Selected Active Swatch (Active Blue Border Box #0056b3) */
-.variant-option input:checked + label,
+.variant-option input:checked + label.swatch,
 .swatch-input__input:checked + .swatch-input__label,
 .swatch-item.active .swatch {
   border: 2px solid #0056b3 !important;
