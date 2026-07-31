@@ -5,156 +5,6 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* 1 Main Image Display Lock inside Swiper Main Slide (SS 2 Match) */
-.swiper-main .swiper-wrapper {
-  display: flex !important;
-  flex-direction: row !important;
-  width: 100% !important;
-}
-
-.swiper-main .swiper-slide {
-  width: 100% !important;
-  min-width: 100% !important;
-  max-width: 100% !important;
-  flex-shrink: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background-color: #f6f6f8 !important;
-  border-radius: 16px !important;
-  overflow: hidden !important;
-}
-
-.swiper-main img,
-.swiper-main .swiper-slide img,
-.product-media-gallery__media img,
-.product-media-gallery__slide img,
-.product__media-wrapper img,
-.product-media-container img {
-  position: relative !important;
-  width: 100% !important;
-  height: 100% !important;
-  max-height: 520px !important;
-  object-fit: contain !important;
-  background-color: #f6f6f8 !important;
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-/* Desktop boAt Media Gallery (Vertical Left Thumbnails Outside Main Image Box) */
-@media (min-width: 990px) {
-  .product-information__grid {
-    display: grid !important;
-    grid-template-columns: 52% 48% !important;
-    gap: 24px !important;
-    align-items: flex-start !important;
-    width: 100% !important;
-  }
-
-  .product-information__media,
-  .product__media-wrapper,
-  .product-media-gallery,
-  swiper-component[data-thumbnail-position="left"] {
-    position: sticky !important;
-    top: 20px !important;
-    align-self: flex-start !important;
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: flex-start !important;
-    gap: 16px !important;
-  }
-
-  /* Vertical Left Thumbnails List Outside Main Box (Screenshot 2 Match) */
-  .swiper-controls__thumbnails-container,
-  .product-media-gallery__thumbnails,
-  .swiper-controls__thumbnails,
-  swiper-component .swiper-controls__thumbnails-container {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-    width: 68px !important;
-    min-width: 68px !important;
-    max-width: 68px !important;
-    order: -1 !important;
-    overflow-y: auto !important;
-    max-height: 520px !important;
-    z-index: 10 !important;
-  }
-
-  .swiper-controls__thumbnail,
-  button.swiper-controls__thumbnail,
-  .thumbnail-button,
-  .product-media-gallery__thumbnail {
-    width: 64px !important;
-    height: 64px !important;
-    min-width: 64px !important;
-    min-height: 64px !important;
-    border: 1.5px solid #d0d5dd !important;
-    border-radius: 8px !important;
-    padding: 3px !important;
-    background-color: #ffffff !important;
-    box-sizing: border-box !important;
-    cursor: pointer !important;
-    flex-shrink: 0 !important;
-  }
-
-  .swiper-main,
-  .product-media-gallery__slideshow,
-  .product-media-container,
-  .product-media-gallery__slide,
-  .product-media-gallery__media,
-  .product__media-wrapper .media {
-    flex: 1 !important;
-    width: calc(100% - 84px) !important;
-    max-width: 520px !important;
-    aspect-ratio: 1 / 1 !important;
-    background-color: #f6f6f8 !important;
-    background: #f6f6f8 !important;
-    border-radius: 16px !important;
-    overflow: hidden !important;
-    margin: 0 !important;
-    position: relative !important;
-  }
-
-  .product-details {
-    width: 100% !important;
-  }
-}
-
-.swiper-controls__thumbnail:hover,
-button.swiper-controls__thumbnail:hover {
-  border-color: #00c68c !important;
-}
-
-/* Active Selected Thumbnail Green/Teal Outline Box (#00c68c) */
-.swiper-slide-thumb-active .swiper-controls__thumbnail,
-.swiper-controls__thumbnail.is-active,
-.swiper-controls__thumbnail.active,
-button.swiper-controls__thumbnail[aria-current="true"],
-.swiper-slide-thumb-active button.swiper-controls__thumbnail,
-.swiper-slide-thumb-active {
-  border: 2px solid #00c68c !important;
-  border-radius: 8px !important;
-  box-shadow: 0 0 0 1px #00c68c !important;
-}
-
-/* Fit images inside thumbnail outline box cleanly */
-.swiper-controls__thumbnail img,
-button.swiper-controls__thumbnail img,
-.product-media-gallery__thumbnail img {
-  border-radius: 6px !important;
-  object-fit: contain !important;
-  background-color: #ffffff !important;
-  width: 100% !important;
-  height: 100% !important;
-  display: block !important;
-}
-
 /* Hide Shopping Bag Icon inside Quantity Label */
 .quantity__label .quantity__rules-cart,
 .quantity__label .icon-cart,
@@ -183,7 +33,7 @@ button.swiper-controls__thumbnail img,
   color: #1c252c !important;
 }
 
-/* Square Swatch Buttons (boAt 44px x 44px style matching reference image) */
+/* Square Swatch Buttons (boAt 44px x 44px style) */
 .variant-option--swatches label,
 .variant-option label.swatch,
 .swatch-input__label,
@@ -588,41 +438,8 @@ quantity-input.quantity .quantity__input::-webkit-inner-spin-button {
   box-shadow: 0 6px 18px rgba(0, 198, 140, 0.45) !important;
 }
 
-/* Mobile Layout Rules (Matching SS 1 Mobile Carousel View & Title First) */
+/* Mobile Layout Rules */
 @media (max-width: 768px) {
-  .product-information__grid {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  .product-details {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  /* Move Product Title / Header block to top on mobile */
-  .product-details > div:has(.product-form-text-block),
-  .product-details > .product-form-text-block,
-  .product-details > [data-block-id*="title"],
-  .product-details > div:first-child {
-    order: -1 !important;
-  }
-
-  /* Hide extra thumbnails list on mobile so only clean carousel shows */
-  .swiper-controls__thumbnails-container,
-  .product-media-gallery__thumbnails,
-  .swiper-controls__thumbnails {
-    display: none !important;
-  }
-
-  .swiper-main,
-  .product-media-gallery__slide,
-  .product-media-container {
-    aspect-ratio: 1 / 1 !important;
-    max-height: 380px !important;
-    border-radius: 16px !important;
-  }
-
   .boat-active-offers-block {
     margin: 14px 0;
   }
