@@ -5,6 +5,108 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* Main Product Image Container & PNG Image Background #F6F6F8 (SS 2 Style) */
+.product-media-gallery__media,
+.product__media-wrapper .media,
+.product__media-item .media,
+.product-media-container .media,
+.swiper-main .media,
+.product-media-gallery__slide .media {
+  background-color: #f6f6f8 !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+.product-media-gallery__media img,
+.product__media-wrapper img,
+.product-media-container img,
+.swiper-main img,
+.product-media-gallery__slide img {
+  object-fit: contain !important;
+  max-height: 100% !important;
+  width: 100% !important;
+  border-radius: 16px !important;
+}
+
+/* Thumbnails Square Outline Box (SS 2 Style) */
+.swiper-controls__thumbnail,
+button.swiper-controls__thumbnail,
+.thumbnail-button,
+.product-media-gallery__thumbnail {
+  border: 1.5px solid #d0d5dd !important;
+  border-radius: 10px !important;
+  padding: 2px !important;
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.swiper-controls__thumbnail:hover,
+button.swiper-controls__thumbnail:hover {
+  border-color: #00c68c !important;
+}
+
+/* Active Selected Thumbnail (Teal/Green Active Outline Box #00c68c - SS 1 & SS 2) */
+.swiper-slide-thumb-active .swiper-controls__thumbnail,
+.swiper-controls__thumbnail.is-active,
+.swiper-controls__thumbnail.active,
+button.swiper-controls__thumbnail[aria-current="true"],
+.swiper-slide-thumb-active button.swiper-controls__thumbnail {
+  border: 2.5px solid #00c68c !important;
+  border-radius: 10px !important;
+  box-shadow: 0 0 0 1px #00c68c !important;
+}
+
+/* Fit images inside thumbnail outline box cleanly & make 100% visible */
+.swiper-controls__thumbnail img,
+button.swiper-controls__thumbnail img,
+.product-media-gallery__thumbnail img {
+  border-radius: 8px !important;
+  object-fit: contain !important;
+  background-color: #ffffff !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Remove empty right-side column space and stretch product column 100% full width */
+.product__info-container,
+.product-details,
+.product-info,
+.product-info-block,
+.product__info-wrapper,
+.product-form,
+.boat-active-offers-block,
+.product-form__buttons {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Absolute position for Share Button so it doesn't create extra right-side column margin */
+share-button.share-button,
+.share-button {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  margin: 0 !important;
+  z-index: 5 !important;
+}
+
+.product__info-container {
+  position: relative !important;
+  padding-right: 0 !important;
+}
+
 /* Hide Shopping Bag Icon inside Quantity Label */
 .quantity__label .quantity__rules-cart,
 .quantity__label .icon-cart,
@@ -33,7 +135,7 @@
   color: #1c252c !important;
 }
 
-/* Square Swatch Buttons (boAt 44px x 44px style) */
+/* Square Swatch Buttons (boAt 44px x 44px style matching reference image) */
 .variant-option--swatches label,
 .variant-option label.swatch,
 .swatch-input__label,
@@ -56,13 +158,13 @@
   justify-content: center !important;
 }
 
-/* Selected Active Swatch (Active Green Border Box #00c68c) */
+/* Selected Active Swatch (Active Blue Border Box #0056b3) */
 .variant-option input:checked + label,
 .swatch-input__input:checked + .swatch-input__label,
 .swatch-item.active .swatch {
-  border: 2px solid #00c68c !important;
+  border: 2px solid #0056b3 !important;
   border-radius: 10px !important;
-  box-shadow: 0 0 0 1px #00c68c !important;
+  box-shadow: 0 0 0 1px #0056b3 !important;
   background-color: #f1f5f9 !important;
 }
 
