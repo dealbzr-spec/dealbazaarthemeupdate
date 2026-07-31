@@ -56,7 +56,7 @@
     <!-- Card 1 -->
     {% if block.settings.enable_card_1 %}
       <div 
-        class="boat-offer-card" 
+        class="boat-offer-card boat-offer-card--1" 
         onclick="applyOfferCard(this, {{ block.settings.qty_1 | default: 2 }}, '{{ block.settings.code_1 | default: 'DEAL6' | escape }}', {{ pct_1 }}, {{ p_price }})"
       >
         {% if block.settings.badge_1 != blank %}
@@ -85,7 +85,7 @@
     <!-- Card 2 -->
     {% if block.settings.enable_card_2 %}
       <div 
-        class="boat-offer-card" 
+        class="boat-offer-card boat-offer-card--2" 
         onclick="applyOfferCard(this, {{ block.settings.qty_2 | default: 5 }}, '{{ block.settings.code_2 | default: 'DEAL7' | escape }}', {{ pct_2 }}, {{ p_price }})"
       >
         {% if block.settings.badge_2 != blank %}
@@ -114,7 +114,7 @@
     <!-- Card 3 -->
     {% if block.settings.enable_card_3 %}
       <div 
-        class="boat-offer-card" 
+        class="boat-offer-card boat-offer-card--3" 
         onclick="applyOfferCard(this, {{ block.settings.qty_3 | default: 10 }}, '{{ block.settings.code_3 | default: 'DEAL10' | escape }}', {{ pct_3 }}, {{ p_price }})"
       >
         {% if block.settings.badge_3 != blank %}
@@ -145,7 +145,19 @@
 <script>
   window.boatActiveOfferDiscountPct = 0;
   window.boatActiveOfferCode = '';
-  window.boatBasePrice = 0;
+  window.boatBasePrice = {{ p_price }};
+
+  window.boatCard1Qty = {{ block.settings.qty_1 | default: 2 }};
+  window.boatCard1Pct = {{ pct_1 }};
+  window.boatCard1Code = '{{ block.settings.code_1 | default: "DEAL6" | escape }}';
+
+  window.boatCard2Qty = {{ block.settings.qty_2 | default: 5 }};
+  window.boatCard2Pct = {{ pct_2 }};
+  window.boatCard2Code = '{{ block.settings.code_2 | default: "DEAL7" | escape }}';
+
+  window.boatCard3Qty = {{ block.settings.qty_3 | default: 10 }};
+  window.boatCard3Pct = {{ pct_3 }};
+  window.boatCard3Code = '{{ block.settings.code_3 | default: "DEAL10" | escape }}';
 
   function applyOfferCard(cardEl, qty, code, pct, basePrice) {
     window.boatActiveOfferDiscountPct = pct;
@@ -190,6 +202,63 @@
     }
   }
 
+  function autoSyncTierForQuantity(newQty) {
+    const q1 = window.boatCard1Qty;
+    const p1 = window.boatCard1Pct;
+    const c1 = window.boatCard1Code;
+
+    const q2 = window.boatCard2Qty;
+    const p2 = window.boatCard2Pct;
+    const c2 = window.boatCard2Code;
+
+    const q3 = window.boatCard3Qty;
+    const p3 = window.boatCard3Pct;
+    const c3 = window.boatCard3Code;
+
+    let activeCardClass = '';
+    let activePct = 0;
+    let activeCode = '';
+
+    if (newQty >= q3) {
+      activeCardClass = 'boat-offer-card--3';
+      activePct = p3;
+      activeCode = c3;
+    } else if (newQty >= q2) {
+      activeCardClass = 'boat-offer-card--2';
+      activePct = p2;
+      activeCode = c2;
+    } else if (newQty >= q1) {
+      activeCardClass = 'boat-offer-card--1';
+      activePct = p1;
+      activeCode = c1;
+    }
+
+    window.boatActiveOfferDiscountPct = activePct;
+    window.boatActiveOfferCode = activeCode;
+
+    // Highlight matching offer card
+    const grid = document.querySelector('.boat-offers-grid');
+    if (grid) {
+      grid.querySelectorAll('.boat-offer-card').forEach(c => {
+        if (activeCardClass && c.classList.contains(activeCardClass)) {
+          c.classList.add('is-selected');
+        } else {
+          c.classList.remove('is-selected');
+        }
+      });
+    }
+
+    if (activePct > 0 && window.boatBasePrice > 0) {
+      updateDiscountedSubtotalDisplay(newQty, activePct, window.boatBasePrice);
+      if (activeCode) {
+        fetch('/discount/' + encodeURIComponent(activeCode)).catch(function(){});
+      }
+    } else {
+      // Regular price if quantity < lowest tier (e.g. 1)
+      revertToRegularSubtotalDisplay(newQty, window.boatBasePrice);
+    }
+  }
+
   function updateDiscountedSubtotalDisplay(qty, pct, basePrice) {
     if (!basePrice || !pct) return;
     const discountedUnitPrice = (basePrice * (100 - pct)) / 100;
@@ -212,6 +281,25 @@
       badge.style.cssText = 'font-size:12px; color:#00c68c; font-weight:700; margin-left:6px;';
       badge.textContent = '(' + pct + '% Off Applied)';
       el.appendChild(badge);
+    });
+  }
+
+  function revertToRegularSubtotalDisplay(qty, basePrice) {
+    if (!basePrice) return;
+    const totalSubtotalCents = Math.round(basePrice * qty);
+    const formattedSubtotal = 'Rs.' + (totalSubtotalCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    
+    const priceEls = document.querySelectorAll('[data-subtotal-price]');
+    if (priceEls.length > 0) {
+      priceEls.forEach(el => {
+        el.textContent = formattedSubtotal;
+      });
+    }
+
+    const containerEls = document.querySelectorAll('subtotal-component, .product-subtotal, [data-testid="subtotal"], .product-form__subtotal');
+    containerEls.forEach(el => {
+      const existingBadge = el.querySelector('.boat-discount-badge');
+      if (existingBadge) existingBadge.remove();
     });
   }
 
@@ -239,15 +327,22 @@
     }
   }, true);
 
-  // Keep subtotal synced if quantity input is manually changed while card is active
+  // Auto-sync discount tier whenever quantity input changes (+ / - buttons or manual input)
   document.addEventListener('change', function(e) {
     if (e.target && (e.target.name === 'quantity' || e.target.classList.contains('quantity__input'))) {
-      if (window.boatActiveOfferDiscountPct > 0 && window.boatBasePrice > 0) {
-        const newQty = parseInt(e.target.value) || 1;
-        setTimeout(function() {
-          updateDiscountedSubtotalDisplay(newQty, window.boatActiveOfferDiscountPct, window.boatBasePrice);
-        }, 60);
-      }
+      const newQty = parseInt(e.target.value) || 1;
+      setTimeout(function() {
+        autoSyncTierForQuantity(newQty);
+      }, 50);
+    }
+  });
+
+  document.addEventListener('input', function(e) {
+    if (e.target && (e.target.name === 'quantity' || e.target.classList.contains('quantity__input'))) {
+      const newQty = parseInt(e.target.value) || 1;
+      setTimeout(function() {
+        autoSyncTierForQuantity(newQty);
+      }, 50);
     }
   });
 </script>
