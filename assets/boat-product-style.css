@@ -5,21 +5,19 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Main Product Media Container & PNG Image Background #F6F6F8 (Fixed Box Size & Aspect Ratio) */
+/* Ensure main media container and image load instantly with correct dimensions (Fix Blank Box) */
 .swiper-main,
-.swiper-main .swiper-slide,
-.swiper-main .media,
-.product-media-gallery__media,
-.product__media-wrapper .media,
-.product__media-item,
+.product-media-gallery__slideshow,
 .product-media-container,
-.product-media-gallery__slide {
+.product-media-gallery__slide,
+.product-media-gallery__media,
+.product__media-wrapper .media {
+  position: relative !important;
+  width: 100% !important;
+  min-height: 380px !important;
   background-color: #f6f6f8 !important;
   background: #f6f6f8 !important;
   border-radius: 16px !important;
-  width: 100% !important;
-  aspect-ratio: 1 / 1 !important;
-  max-height: 520px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -28,17 +26,45 @@
 
 .swiper-main img,
 .product-media-gallery__media img,
+.product-media-gallery__slide img,
 .product__media-wrapper img,
-.product-media-gallery__slide img {
+.product-media-container img {
+  position: relative !important;
   width: 100% !important;
   height: 100% !important;
-  max-height: 100% !important;
+  max-height: 520px !important;
   object-fit: contain !important;
   background-color: #f6f6f8 !important;
-  border-radius: 16px !important;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
-/* Thumbnails Square Outline Box & Visible Thumbnails List */
+/* Desktop Sticky Image Gallery (Image Stays Fixed While Right Content Scrolls - boAt Style) */
+@media (min-width: 769px) {
+  .product-information__grid {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 30px !important;
+  }
+
+  .product-information__media {
+    position: sticky !important;
+    top: 20px !important;
+    align-self: flex-start !important;
+    flex: 1 1 50% !important;
+    max-width: 50% !important;
+  }
+
+  .product-details,
+  .product-information__grid > div:not(.product-information__media) {
+    flex: 1 1 50% !important;
+    max-width: 50% !important;
+  }
+}
+
+/* Thumbnails Square Outline Box & Visible Thumbnails List (Desktop) */
 .swiper-controls__thumbnails-container,
 .product-media-gallery__thumbnails {
   display: flex !important;
@@ -557,34 +583,40 @@ quantity-input.quantity .quantity__input::-webkit-inner-spin-button {
   box-shadow: 0 6px 18px rgba(0, 198, 140, 0.45) !important;
 }
 
-/* Mobile Layout Rules (Matching SS 2 Mobile Carousel View) */
+/* Mobile Layout Rules (Matching SS 1 Mobile Carousel View & Title First) */
 @media (max-width: 768px) {
+  .product-information__grid {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .product-details {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* Move Product Title / Header block to top on mobile */
+  .product-details > div:has(.product-form-text-block),
+  .product-details > .product-form-text-block,
+  .product-details > [data-block-id*="title"],
+  .product-details > div:first-child {
+    order: -1 !important;
+  }
+
+  /* Hide extra thumbnails list on mobile so only clean carousel shows */
+  .swiper-controls__thumbnails-container,
+  .product-media-gallery__thumbnails,
+  .swiper-controls__thumbnails {
+    display: none !important;
+  }
+
   .swiper-main,
   .product-media-gallery__slide,
   .product-media-container {
     aspect-ratio: 1 / 1 !important;
     max-height: 380px !important;
+    min-height: 320px !important;
     border-radius: 16px !important;
-  }
-
-  .swiper-controls__thumbnails-container,
-  .product-media-gallery__thumbnails {
-    display: flex !important;
-    flex-direction: row !important;
-    overflow-x: auto !important;
-    gap: 8px !important;
-    padding: 6px 2px !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-
-  .swiper-controls__thumbnail,
-  button.swiper-controls__thumbnail,
-  .product-media-gallery__thumbnail {
-    width: 56px !important;
-    height: 56px !important;
-    min-width: 56px !important;
-    min-height: 56px !important;
-    flex-shrink: 0 !important;
   }
 
   .boat-active-offers-block {
