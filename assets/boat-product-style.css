@@ -86,14 +86,6 @@
   width: 100%;
 }
 
-@media (max-width: 768px) {
-  .boat-offers-grid {
-    grid-template-columns: repeat(3, 1fr);
-    overflow-x: auto;
-    padding-bottom: 6px;
-  }
-}
-
 .boat-offer-card {
   position: relative;
   background: linear-gradient(180deg, #eaf8f5 0%, #ffffff 100%);
@@ -392,7 +384,7 @@ quantity-input.quantity .quantity__input::-webkit-inner-spin-button {
   justify-content: center !important;
   cursor: pointer !important;
   box-shadow: 0 4px 12px rgba(28, 37, 44, 0.25) !important;
-  transition: all 0.25 ease !important;
+  transition: all 0.25s ease !important;
 }
 
 .product-form__buttons .add-to-cart-button:hover,
@@ -428,4 +420,69 @@ quantity-input.quantity .quantity__input::-webkit-inner-spin-button {
   background: linear-gradient(180deg, #00e09e 0%, #00d697 100%) !important;
   transform: translateY(-1px) !important;
   box-shadow: 0 6px 18px rgba(0, 198, 140, 0.45) !important;
+}
+
+/* Mobile Responsiveness Enhancements */
+@media (max-width: 768px) {
+  .boat-active-offers-block {
+    margin: 14px 0;
+  }
+
+  .boat-offers-heading {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .boat-offers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    width: 100%;
+  }
+
+  .boat-offer-card {
+    padding: 18px 4px 8px 4px;
+    min-height: 110px;
+    border-radius: 10px;
+  }
+
+  .boat-offer-badge {
+    font-size: 8px;
+    padding: 2px 6px;
+    top: -8px;
+  }
+
+  .boat-offer-title {
+    font-size: 11px;
+  }
+
+  .boat-offer-discount {
+    font-size: 11px;
+  }
+
+  .boat-offer-calc-price {
+    font-size: 10px;
+  }
+
+  .boat-offer-code-btn {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+
+  .product-form__buttons {
+    padding: 12px !important;
+    border-radius: 14px !important;
+    gap: 10px !important;
+    margin-top: 14px !important;
+  }
+
+  .product-form__buttons .add-to-cart-button,
+  .product-form__buttons button[name="add"],
+  .product-form__buttons .shopify-payment-button__button--unbranded,
+  .product-form__buttons .shopify-payment-button__button {
+    height: 46px !important;
+    min-height: 46px !important;
+    font-size: 14px !important;
+    border-radius: 12px !important;
+  }
 }
