@@ -280,12 +280,13 @@ share-button.share-button,
   box-shadow: 0 6px 24px rgba(0, 86, 179, 0.12) !important;
 }
 
-/* Quantity Title & Box in ONE SINGLE ROW (Desktop & Mobile) */
+/* Quantity Title & Box with Comfortable Gap in ONE SINGLE ROW (Desktop & Mobile) */
 .product-form__quantity {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  justify-content: space-between !important;
+  justify-content: flex-start !important;
+  gap: 16px !important;
   width: 100% !important;
   margin-bottom: 4px !important;
 }
@@ -294,6 +295,7 @@ share-button.share-button,
 .product-form__buttons .form__label,
 .product-form__buttons label[for*="Quantity"] {
   margin-bottom: 0 !important;
+  margin-right: 16px !important;
   font-size: 15px !important;
   font-weight: 700 !important;
   color: #1c252c !important;
