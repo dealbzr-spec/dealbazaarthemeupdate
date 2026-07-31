@@ -5,7 +5,7 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Ensure main media container and image load instantly with correct dimensions (Fix Blank Box) */
+/* Ensure main media container and image load cleanly (Fixed Aspect Ratio & Box Size) */
 .swiper-main,
 .product-media-gallery__slideshow,
 .product-media-container,
@@ -14,14 +14,13 @@
 .product__media-wrapper .media {
   position: relative !important;
   width: 100% !important;
-  min-height: 380px !important;
+  max-width: 520px !important;
+  aspect-ratio: 1 / 1 !important;
   background-color: #f6f6f8 !important;
   background: #f6f6f8 !important;
   border-radius: 16px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
   overflow: hidden !important;
+  margin: 0 auto !important;
 }
 
 .swiper-main img,
@@ -32,36 +31,11 @@
   position: relative !important;
   width: 100% !important;
   height: 100% !important;
-  max-height: 520px !important;
   object-fit: contain !important;
   background-color: #f6f6f8 !important;
   display: block !important;
   opacity: 1 !important;
   visibility: visible !important;
-}
-
-/* Desktop Sticky Image Gallery (Image Stays Fixed While Right Content Scrolls - boAt Style) */
-@media (min-width: 769px) {
-  .product-information__grid {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: flex-start !important;
-    gap: 30px !important;
-  }
-
-  .product-information__media {
-    position: sticky !important;
-    top: 20px !important;
-    align-self: flex-start !important;
-    flex: 1 1 50% !important;
-    max-width: 50% !important;
-  }
-
-  .product-details,
-  .product-information__grid > div:not(.product-information__media) {
-    flex: 1 1 50% !important;
-    max-width: 50% !important;
-  }
 }
 
 /* Thumbnails Square Outline Box & Visible Thumbnails List (Desktop) */
@@ -119,35 +93,6 @@ button.swiper-controls__thumbnail img,
   width: 100% !important;
   height: 100% !important;
   display: block !important;
-}
-
-/* Remove empty right-side column space and stretch product column 100% full width */
-.product__info-container,
-.product-details,
-.product-info,
-.product-info-block,
-.product__info-wrapper,
-.product-form,
-.boat-active-offers-block,
-.product-form__buttons {
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-/* Absolute position for Share Button so it doesn't create extra right-side column margin */
-share-button.share-button,
-.share-button {
-  position: absolute !important;
-  top: 0 !important;
-  right: 0 !important;
-  margin: 0 !important;
-  z-index: 5 !important;
-}
-
-.product__info-container {
-  position: relative !important;
-  padding-right: 0 !important;
 }
 
 /* Hide Shopping Bag Icon inside Quantity Label */
@@ -615,7 +560,6 @@ quantity-input.quantity .quantity__input::-webkit-inner-spin-button {
   .product-media-container {
     aspect-ratio: 1 / 1 !important;
     max-height: 380px !important;
-    min-height: 320px !important;
     border-radius: 16px !important;
   }
 
