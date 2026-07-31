@@ -251,6 +251,31 @@
   box-shadow: 0 6px 24px rgba(0, 86, 179, 0.12) !important;
 }
 
+/* Quantity Title & Box in ONE SINGLE ROW (Desktop & Mobile) */
+.product-form__quantity {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  margin-bottom: 4px !important;
+}
+
+.product-form__quantity .quantity__label,
+.product-form__buttons .form__label,
+.product-form__buttons label[for*="Quantity"] {
+  margin-bottom: 0 !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #1c252c !important;
+  display: inline-block !important;
+  line-height: 1.2 !important;
+}
+
+.product-form__quantity .price-per-item__container {
+  margin-top: 0 !important;
+}
+
 /* Fix Quantity Selector Input Box (Preventing + sign overflow) */
 quantity-input.quantity,
 .quantity-input,
@@ -337,17 +362,6 @@ quantity-input.quantity .quantity__input::-webkit-inner-spin-button {
   margin: 0 !important;
 }
 
-/* Quantity Label & Subtotal Text */
-.product-form__buttons .form__label,
-.product-form__buttons label[for*="Quantity"] {
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  color: #1c252c !important;
-  margin-bottom: 4px !important;
-  display: block !important;
-  letter-spacing: -0.2px !important;
-}
-
 .product-form__buttons subtotal-component,
 .product-form__buttons .product-subtotal,
 .product-form__buttons [data-testid="subtotal"] {
@@ -422,7 +436,7 @@ quantity-input.quantity .quantity__input::-webkit-inner-spin-button {
   box-shadow: 0 6px 18px rgba(0, 198, 140, 0.45) !important;
 }
 
-/* Mobile Responsiveness Enhancements */
+/* Mobile Layout Rules */
 @media (max-width: 768px) {
   .boat-active-offers-block {
     margin: 14px 0;
@@ -476,13 +490,43 @@ quantity-input.quantity .quantity__input::-webkit-inner-spin-button {
     margin-top: 14px !important;
   }
 
+  /* Add to Cart & Buy Now side-by-side in ONE ROW on Mobile */
+  .product-form__buttons {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .product-form__buttons > *:nth-child(1),
+  .product-form__buttons > *:nth-child(2),
+  .product-form__buttons > .product-form__quantity,
+  .product-form__buttons > subtotal-component,
+  .product-form__buttons > .product-form__subtotal {
+    grid-column: span 2 !important;
+    width: 100% !important;
+  }
+
+  .product-form__buttons > *:nth-child(3),
+  .product-form__buttons > *:nth-child(4),
+  .product-form__buttons > *:nth-child(5),
+  .product-form__buttons .add-to-cart-button-container,
+  .product-form__buttons .shopify-payment-button {
+    grid-column: span 1 !important;
+    width: 100% !important;
+  }
+
   .product-form__buttons .add-to-cart-button,
   .product-form__buttons button[name="add"],
   .product-form__buttons .shopify-payment-button__button--unbranded,
   .product-form__buttons .shopify-payment-button__button {
-    height: 46px !important;
-    min-height: 46px !important;
-    font-size: 14px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
     border-radius: 12px !important;
+    width: 100% !important;
+    padding: 0 4px !important;
+    white-space: nowrap !important;
   }
 }
