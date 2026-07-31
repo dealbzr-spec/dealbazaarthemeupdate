@@ -194,10 +194,15 @@ fieldset.product-form__input input:checked + label {
   background-color: #f1f5f9 !important;
 }
 
-/* boAt Active Offers Styling (Dynamic Cards) */
+/* boAt Active Offers Styling (EXACT SS1 DESIGN) */
 .boat-active-offers-block {
   margin: 18px 0;
   width: 100% !important;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
 }
 
 .boat-offers-heading {
@@ -228,6 +233,7 @@ fieldset.product-form__input input:checked + label {
   min-height: 125px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-sizing: border-box;
 }
 
 .boat-offer-card:hover {
@@ -256,6 +262,7 @@ fieldset.product-form__input input:checked + label {
   white-space: nowrap;
   text-transform: uppercase;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 2;
 }
 
 .boat-offer-badge--2 {
