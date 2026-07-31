@@ -5,6 +5,29 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* Desktop boAt Sticky Gallery & Balanced 2-Column Grid (Image Stays Pinned While Scrolling) */
+@media (min-width: 990px) {
+  .product-information__grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 40px !important;
+    align-items: start !important;
+    width: 100% !important;
+  }
+
+  .product-information__media,
+  .product__media-wrapper {
+    position: sticky !important;
+    top: 30px !important;
+    align-self: start !important;
+    width: 100% !important;
+  }
+
+  .product-details {
+    width: 100% !important;
+  }
+}
+
 /* Ensure main media container and image load cleanly (Fixed Aspect Ratio & Box Size) */
 .swiper-main,
 .product-media-gallery__slideshow,
