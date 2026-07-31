@@ -5,45 +5,82 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Desktop boAt Sticky Gallery & Balanced 2-Column Grid (Image Stays Pinned While Scrolling) */
+/* Desktop boAt Sticky Media Gallery & Vertical Left Thumbnails (Screenshot 1 & 2 Match) */
 @media (min-width: 990px) {
   .product-information__grid {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    gap: 40px !important;
-    align-items: start !important;
+    grid-template-columns: 52% 48% !important;
+    gap: 24px !important;
+    align-items: flex-start !important;
     width: 100% !important;
   }
 
   .product-information__media,
-  .product__media-wrapper {
+  .product__media-wrapper,
+  .product-media-gallery {
     position: sticky !important;
-    top: 30px !important;
-    align-self: start !important;
+    top: 20px !important;
+    align-self: flex-start !important;
     width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+  }
+
+  /* Vertical Left Thumbnails List (Screenshot 1 Style) */
+  .swiper-controls__thumbnails-container,
+  .product-media-gallery__thumbnails,
+  .swiper-controls__thumbnails {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 68px !important;
+    min-width: 68px !important;
+    max-width: 68px !important;
+    order: -1 !important;
+    overflow-y: auto !important;
+    max-height: 520px !important;
+  }
+
+  .swiper-controls__thumbnail,
+  button.swiper-controls__thumbnail,
+  .thumbnail-button,
+  .product-media-gallery__thumbnail {
+    width: 64px !important;
+    height: 64px !important;
+    min-width: 64px !important;
+    min-height: 64px !important;
+    border: 1.5px solid #d0d5dd !important;
+    border-radius: 8px !important;
+    padding: 3px !important;
+    background-color: #ffffff !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+  }
+
+  .swiper-main,
+  .product-media-gallery__slideshow,
+  .product-media-container,
+  .product-media-gallery__slide,
+  .product-media-gallery__media,
+  .product__media-wrapper .media {
+    flex: 1 !important;
+    width: 100% !important;
+    max-width: 520px !important;
+    aspect-ratio: 1 / 1 !important;
+    background-color: #f6f6f8 !important;
+    background: #f6f6f8 !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    position: relative !important;
   }
 
   .product-details {
     width: 100% !important;
   }
-}
-
-/* Ensure main media container and image load cleanly (Fixed Aspect Ratio & Box Size) */
-.swiper-main,
-.product-media-gallery__slideshow,
-.product-media-container,
-.product-media-gallery__slide,
-.product-media-gallery__media,
-.product__media-wrapper .media {
-  position: relative !important;
-  width: 100% !important;
-  max-width: 520px !important;
-  aspect-ratio: 1 / 1 !important;
-  background-color: #f6f6f8 !important;
-  background: #f6f6f8 !important;
-  border-radius: 16px !important;
-  overflow: hidden !important;
-  margin: 0 auto !important;
 }
 
 .swiper-main img,
@@ -59,34 +96,6 @@
   display: block !important;
   opacity: 1 !important;
   visibility: visible !important;
-}
-
-/* Thumbnails Square Outline Box & Visible Thumbnails List (Desktop) */
-.swiper-controls__thumbnails-container,
-.product-media-gallery__thumbnails {
-  display: flex !important;
-  gap: 8px !important;
-  overflow: visible !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-.swiper-controls__thumbnail,
-button.swiper-controls__thumbnail,
-.thumbnail-button,
-.product-media-gallery__thumbnail,
-.swiper-controls__thumbnail-container .swiper-slide {
-  border: 1.5px solid #d0d5dd !important;
-  border-radius: 8px !important;
-  padding: 3px !important;
-  background-color: #ffffff !important;
-  background: #ffffff !important;
-  box-shadow: none !important;
-  transition: all 0.2s ease !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-  visibility: visible !important;
-  opacity: 1 !important;
 }
 
 .swiper-controls__thumbnail:hover,
