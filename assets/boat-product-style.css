@@ -5,6 +5,35 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* Remove empty right-side column space and stretch product column 100% full width */
+.product__info-container,
+.product-details,
+.product-info,
+.product-info-block,
+.product__info-wrapper,
+.product-form,
+.boat-active-offers-block,
+.product-form__buttons {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Absolute position for Share Button so it doesn't create extra right-side column margin */
+share-button.share-button,
+.share-button {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  margin: 0 !important;
+  z-index: 5 !important;
+}
+
+.product__info-container {
+  position: relative !important;
+  padding-right: 0 !important;
+}
+
 /* Hide Shopping Bag Icon inside Quantity Label */
 .quantity__label .quantity__rules-cart,
 .quantity__label .icon-cart,
@@ -69,7 +98,7 @@
 /* boAt Active Offers Styling (Dynamic Cards) */
 .boat-active-offers-block {
   margin: 18px 0;
-  width: 100%;
+  width: 100% !important;
 }
 
 .boat-offers-heading {
@@ -83,7 +112,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  width: 100%;
+  width: 100% !important;
 }
 
 .boat-offer-card {
@@ -451,7 +480,7 @@ quantity-input.quantity .quantity__input::-webkit-inner-spin-button {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 6px;
-    width: 100%;
+    width: 100% !important;
   }
 
   .boat-offer-card {
