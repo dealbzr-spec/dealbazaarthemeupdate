@@ -5,7 +5,129 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Main Product Image Container & PNG Image Background #F6F6F8 (SS 2 Style) */
+/* ==========================================================================
+   Product Media Gallery - Reference Image Exact Match (Vertical Left Thumbnails)
+   ========================================================================== */
+
+/* Desktop Layout with Vertical Left Thumbnails */
+@media screen and (min-width: 750px) {
+  media-gallery {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+  }
+
+  media-gallery swiper-component {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+    position: relative !important;
+  }
+
+  /* Left Vertical Thumbnails Container */
+  swiper-component .swiper-controls__thumbnails-container[data-thumbnail-position="left"],
+  .swiper-controls__thumbnails-container[data-thumbnail-position="left"] {
+    width: 68px !important;
+    min-width: 68px !important;
+    max-width: 68px !important;
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: auto !important;
+    max-height: 540px !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    z-index: 2 !important;
+    flex-shrink: 0 !important;
+    order: 1 !important;
+  }
+
+  .swiper-controls__thumbnails-container::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .swiper-controls__thumbnails-container[data-thumbnail-position="left"] .swiper-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    height: auto !important;
+    width: 100% !important;
+  }
+
+  /* Main Product Image Container */
+  media-gallery swiper-component .swiper-main {
+    flex: 1 1 auto !important;
+    width: calc(100% - 84px) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 16px !important;
+    background-color: #f6f6f8 !important;
+    order: 2 !important;
+  }
+}
+
+/* Square Thumbnail Boxes */
+.swiper-controls__thumbnail,
+button.swiper-controls__thumbnail,
+.thumbnail-button,
+.product-media-gallery__thumbnail {
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  min-height: 64px !important;
+  max-width: 64px !important;
+  max-height: 64px !important;
+  border: 1.5px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  padding: 3px !important;
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease-in-out !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.swiper-controls__thumbnail:hover,
+button.swiper-controls__thumbnail:hover {
+  border-color: #1c252c !important;
+}
+
+/* Active Selected Thumbnail (Crisp Dark Active Border Box - Reference Image Match) */
+.swiper-slide-thumb-active .swiper-controls__thumbnail,
+.swiper-controls__thumbnail.is-active,
+.swiper-controls__thumbnail.active,
+button.swiper-controls__thumbnail[aria-current="true"],
+.swiper-slide-thumb-active button.swiper-controls__thumbnail {
+  border: 2px solid #1c252c !important;
+  border-radius: 8px !important;
+  box-shadow: 0 0 0 1px #1c252c !important;
+}
+
+.swiper-controls__thumbnail img,
+button.swiper-controls__thumbnail img,
+.product-media-gallery__thumbnail img {
+  border-radius: 6px !important;
+  object-fit: contain !important;
+  background-color: #ffffff !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Main Product Image Container & Background #F6F6F8 */
 .product-media-gallery__media,
 .product__media-wrapper .media,
 .product__media-item .media,
@@ -15,6 +137,9 @@
   background-color: #f6f6f8 !important;
   border-radius: 16px !important;
   overflow: hidden !important;
+  padding: 24px !important;
+  box-sizing: border-box !important;
+  position: relative !important;
 }
 
 .product-media-gallery__media img,
@@ -25,57 +150,141 @@
   object-fit: contain !important;
   max-height: 100% !important;
   width: 100% !important;
-  border-radius: 16px !important;
+  height: auto !important;
+  border-radius: 12px !important;
 }
 
-/* Thumbnails Square Outline Box (SS 2 Style) */
-.swiper-controls__thumbnail,
-button.swiper-controls__thumbnail,
-.thumbnail-button,
-.product-media-gallery__thumbnail {
-  border: 1.5px solid #d0d5dd !important;
-  border-radius: 10px !important;
-  padding: 2px !important;
-  background-color: #ffffff !important;
-  background: #ffffff !important;
-  box-shadow: none !important;
-  transition: all 0.2s ease !important;
-  box-sizing: border-box !important;
+/* Circular Prev / Next Navigation Arrows (Dark Round Buttons with White Arrow) */
+.swiper-main .swiper-button-prev,
+.swiper-main .swiper-button-next,
+.swiper-btns-wrap .swiper-button-prev,
+.swiper-btns-wrap .swiper-button-next,
+hover-button.swiper-button {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  border-radius: 50% !important;
+  background-color: #23262f !important;
+  background: #23262f !important;
+  color: #ffffff !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  visibility: visible !important;
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 10 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
   opacity: 1 !important;
-}
-
-.swiper-controls__thumbnail:hover,
-button.swiper-controls__thumbnail:hover {
-  border-color: #00c68c !important;
-}
-
-/* Active Selected Thumbnail (Teal/Green Active Outline Box #00c68c - SS 1 & SS 2) */
-.swiper-slide-thumb-active .swiper-controls__thumbnail,
-.swiper-controls__thumbnail.is-active,
-.swiper-controls__thumbnail.active,
-button.swiper-controls__thumbnail[aria-current="true"],
-.swiper-slide-thumb-active button.swiper-controls__thumbnail {
-  border: 2.5px solid #00c68c !important;
-  border-radius: 10px !important;
-  box-shadow: 0 0 0 1px #00c68c !important;
-}
-
-/* Fit images inside thumbnail outline box cleanly & make 100% visible */
-.swiper-controls__thumbnail img,
-button.swiper-controls__thumbnail img,
-.product-media-gallery__thumbnail img {
-  border-radius: 8px !important;
-  object-fit: contain !important;
-  background-color: #ffffff !important;
-  width: 100% !important;
-  height: 100% !important;
-  display: block !important;
   visibility: visible !important;
-  opacity: 1 !important;
+}
+
+.swiper-main .swiper-button-prev:hover,
+.swiper-main .swiper-button-next:hover,
+hover-button.swiper-button:hover {
+  background-color: #111111 !important;
+  background: #111111 !important;
+  transform: translateY(-50%) scale(1.06) !important;
+}
+
+.swiper-main .swiper-button-prev,
+.swiper-btns-wrap .swiper-button-prev {
+  left: 14px !important;
+  right: auto !important;
+}
+
+.swiper-main .swiper-button-next,
+.swiper-btns-wrap .swiper-button-next {
+  right: 14px !important;
+  left: auto !important;
+}
+
+.swiper-button .svg-wrapper,
+hover-button.swiper-button svg {
+  width: 16px !important;
+  height: 16px !important;
+  fill: none !important;
+  stroke: #ffffff !important;
+  stroke-width: 2.5px !important;
+}
+
+.swiper-main .swiper-pagination {
+  display: none !important;
+}
+
+/* Bottom-Right Overlay Buttons (View Similar & Countdown Timer) */
+.product-media-overlay-actions {
+  position: absolute !important;
+  bottom: 16px !important;
+  right: 16px !important;
+  z-index: 10 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  gap: 8px !important;
+  pointer-events: auto !important;
+}
+
+.boat-view-similar-btn {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 20px !important;
+  padding: 6px 14px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+  cursor: pointer !important;
+  backdrop-filter: blur(4px) !important;
+  transition: all 0.2s ease !important;
+}
+
+.boat-view-similar-btn:hover {
+  background: #ffffff !important;
+  color: #1e293b !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.boat-countdown-timer-pill {
+  background: #ffffff !important;
+  border-radius: 14px !important;
+  padding: 4px 12px 4px 6px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  color: #1c252c !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  border: 1px solid #f1f5f9 !important;
+  letter-spacing: 0.5px !important;
+}
+
+.boat-timer-accent-bar {
+  display: inline-block !important;
+  width: 18px !important;
+  height: 18px !important;
+  border-radius: 50% !important;
+  background: #ffcc00 !important;
+  position: relative !important;
+}
+
+.boat-timer-accent-bar::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 4px !important;
+  left: 4px !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  border: 2px solid #1c252c !important;
 }
 
 /* Remove empty right-side column space and stretch product column 100% full width */
