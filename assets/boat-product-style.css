@@ -127,7 +127,8 @@ button.swiper-controls__thumbnail img,
   opacity: 1 !important;
 }
 
-/* Main Product Image Container & Background #F6F6F8 (Contain Fix) */
+/* Main Product Image Container & Background #F6F6F8 (SS 2 Single Box Match) */
+media-gallery swiper-component .swiper-main,
 .product-media-gallery__media,
 .product__media-wrapper .media,
 .product__media-item .media,
@@ -137,9 +138,9 @@ button.swiper-controls__thumbnail img,
 .product-media-container,
 picture.media {
   background-color: #f6f6f8 !important;
+  background: #f6f6f8 !important;
   border-radius: 16px !important;
   overflow: hidden !important;
-  padding: 24px !important;
   box-sizing: border-box !important;
   position: relative !important;
   display: flex !important;
@@ -147,9 +148,17 @@ picture.media {
   justify-content: center !important;
   width: 100% !important;
   height: 100% !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
-/* Force object-fit: contain on all media images to prevent zoom/stretch */
+/* Slide media padding for comfortable contain breathing space */
+.product-media-gallery__slide .media,
+.swiper-main .swiper-slide .media {
+  padding: 20px !important;
+}
+
+/* Force object-fit: contain on all media images to fill cleanly without stretch or inner box */
 .product-media-gallery__media img,
 .product__media-wrapper img,
 .product-media-container img,
@@ -163,27 +172,37 @@ picture.media img,
   object-fit: contain !important;
   max-height: 100% !important;
   max-width: 100% !important;
-  width: auto !important;
-  height: auto !important;
+  width: 100% !important;
+  height: 100% !important;
   margin: auto !important;
-  border-radius: 12px !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
-/* Circular Prev / Next Navigation Arrows (Dark Round Buttons #23262f with White Arrow) */
-.swiper-main .swiper-button-prev,
-.swiper-main .swiper-button-next,
-.swiper-btns-wrap .swiper-button-prev,
-.swiper-btns-wrap .swiper-button-next,
-hover-button.swiper-button,
+/* Hide duplicate bottom action bar buttons so ONLY the 2 main carousel arrows exist */
+.swiper-actions,
+.swiper-btns-wrap {
+  display: none !important;
+}
+
+/* Circular Prev / Next Navigation Arrows (Dark Round Buttons #23262f with White Arrow - SS 2 Match) */
+.swiper-main > .swiper-button,
+.swiper-main > hover-button.swiper-button,
+.swiper-main > .swiper-button-prev,
+.swiper-main > .swiper-button-next,
 hover-button.swiper-button-prev,
 hover-button.swiper-button-next,
-.swiper-button {
-  width: 38px !important;
-  height: 38px !important;
-  min-width: 38px !important;
-  min-height: 38px !important;
-  max-width: 38px !important;
-  max-height: 38px !important;
+.swiper-button-prev,
+.swiper-button-next {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  max-width: 36px !important;
+  max-height: 36px !important;
   border-radius: 50% !important;
   background-color: #23262f !important;
   background: #23262f !important;
@@ -195,7 +214,7 @@ hover-button.swiper-button-next,
   top: 50% !important;
   bottom: auto !important;
   transform: translateY(-50%) !important;
-  z-index: 35 !important;
+  z-index: 50 !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
   border: none !important;
   cursor: pointer !important;
@@ -206,27 +225,25 @@ hover-button.swiper-button-next,
   padding: 0 !important;
 }
 
-.swiper-main .swiper-button-prev:hover,
-.swiper-main .swiper-button-next:hover,
-hover-button.swiper-button:hover {
+.swiper-main > hover-button.swiper-button:hover,
+.swiper-main > .swiper-button-prev:hover,
+.swiper-main > .swiper-button-next:hover {
   background-color: #111111 !important;
   background: #111111 !important;
-  transform: translateY(-50%) scale(1.06) !important;
+  transform: translateY(-50%) scale(1.08) !important;
 }
 
-.swiper-main .swiper-button-prev,
-.swiper-btns-wrap .swiper-button-prev,
-hover-button.swiper-button-prev,
+.swiper-main > hover-button.swiper-button-prev,
+.swiper-main > .swiper-button-prev,
 .swiper-button-prev {
-  left: 14px !important;
+  left: 12px !important;
   right: auto !important;
 }
 
-.swiper-main .swiper-button-next,
-.swiper-btns-wrap .swiper-button-next,
-hover-button.swiper-button-next,
+.swiper-main > hover-button.swiper-button-next,
+.swiper-main > .swiper-button-next,
 .swiper-button-next {
-  right: 14px !important;
+  right: 12px !important;
   left: auto !important;
 }
 
@@ -237,8 +254,8 @@ hover-button.swiper-button-next,
 .swiper-button .svg-wrapper,
 hover-button.swiper-button svg,
 .swiper-button svg {
-  width: 16px !important;
-  height: 16px !important;
+  width: 14px !important;
+  height: 14px !important;
   fill: none !important;
   stroke: #ffffff !important;
   stroke-width: 2.5px !important;
@@ -247,7 +264,8 @@ hover-button.swiper-button svg,
 }
 
 .swiper-button .svg-wrapper path,
-hover-button.swiper-button path {
+hover-button.swiper-button path,
+.swiper-button svg path {
   stroke: #ffffff !important;
   fill: none !important;
 }

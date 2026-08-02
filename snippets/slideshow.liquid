@@ -101,10 +101,6 @@
         class="swiper-btns-wrap{% if enable_navigation %} {{ arrows_position }}{% if arrows_position == 'bottom_right' %} page-width{% endif %}{% endif %}"
         {{ buttons_styles }}
       >
-        {% if enable_navigation %}
-          {%- render 'swiper-button' -%}
-        {% endif %}
-
         {% if enable_pagination %}
           {{ pagi_html }}
         {% endif %}
