@@ -952,3 +952,174 @@ quantity-input.quantity .quantity__input::-webkit-inner-spin-button {
     white-space: nowrap !important;
   }
 }
+
+/* ==========================================================================
+   ULTIMATE OVERRIDES - Solid Black Circle Arrows, Crisp Thumbnails & Variant Swatches
+   ========================================================================== */
+
+/* 1. SOLID BLACK CIRCLE NAVIGATION ARROWS WITH WHITE CHEVRONS */
+:is(body, html, main, section, div, media-gallery) :is(.swiper-button, .swiper-button-prev, .swiper-button-next, button.swiper-button-prev, button.swiper-button-next, hover-button.swiper-button) {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  max-width: 38px !important;
+  max-height: 38px !important;
+  border-radius: 50% !important;
+  background-color: #000000 !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+  top: 50% !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+  z-index: 9999 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  border: none !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: auto !important;
+}
+
+:is(body, html, main, section, div, media-gallery) :is(.swiper-button-prev, button.swiper-button-prev) {
+  left: 16px !important;
+  right: auto !important;
+}
+
+:is(body, html, main, section, div, media-gallery) :is(.swiper-button-next, button.swiper-button-next) {
+  right: 16px !important;
+  left: auto !important;
+}
+
+:is(.swiper-button, .swiper-button-prev, .swiper-button-next, button.swiper-button-prev, button.swiper-button-next) :is(svg, .svg-wrapper, polyline, path) {
+  stroke: #ffffff !important;
+  color: #ffffff !important;
+  fill: none !important;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+:is(.swiper-button, .swiper-button-prev, .swiper-button-next, button.swiper-button-prev, button.swiper-button-next) svg {
+  width: 18px !important;
+  height: 18px !important;
+  margin: auto !important;
+}
+
+:is(.swiper-button, .swiper-button-prev, .swiper-button-next, button.swiper-button-prev, button.swiper-button-next) polyline {
+  stroke: #ffffff !important;
+  stroke-width: 2.5px !important;
+  fill: none !important;
+}
+
+/* Hide duplicate hover bg layer */
+.swiper-button .fill-bg,
+.swiper-button::before,
+.swiper-button::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* 2. CRISP LEFT VERTICAL THUMBNAILS */
+.swiper-controls__thumbnail,
+button.swiper-controls__thumbnail,
+.product-media-gallery__thumbnail {
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  min-height: 64px !important;
+  max-width: 64px !important;
+  max-height: 64px !important;
+  border-radius: 8px !important;
+  border: 1.5px solid #d0d5dd !important;
+  background-color: #ffffff !important;
+  overflow: hidden !important;
+  padding: 2px !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.swiper-slide-thumb-active .swiper-controls__thumbnail,
+.swiper-controls__thumbnail.is-active,
+.swiper-controls__thumbnail.active,
+button.swiper-controls__thumbnail[aria-current="true"] {
+  border: 2.5px solid #1c252c !important;
+  box-shadow: 0 0 0 1px #1c252c !important;
+  border-radius: 8px !important;
+}
+
+.swiper-controls__thumbnail img,
+button.swiper-controls__thumbnail img,
+.product-media-gallery__thumbnail img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 6px !important;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* 3. CLEAN VARIANT IMAGE SWATCHES */
+.variant-picker__option,
+.variant-option,
+.variant-option__swatch-wrapper,
+.variant-option__swatch,
+.swatch-input,
+.pills__pill--swatch {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.variant-option__swatch,
+.variant-picker label.swatch,
+.variant-option label.swatch,
+.swatch-element,
+.swatch-input label {
+  border-radius: 8px !important;
+  border: 1.5px solid #d0d5dd !important;
+  padding: 2px !important;
+  background-color: #ffffff !important;
+  overflow: hidden !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+}
+
+.variant-option__swatch img,
+.variant-picker label img,
+.variant-option label img,
+.swatch-element img,
+.swatch img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 6px !important;
+  display: block !important;
+}
+
+.variant-option input:checked + label,
+.variant-option input:checked + .variant-option__swatch,
+label.swatch.is-selected,
+label.swatch[aria-checked="true"],
+.swatch-input input:checked + label {
+  border: 2.5px solid #1c252c !important;
+  box-shadow: 0 0 0 1px #1c252c !important;
+  border-radius: 8px !important;
+}
