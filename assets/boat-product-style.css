@@ -1018,24 +1018,59 @@ quantity-input.quantity .quantity__input::-webkit-inner-spin-button {
   fill: none !important;
 }
 
-/* Hide duplicate hover bg layer */
-.swiper-button .fill-bg,
-.swiper-button::before,
-.swiper-button::after {
-  display: none !important;
-  content: none !important;
+/* 2. PERMANENT THUMBNAIL VISIBILITY & FLEX FIX */
+.swiper-controls__thumbnails-container,
+.swiper-controls__thumbnails,
+.swiper-controls__thumbnails .swiper-wrapper {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
-/* 2. CRISP LEFT VERTICAL THUMBNAILS */
+@media screen and (min-width: 750px) {
+  .swiper-controls__thumbnails-container {
+    width: 68px !important;
+    min-width: 68px !important;
+    max-width: 68px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .swiper-controls__thumbnails .swiper-wrapper {
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .swiper-controls__thumbnails-container {
+    width: 100% !important;
+    margin-top: 10px !important;
+    overflow-x: auto !important;
+  }
+
+  .swiper-controls__thumbnails .swiper-wrapper {
+    flex-direction: row !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+}
+
+.swiper-controls__thumbnail.swiper-slide,
 .swiper-controls__thumbnail,
 button.swiper-controls__thumbnail,
 .product-media-gallery__thumbnail {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
   width: 64px !important;
   height: 64px !important;
   min-width: 64px !important;
   min-height: 64px !important;
   max-width: 64px !important;
   max-height: 64px !important;
+  flex-shrink: 0 !important;
   border-radius: 8px !important;
   border: 1.5px solid #d0d5dd !important;
   background-color: #ffffff !important;
@@ -1043,12 +1078,12 @@ button.swiper-controls__thumbnail,
   padding: 2px !important;
   box-sizing: border-box !important;
   cursor: pointer !important;
-  display: flex !important;
   align-items: center !important;
   justify-content: center !important;
 }
 
 .swiper-slide-thumb-active .swiper-controls__thumbnail,
+.swiper-slide-thumb-active button.swiper-controls__thumbnail,
 .swiper-controls__thumbnail.is-active,
 .swiper-controls__thumbnail.active,
 button.swiper-controls__thumbnail[aria-current="true"] {
@@ -1069,30 +1104,28 @@ button.swiper-controls__thumbnail img,
   visibility: visible !important;
 }
 
-/* 3. CLEAN VARIANT IMAGE SWATCHES */
-.variant-picker__option,
-.variant-option,
-.variant-option__swatch-wrapper,
-.variant-option__swatch,
-.swatch-input,
-.pills__pill--swatch {
-  display: inline-flex !important;
+/* 3. CLEAN VARIANT IMAGE SWATCHES FIX */
+variant-selects fieldset.product-form__input,
+.product-form__input--swatch fieldset,
+.variant-picker fieldset,
+.variant-picker .variant-picker__option-values,
+.pills__pill--swatch-container {
+  display: flex !important;
+  flex-wrap: wrap !important;
   align-items: center !important;
   gap: 8px !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 8px 0 16px 0 !important;
 }
 
+.variant-option__swatch-wrapper,
 .variant-option__swatch,
-.variant-picker label.swatch,
-.variant-option label.swatch,
-.swatch-element,
-.swatch-input label {
-  border-radius: 8px !important;
-  border: 1.5px solid #d0d5dd !important;
-  padding: 2px !important;
-  background-color: #ffffff !important;
-  overflow: hidden !important;
-  transition: all 0.2s ease !important;
-  cursor: pointer !important;
+label.pills__pill--swatch,
+label.swatch,
+.swatch-input label,
+.variant-picker label,
+.product-form__input input[type="radio"] + label {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1100,26 +1133,57 @@ button.swiper-controls__thumbnail img,
   height: 44px !important;
   min-width: 44px !important;
   min-height: 44px !important;
+  max-width: 44px !important;
+  max-height: 44px !important;
+  border-radius: 8px !important;
+  border: 1.5px solid #d0d5dd !important;
+  background-color: #ffffff !important;
+  padding: 2px !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  transition: all 0.2s ease !important;
+  flex-shrink: 0 !important;
 }
 
 .variant-option__swatch img,
+label.pills__pill--swatch img,
+label.swatch img,
+.swatch-input label img,
 .variant-picker label img,
-.variant-option label img,
-.swatch-element img,
+.product-form__input input[type="radio"] + label img,
 .swatch img {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
   border-radius: 6px !important;
   display: block !important;
+  margin: 0 !important;
 }
 
-.variant-option input:checked + label,
-.variant-option input:checked + .variant-option__swatch,
+variant-selects input[type="radio"],
+.variant-picker input[type="radio"],
+.product-form__input input[type="radio"],
+.swatch-input input[type="radio"] {
+  position: absolute !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  pointer-events: none !important;
+}
+
+.variant-option input[type="radio"]:checked + label,
+.variant-option input[type="radio"]:checked + .variant-option__swatch,
+.product-form__input input[type="radio"]:checked + label,
+.variant-picker input[type="radio"]:checked + label,
+label.pills__pill--swatch.is-selected,
 label.swatch.is-selected,
 label.swatch[aria-checked="true"],
-.swatch-input input:checked + label {
+.swatch-input input[type="radio"]:checked + label {
   border: 2.5px solid #1c252c !important;
   box-shadow: 0 0 0 1px #1c252c !important;
   border-radius: 8px !important;
+  background-color: #ffffff !important;
 }
