@@ -51,7 +51,7 @@
             "arrows_position": "bottom_right",
             "swiper_buttons_gap": 20,
             "pagination_type": "fraction",
-            "thumbnail_position": "bottom",
+            "thumbnail_position": "left",
             "thumbnail_width": 70,
             "pagination_position": "inside",
             "dot_style": "filled",
