@@ -116,12 +116,15 @@ button.swiper-controls__thumbnail[aria-current="true"],
 
 .swiper-controls__thumbnail img,
 button.swiper-controls__thumbnail img,
-.product-media-gallery__thumbnail img {
+.product-media-gallery__thumbnail img,
+.swiper-slide.swiper-controls__thumbnail img {
   border-radius: 6px !important;
   object-fit: contain !important;
   background-color: #ffffff !important;
   width: 100% !important;
   height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -196,7 +199,9 @@ picture.media img,
 hover-button.swiper-button-prev,
 hover-button.swiper-button-next,
 .swiper-button-prev,
-.swiper-button-next {
+.swiper-button-next,
+button.swiper-button-prev,
+button.swiper-button-next {
   width: 36px !important;
   height: 36px !important;
   min-width: 36px !important;
@@ -227,7 +232,9 @@ hover-button.swiper-button-next,
 
 .swiper-main > hover-button.swiper-button:hover,
 .swiper-main > .swiper-button-prev:hover,
-.swiper-main > .swiper-button-next:hover {
+.swiper-main > .swiper-button-next:hover,
+button.swiper-button-prev:hover,
+button.swiper-button-next:hover {
   background-color: #111111 !important;
   background: #111111 !important;
   transform: translateY(-50%) scale(1.08) !important;
@@ -235,14 +242,16 @@ hover-button.swiper-button-next,
 
 .swiper-main > hover-button.swiper-button-prev,
 .swiper-main > .swiper-button-prev,
-.swiper-button-prev {
+.swiper-button-prev,
+button.swiper-button-prev {
   left: 12px !important;
   right: auto !important;
 }
 
 .swiper-main > hover-button.swiper-button-next,
 .swiper-main > .swiper-button-next,
-.swiper-button-next {
+.swiper-button-next,
+button.swiper-button-next {
   right: 12px !important;
   left: auto !important;
 }
@@ -251,23 +260,32 @@ hover-button.swiper-button-next,
   display: none !important;
 }
 
+/* Force white arrow SVGs to render inside dark circles */
 .swiper-button .svg-wrapper,
 hover-button.swiper-button svg,
-.swiper-button svg {
-  width: 14px !important;
-  height: 14px !important;
-  fill: none !important;
+.swiper-button svg,
+button.swiper-button-prev svg,
+button.swiper-button-next svg {
+  width: 18px !important;
+  height: 18px !important;
   stroke: #ffffff !important;
-  stroke-width: 2.5px !important;
-  color: #ffffff !important;
+  fill: none !important;
   display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: #ffffff !important;
 }
 
-.swiper-button .svg-wrapper path,
-hover-button.swiper-button path,
-.swiper-button svg path {
+.swiper-button .svg-wrapper polyline,
+hover-button.swiper-button polyline,
+.swiper-button svg polyline,
+button.swiper-button-prev svg polyline,
+button.swiper-button-next svg polyline,
+.swiper-button path {
   stroke: #ffffff !important;
   fill: none !important;
+  stroke-width: 2.5px !important;
+  display: block !important;
 }
 
 .swiper-main .swiper-pagination {
