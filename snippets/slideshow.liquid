@@ -67,6 +67,7 @@
     <div class="swiper-wrapper swiper__slides w-full">
       {{ slides }}
     </div>
+    {%- render 'swiper-button' -%}
     <div class="swiper-actions{% if enable_navigation %} swiper-actions--{{ arrows_position }}{% endif %} w-full">
       {%- capture pagi_class -%}
         swiper-pagination

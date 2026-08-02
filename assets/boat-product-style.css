@@ -127,43 +127,63 @@ button.swiper-controls__thumbnail img,
   opacity: 1 !important;
 }
 
-/* Main Product Image Container & Background #F6F6F8 */
+/* Main Product Image Container & Background #F6F6F8 (Contain Fix) */
 .product-media-gallery__media,
 .product__media-wrapper .media,
 .product__media-item .media,
 .product-media-container .media,
 .swiper-main .media,
-.product-media-gallery__slide .media {
+.product-media-gallery__slide .media,
+.product-media-container,
+picture.media {
   background-color: #f6f6f8 !important;
   border-radius: 16px !important;
   overflow: hidden !important;
   padding: 24px !important;
   box-sizing: border-box !important;
   position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
+/* Force object-fit: contain on all media images to prevent zoom/stretch */
 .product-media-gallery__media img,
 .product__media-wrapper img,
 .product-media-container img,
 .swiper-main img,
-.product-media-gallery__slide img {
+.product-media-gallery__slide img,
+.product-media img,
+.media img,
+picture.media img,
+.media-fit-cover img,
+.media-fit-cover :is(img, video, iframe, .deferred-media__poster-image) {
   object-fit: contain !important;
   max-height: 100% !important;
-  width: 100% !important;
+  max-width: 100% !important;
+  width: auto !important;
   height: auto !important;
+  margin: auto !important;
   border-radius: 12px !important;
 }
 
-/* Circular Prev / Next Navigation Arrows (Dark Round Buttons with White Arrow) */
+/* Circular Prev / Next Navigation Arrows (Dark Round Buttons #23262f with White Arrow) */
 .swiper-main .swiper-button-prev,
 .swiper-main .swiper-button-next,
 .swiper-btns-wrap .swiper-button-prev,
 .swiper-btns-wrap .swiper-button-next,
-hover-button.swiper-button {
+hover-button.swiper-button,
+hover-button.swiper-button-prev,
+hover-button.swiper-button-next,
+.swiper-button {
   width: 38px !important;
   height: 38px !important;
   min-width: 38px !important;
   min-height: 38px !important;
+  max-width: 38px !important;
+  max-height: 38px !important;
   border-radius: 50% !important;
   background-color: #23262f !important;
   background: #23262f !important;
@@ -173,14 +193,17 @@ hover-button.swiper-button {
   justify-content: center !important;
   position: absolute !important;
   top: 50% !important;
+  bottom: auto !important;
   transform: translateY(-50%) !important;
-  z-index: 10 !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  z-index: 35 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
   border: none !important;
   cursor: pointer !important;
   transition: all 0.2s ease !important;
   opacity: 1 !important;
   visibility: visible !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .swiper-main .swiper-button-prev:hover,
@@ -192,24 +215,41 @@ hover-button.swiper-button:hover {
 }
 
 .swiper-main .swiper-button-prev,
-.swiper-btns-wrap .swiper-button-prev {
+.swiper-btns-wrap .swiper-button-prev,
+hover-button.swiper-button-prev,
+.swiper-button-prev {
   left: 14px !important;
   right: auto !important;
 }
 
 .swiper-main .swiper-button-next,
-.swiper-btns-wrap .swiper-button-next {
+.swiper-btns-wrap .swiper-button-next,
+hover-button.swiper-button-next,
+.swiper-button-next {
   right: 14px !important;
   left: auto !important;
 }
 
+.swiper-button .fill-bg {
+  display: none !important;
+}
+
 .swiper-button .svg-wrapper,
-hover-button.swiper-button svg {
+hover-button.swiper-button svg,
+.swiper-button svg {
   width: 16px !important;
   height: 16px !important;
   fill: none !important;
   stroke: #ffffff !important;
   stroke-width: 2.5px !important;
+  color: #ffffff !important;
+  display: block !important;
+}
+
+.swiper-button .svg-wrapper path,
+hover-button.swiper-button path {
+  stroke: #ffffff !important;
+  fill: none !important;
 }
 
 .swiper-main .swiper-pagination {
