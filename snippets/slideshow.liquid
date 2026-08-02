@@ -106,19 +106,6 @@
         {% endif %}
       </div>
     </div>
-    <div class="product-media-overlay-actions">
-      <button type="button" class="boat-view-similar-btn" onclick="document.querySelector('.product-recommendations, #product-recommendations-{{ section.id }}')?.scrollIntoView({ behavior: 'smooth' });">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <span>View Similar</span>
-      </button>
-      <div class="boat-countdown-timer-pill" data-countdown-timer>
-        <span class="boat-timer-accent-bar"></span>
-        <span class="boat-timer-text" data-timer-display>01h : 46m : 01s</span>
-      </div>
-    </div>
     {{ video_dialog_html }}
     <div class="card__badge absolute z-1{% if class_badge %} {{ class_badge }}{% endif %}" style="{%- render 'badge-position-style' -%}">
       {%- render 'product-badge',
@@ -129,32 +116,5 @@
       -%}
     </div>
   </div>
-  <script>
-    (function() {
-      function startGalleryTimer() {
-        const timerEls = document.querySelectorAll('[data-timer-display]');
-        if (!timerEls.length) return;
-        let totalSeconds = 1 * 3600 + 46 * 60 + 1;
-        setInterval(function() {
-          if (totalSeconds > 0) {
-            totalSeconds--;
-          } else {
-            totalSeconds = 2 * 3600;
-          }
-          const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-          const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-          const seconds = String(totalSeconds % 60).padStart(2, '0');
-          timerEls.forEach(el => {
-            el.textContent = `${hours}h : ${minutes}m : ${seconds}s`;
-          });
-        }, 1000);
-      }
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', startGalleryTimer);
-      } else {
-        startGalleryTimer();
-      }
-    })();
-  </script>
   {{ controls }}
 </swiper-component>

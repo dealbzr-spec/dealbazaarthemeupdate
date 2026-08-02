@@ -202,7 +202,7 @@ button.swiper-controls__thumbnail img,
   display: none !important;
 }
 
-/* Circular Prev / Next Navigation Arrows (Dark Round Buttons #23262f with White Arrow - Match) */
+/* Circular Prev / Next Navigation Arrows (Solid Black #000000 Circle with White Arrow) */
 .swiper-main > .swiper-button,
 .swiper-main > hover-button.swiper-button,
 .swiper-main > .swiper-button-prev,
@@ -220,8 +220,8 @@ button.swiper-button-next {
   max-width: 38px !important;
   max-height: 38px !important;
   border-radius: 50% !important;
-  background-color: #23262f !important;
-  background: #23262f !important;
+  background-color: #000000 !important;
+  background: #000000 !important;
   color: #ffffff !important;
   display: flex !important;
   align-items: center !important;
@@ -231,7 +231,7 @@ button.swiper-button-next {
   bottom: auto !important;
   transform: translateY(-50%) !important;
   z-index: 99 !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
   border: none !important;
   cursor: pointer !important;
   transition: all 0.2s ease !important;
