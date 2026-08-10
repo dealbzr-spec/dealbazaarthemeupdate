@@ -1,0 +1,15 @@
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Shopify files & exported zips
+*.zip
+.shopify/
+.env
+
+# Node modules if any
+node_modules/
