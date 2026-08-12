@@ -211,7 +211,7 @@
   transform: translateX(3px);
 }
 
-/* --- Desktop Sidebar Hover Flyout Mega Menu --- */
+/* --- Desktop Sidebar Hover Flyout Mega Menu (Smooth Seamless Mouse Bridge) --- */
 .category-hero__flyout {
   display: none;
   opacity: 0;
@@ -226,16 +226,30 @@
   box-shadow: 14px 8px 36px rgba(0, 0, 0, 0.12);
   z-index: 99;
   padding: 28px;
-  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
   border-left: 1px solid #f0f2f5;
-  transform: translateX(8px);
+  pointer-events: auto;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
 }
 
-.category-hero__sidebar-item:hover .category-hero__flyout {
-  display: block;
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(0);
+/* Invisible Mouse Bridge between Sidebar Item and Flyout Box */
+.category-hero__flyout::before {
+  content: '';
+  position: absolute;
+  left: -25px;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  background: transparent;
+  z-index: 100;
+  pointer-events: auto;
+}
+
+/* Stay open on hover of sidebar item OR hover of flyout itself */
+.category-hero__sidebar-item:hover .category-hero__flyout,
+.category-hero__flyout:hover {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .category-hero__flyout-inner {
