@@ -2,86 +2,123 @@
    boAt Inspired Header, Mega Menu & Category Hero Banner Styles
    ========================================================================== */
 
-/* --- Mega Menu Grid with Thumbnail Icons (SS3 Style) --- */
-.boat-megamenu {
-  padding: 24px 32px;
-  background: #ffffff;
-  border-bottom: 1px solid #eaeaea;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-}
-
-.boat-megamenu__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 20px 16px;
-  align-items: start;
-}
-
-.boat-megamenu__item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 12px;
-  border-radius: 24px;
-  text-decoration: none;
-  color: #1a1a1a;
-  transition: all 0.2s ease-in-out;
-  background: #f9f9fb;
-}
-
-.boat-megamenu__item:hover {
-  background: #f0f3f7;
-  transform: translateY(-2px);
-  color: #d8232a;
-}
-
-.boat-megamenu__icon-wrap {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-}
-
-.boat-megamenu__icon-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.boat-megamenu__title {
-  font-size: 0.88rem;
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-/* Enhancements for standard mega-menu list when icons rendered inline */
-.mega-menu__link--with-icon {
+/* --- Top Header Navigation Bar Styling (SS2 Style) --- */
+.menu-list__link {
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  color: #121212 !important;
+  padding: 10px 14px !important;
+  position: relative;
+  transition: color 0.2s ease;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 10px;
-  border-radius: 20px;
-  transition: background 0.2s ease, transform 0.2s ease;
+  gap: 4px;
+}
+
+.menu-list__chevron {
+  font-size: 0.75rem;
+  margin-left: 2px;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.menu-list__list-item:hover .menu-list__chevron {
+  transform: rotate(180deg);
+}
+
+.menu-list__link-title {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Active / Hover Red Accent Line under Header Nav Items (boAt Style) */
+.menu-list__link-title::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #d8232a;
+  transition: width 0.25s ease-in-out;
+  border-radius: 2px;
+}
+
+.menu-list__link:hover .menu-list__link-title::after,
+.menu-list__link--active .menu-list__link-title::after {
+  width: 100%;
+}
+
+/* --- Search Bar Pill Styling (SS2 Style) --- */
+.header__search-form,
+.search-modal__form,
+.search-action {
+  background: #f4f5f8 !important;
+  border-radius: 30px !important;
+  border: 1px solid #e5e7eb !important;
+  padding: 4px 16px !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.header__search-form:focus-within {
+  border-color: #000000 !important;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.05) !important;
+}
+
+/* --- Mega Menu Grid with Thumbnail Icons (SS3/SS2 Style) --- */
+.mega-menu {
+  background: #ffffff !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08) !important;
+  border-bottom: 1px solid #eeeeee !important;
+  padding: 24px 0 !important;
+}
+
+.mega-menu__list {
+  display: grid !important;
+  grid-template-columns: repeat(5, 1fr) !important;
+  gap: 20px 24px !important;
+  align-items: start !important;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.mega-menu__column {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.mega-menu__link--with-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 8px 12px !important;
+  border-radius: 24px !important;
+  background: #ffffff !important;
+  text-decoration: none !important;
+  color: #121212 !important;
+  font-size: 0.88rem !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+  width: 100%;
 }
 
 .mega-menu__link--with-icon:hover {
-  background: rgba(0, 0, 0, 0.04);
-  transform: translateX(3px);
+  background: #f4f6f9 !important;
+  color: #d8232a !important;
+  transform: translateY(-2px) !important;
 }
 
 .mega-menu__link-thumb {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-  border: 1px solid #eeeeee;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  flex-shrink: 0 !important;
+  border: 1px solid #eaeaea !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04) !important;
 }
 
 /* --- Category Hero Banner (SS2 Style: Dynamic Layout & Sidebar Flyout) --- */
@@ -211,7 +248,7 @@
   transform: translateX(3px);
 }
 
-/* --- Desktop Sidebar Hover Flyout Mega Menu (Smooth Seamless Mouse Bridge) --- */
+/* --- Desktop Sidebar Hover Flyout Mega Menu --- */
 .category-hero__flyout {
   display: none;
   opacity: 0;
@@ -231,7 +268,6 @@
   transition: opacity 0.15s ease, visibility 0.15s ease;
 }
 
-/* Invisible Mouse Bridge between Sidebar Item and Flyout Box */
 .category-hero__flyout::before {
   content: '';
   position: absolute;
@@ -244,7 +280,6 @@
   pointer-events: auto;
 }
 
-/* Stay open on hover of sidebar item OR hover of flyout itself */
 .category-hero__sidebar-item:hover .category-hero__flyout,
 .category-hero__flyout:hover {
   display: block !important;
