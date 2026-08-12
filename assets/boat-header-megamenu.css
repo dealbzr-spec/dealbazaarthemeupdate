@@ -6,9 +6,13 @@
 #header-group,
 .header,
 .header__inner,
-.menu-list__submenu,
-.mega-menu {
+.section-header {
+  position: relative !important;
   z-index: 999999 !important;
+}
+
+.menu-list__list-item {
+  position: static !important;
 }
 
 .menu-list__submenu {
@@ -16,15 +20,16 @@
   left: 0 !important;
   right: 0 !important;
   top: 100% !important;
+  margin-top: 0 !important;
   width: 100vw !important;
   margin-left: calc(-50vw + 50%) !important;
   background-color: #ffffff !important;
   background: #ffffff !important;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08) !important;
   opacity: 1 !important;
   z-index: 9999999 !important;
-  border-top: 1px solid #eaeaea !important;
-  border-bottom: 1px solid #eaeaea !important;
+  border-top: 1px solid #e5e7eb !important;
+  border-bottom: 1px solid #e5e7eb !important;
 }
 
 .menu-list__link {
