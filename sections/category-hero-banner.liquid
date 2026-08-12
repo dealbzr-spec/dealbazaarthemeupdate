@@ -1,0 +1,276 @@
+{{ 'boat-header-megamenu.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign sidebar_menu = section.settings.sidebar_menu
+%}
+
+<div class="category-hero-section section-{{ section.id }}">
+  <div class="category-hero__container">
+    
+    {% comment %} --- Left Sidebar: TOP CATEGORIES --- {% endcomment %}
+    <aside class="category-hero__sidebar">
+      <div class="category-hero__sidebar-header">
+        <span>{{ section.settings.sidebar_heading | default: 'TOP CATEGORIES' }}</span>
+      </div>
+      <ul class="category-hero__sidebar-list" role="list">
+        {% if sidebar_menu != blank and sidebar_menu.links.size > 0 %}
+          {% for link in sidebar_menu.links %}
+            <li class="category-hero__sidebar-item">
+              <a href="{{ link.url }}">
+                {% if link.type == 'collection_link' and link.object.featured_image != blank %}
+                  <img src="{{ link.object.featured_image | image_url: width: 60 }}" alt="{{ link.title | escape }}" class="category-hero__sidebar-icon" loading="lazy" width="22" height="22">
+                {% else %}
+                  <span class="category-hero__sidebar-icon-placeholder">🏷️</span>
+                {% endif %}
+                <span>{{ link.title }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        {% else %}
+          {% comment %} Fallback to Category Blocks if set {% endcomment %}
+          {% assign category_blocks = section.blocks | where: 'type', 'category_item' %}
+          {% if category_blocks.size > 0 %}
+            {% for block in category_blocks %}
+              <li class="category-hero__sidebar-item" {{ block.shopify_attributes }}>
+                <a href="{{ block.settings.url | default: '#' }}">
+                  {% if block.settings.icon != blank %}
+                    <img src="{{ block.settings.icon | image_url: width: 60 }}" alt="{{ block.settings.title | escape }}" class="category-hero__sidebar-icon" loading="lazy" width="22" height="22">
+                  {% endif %}
+                  <span>{{ block.settings.title }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          {% else %}
+            {% comment %} Demo fallback categories {% endcomment %}
+            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>📱 Mobiles & Tablets</span></a></li>
+            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>👔 Men's Fashion</span></a></li>
+            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>👗 Women Fashion</span></a></li>
+            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🔌 Appliances</span></a></li>
+            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>📺 TV & Video</span></a></li>
+            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🧸 Kidsmart</span></a></li>
+            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🏠 Home & Living</span></a></li>
+            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>💻 Computer & Gaming</span></a></li>
+            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🚗 Automotive</span></a></li>
+            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>❤️ Health & Care</span></a></li>
+            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>📷 Camera</span></a></li>
+          {% endif %}
+        {% endif %}
+      </ul>
+    </aside>
+
+    {% comment %} --- Middle Column: Main Hero Banner Slider --- {% endcomment %}
+    <main class="category-hero__main">
+      {% assign slide_blocks = section.blocks | where: 'type', 'slide_item' %}
+      <div class="category-hero__slider" id="HeroSlider-{{ section.id }}">
+        {% if slide_blocks.size > 0 %}
+          {% for block in slide_blocks %}
+            <div class="category-hero__slide" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | image_url: width: 1600 }}" alt="{{ block.settings.title | escape }}" class="category-hero__slide-img" loading="eager" width="800" height="400">
+              {% else %}
+                <div class="category-hero__slide-img" style="background: linear-gradient(135deg, #111111 0%, #2b303a 100%);"></div>
+              {% endif %}
+
+              {% if block.settings.title != blank or block.settings.subtitle != blank %}
+                <div class="category-hero__slide-overlay">
+                  {% if block.settings.title != blank %}
+                    <h2 class="category-hero__slide-title">{{ block.settings.title }}</h2>
+                  {% endif %}
+                  {% if block.settings.subtitle != blank %}
+                    <p class="category-hero__slide-subtitle">{{ block.settings.subtitle }}</p>
+                  {% endif %}
+                  {% if block.settings.button_label != blank %}
+                    <a href="{{ block.settings.button_link | default: '#' }}" class="category-hero__slide-btn">{{ block.settings.button_label }}</a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% comment %} Demo Banner Slide {% endcomment %}
+          <div class="category-hero__slide">
+            <div class="category-hero__slide-img" style="background: linear-gradient(135deg, #050505 0%, #1c2517 100%);"></div>
+            <div class="category-hero__slide-overlay">
+              <h2 class="category-hero__slide-title">SOUND. STYLE.<br>SMART LIVING.</h2>
+              <p class="category-hero__slide-subtitle">Premium Audio. Smarter Tech. Better Every Day.</p>
+              <a href="/collections/all" class="category-hero__slide-btn">EXPLORE NOW</a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if slide_blocks.size > 1 %}
+        <button type="button" class="category-hero__slider-nav category-hero__slider-nav--prev" onclick="document.getElementById('HeroSlider-{{ section.id }}').scrollBy({left: -600, behavior: 'smooth'})" aria-label="Previous Slide">‹</button>
+        <button type="button" class="category-hero__slider-nav category-hero__slider-nav--next" onclick="document.getElementById('HeroSlider-{{ section.id }}').scrollBy({left: 600, behavior: 'smooth'})" aria-label="Next Slide">›</button>
+      {% endif %}
+    </main>
+
+    {% comment %} --- Right Column: Stacked Promo Banners --- {% endcomment %}
+    <aside class="category-hero__right">
+      {% assign promo_blocks = section.blocks | where: 'type', 'promo_banner' %}
+      {% if promo_blocks.size > 0 %}
+        {% for block in promo_blocks limit: 2 %}
+          <a href="{{ block.settings.link | default: '#' }}" class="category-hero__promo-card" {{ block.shopify_attributes }}>
+            {% if block.settings.badge_text != blank %}
+              <span class="category-hero__promo-badge">{{ block.settings.badge_text }}</span>
+            {% endif %}
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.title | escape }}" loading="lazy" width="300" height="180">
+            {% else %}
+              <div style="background: #1e2530; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; padding: 20px;">
+                {{ block.settings.title | default: 'PROMO BANNER' }}
+              </div>
+            {% endif %}
+          </a>
+        {% endfor %}
+      {% else %}
+        {% comment %} Demo Banners {% endcomment %}
+        <a href="/collections/all" class="category-hero__promo-card">
+          <span class="category-hero__promo-badge">STARTING FROM RS. 599/-</span>
+          <div style="background: linear-gradient(135deg, #dce4ee 0%, #b8c4d4 100%); width: 100%; height: 100%; min-height: 180px; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; color: #0f172a;">
+            <strong style="font-size: 1.2rem; text-transform: uppercase;">SMART EARBUDS</strong>
+          </div>
+        </a>
+        <a href="/collections/all" class="category-hero__promo-card">
+          <span class="category-hero__promo-badge">STARTING FROM RS. 799/-</span>
+          <div style="background: linear-gradient(135deg, #c7d2fe 0%, #818cf8 100%); width: 100%; height: 100%; min-height: 180px; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; color: #0f172a;">
+            <strong style="font-size: 1.2rem; text-transform: uppercase;">SMART WATCHES</strong>
+          </div>
+        </a>
+      {% endif %}
+    </aside>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Category Hero Banner",
+  "tag": "section",
+  "class": "section-category-hero-banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "sidebar_heading",
+      "label": "Sidebar Heading",
+      "default": "TOP CATEGORIES"
+    },
+    {
+      "type": "link_list",
+      "id": "sidebar_menu",
+      "label": "Sidebar Navigation Menu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_item",
+      "name": "Custom Category Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category Title",
+          "default": "Category Name"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Category Icon / Image"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Category Link"
+        }
+      ]
+    },
+    {
+      "type": "slide_item",
+      "name": "Hero Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Banner Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Slide Title",
+          "default": "SOUND. STYLE. SMART LIVING."
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Slide Subtitle",
+          "default": "Premium Audio. Smarter Tech. Better Every Day."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "EXPLORE NOW"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    },
+    {
+      "type": "promo_banner",
+      "name": "Side Promo Banner",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Banner Title",
+          "default": "Smart Earbuds"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Text",
+          "default": "STARTING FROM RS. 599/-"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Banner Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Banner Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Hero Banner",
+      "blocks": [
+        {
+          "type": "slide_item"
+        },
+        {
+          "type": "promo_banner",
+          "settings": {
+            "title": "Smart Earbuds",
+            "badge_text": "STARTING FROM RS. 599/-"
+          }
+        },
+        {
+          "type": "promo_banner",
+          "settings": {
+            "title": "Smart Watches",
+            "badge_text": "STARTING FROM RS. 799/-"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

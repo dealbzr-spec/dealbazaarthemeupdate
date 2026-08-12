@@ -8,6 +8,32 @@
  * ------------------------------------------------------------
  */{
   "sections": {
+    "category_hero_banner_main": {
+      "type": "category-hero-banner",
+      "blocks": {
+        "promo_banner_1": {
+          "type": "promo_banner",
+          "settings": {
+            "title": "Smart Earbuds",
+            "badge_text": "STARTING FROM RS. 599/-"
+          }
+        },
+        "promo_banner_2": {
+          "type": "promo_banner",
+          "settings": {
+            "title": "Smart Watches",
+            "badge_text": "STARTING FROM RS. 799/-"
+          }
+        }
+      },
+      "block_order": [
+        "promo_banner_1",
+        "promo_banner_2"
+      ],
+      "settings": {
+        "sidebar_heading": "TOP CATEGORIES"
+      }
+    },
     "hero_jVaWmY": {
       "type": "hero",
       "blocks": {
@@ -279,7 +305,7 @@
     }
   },
   "order": [
-    "hero_jVaWmY",
+    "category_hero_banner_main",
     "product_list_fa6P9H"
   ]
 }

@@ -151,8 +151,13 @@
             >
               <a
                 href="{{ childLink.url }}"
-                class="mega-menu__link"
+                class="mega-menu__link mega-menu__link--with-icon"
               >
+                {% if childLink.type == 'collection_link' and childLink.object.featured_image != blank %}
+                  <img src="{{ childLink.object.featured_image | image_url: width: 80 }}" alt="{{ childLink.title | escape }}" class="mega-menu__link-thumb" loading="lazy" width="36" height="36">
+                {% elsif childLink.type == 'product_link' and childLink.object.featured_image != blank %}
+                  <img src="{{ childLink.object.featured_image | image_url: width: 80 }}" alt="{{ childLink.title | escape }}" class="mega-menu__link-thumb" loading="lazy" width="36" height="36">
+                {% endif %}
                 <span class="wrap-text">{{- childLink.title -}}</span>
               </a>
             </li>

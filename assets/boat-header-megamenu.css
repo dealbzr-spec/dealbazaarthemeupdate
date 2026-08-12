@@ -1,0 +1,333 @@
+/* ==========================================================================
+   boAt Inspired Header, Mega Menu & Category Hero Banner Styles
+   ========================================================================== */
+
+/* --- Mega Menu Grid with Thumbnail Icons (SS3 Style) --- */
+.boat-megamenu {
+  padding: 24px 32px;
+  background: #ffffff;
+  border-bottom: 1px solid #eaeaea;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.boat-megamenu__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px 16px;
+  align-items: start;
+}
+
+.boat-megamenu__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 24px;
+  text-decoration: none;
+  color: #1a1a1a;
+  transition: all 0.2s ease-in-out;
+  background: #f9f9fb;
+}
+
+.boat-megamenu__item:hover {
+  background: #f0f3f7;
+  transform: translateY(-2px);
+  color: #d8232a;
+}
+
+.boat-megamenu__icon-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.boat-megamenu__icon-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.boat-megamenu__title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* Enhancements for standard mega-menu list when icons rendered inline */
+.mega-menu__link--with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.mega-menu__link--with-icon:hover {
+  background: rgba(0, 0, 0, 0.04);
+  transform: translateX(3px);
+}
+
+.mega-menu__link-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #eeeeee;
+}
+
+/* --- Category Hero Banner (SS2 Style: 3-Column Layout) --- */
+.category-hero-section {
+  padding: 20px 0;
+  background: #f7f8fa;
+}
+
+.category-hero__container {
+  display: grid;
+  grid-template-columns: 240px 1fr 300px;
+  gap: 16px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+@media (max-width: 1200px) {
+  .category-hero__container {
+    grid-template-columns: 220px 1fr;
+  }
+  .category-hero__right {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .category-hero__container {
+    grid-template-columns: 1fr;
+  }
+  .category-hero__sidebar {
+    display: none;
+  }
+}
+
+/* Left Sidebar - TOP CATEGORIES */
+.category-hero__sidebar {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  border: 1px solid #eef0f4;
+  height: 100%;
+}
+
+.category-hero__sidebar-header {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #71778e;
+  padding: 0 8px 12px 8px;
+  border-bottom: 1px solid #f0f2f5;
+  margin-bottom: 8px;
+}
+
+.category-hero__sidebar-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.category-hero__sidebar-item a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #2c3038;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.category-hero__sidebar-item a:hover {
+  background: #f3f5f9;
+  color: #000000;
+  font-weight: 600;
+  padding-left: 14px;
+}
+
+.category-hero__sidebar-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Middle Column - Main Banner Carousel */
+.category-hero__main {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  background: #000000;
+  min-height: 380px;
+}
+
+.category-hero__slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  height: 100%;
+  scrollbar-width: none;
+}
+
+.category-hero__slider::-webkit-scrollbar {
+  display: none;
+}
+
+.category-hero__slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  position: relative;
+  height: 100%;
+  min-height: 380px;
+}
+
+.category-hero__slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.category-hero__slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.75) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 32px;
+  color: #ffffff;
+}
+
+.category-hero__slide-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  line-height: 1.1;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.category-hero__slide-subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-bottom: 16px;
+}
+
+.category-hero__slide-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  background: #ffffff;
+  color: #000000;
+  font-weight: 700;
+  border-radius: 30px;
+  text-decoration: none;
+  width: fit-content;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.category-hero__slide-btn:hover {
+  transform: scale(1.05);
+  background: #f0f0f0;
+}
+
+.category-hero__slider-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 5;
+  transition: all 0.2s ease;
+}
+
+.category-hero__slider-nav:hover {
+  background: #ffffff;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.category-hero__slider-nav--prev {
+  left: 16px;
+}
+
+.category-hero__slider-nav--next {
+  right: 16px;
+}
+
+/* Right Column - Stacked Promo Banners */
+.category-hero__right {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.category-hero__promo-card {
+  position: relative;
+  flex: 1;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+  background: #eef2f7;
+  text-decoration: none;
+  display: block;
+}
+
+.category-hero__promo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.category-hero__promo-card:hover img {
+  transform: scale(1.05);
+}
+
+.category-hero__promo-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(4px);
+}
