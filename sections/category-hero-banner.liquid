@@ -2,61 +2,133 @@
 
 {% liquid
   assign sidebar_menu = section.settings.sidebar_menu
+  assign show_categories_desktop = section.settings.show_categories_desktop
+  assign show_categories_mobile = section.settings.show_categories_mobile
+  assign show_promos_desktop = section.settings.show_promos_desktop
+  assign show_promos_mobile = section.settings.show_promos_mobile
+
+  # Determine dynamic container class based on desktop visibility settings
+  if show_categories_desktop and show_promos_desktop
+    assign container_class = 'category-hero__container--full'
+  elsif show_categories_desktop and show_promos_desktop == false
+    assign container_class = 'category-hero__container--no-promo'
+  elsif show_categories_desktop == false and show_promos_desktop
+    assign container_class = 'category-hero__container--no-sidebar'
+  else
+    assign container_class = 'category-hero__container--hero-only'
+  endif
 %}
 
+<style>
+  .section-{{ section.id }} .category-hero__main,
+  .section-{{ section.id }} .category-hero__slide {
+    min-height: {{ section.settings.hero_height_desktop }}px;
+  }
+  @media (max-width: 768px) {
+    .section-{{ section.id }} .category-hero__main,
+    .section-{{ section.id }} .category-hero__slide {
+      min-height: {{ section.settings.hero_height_mobile }}px;
+    }
+  }
+</style>
+
 <div class="category-hero-section section-{{ section.id }}">
-  <div class="category-hero__container">
-    
-    {% comment %} --- Left Sidebar: TOP CATEGORIES --- {% endcomment %}
-    <aside class="category-hero__sidebar">
-      <div class="category-hero__sidebar-header">
-        <span>{{ section.settings.sidebar_heading | default: 'TOP CATEGORIES' }}</span>
-      </div>
-      <ul class="category-hero__sidebar-list" role="list">
+  
+  {% comment %} --- Mobile Top Categories Horizontal Carousel Pill Bar --- {% endcomment %}
+  {% if show_categories_mobile %}
+    <div class="category-hero__mobile-bar category-hero__mobile-bar--show">
+      <ul class="category-hero__mobile-list" role="list">
         {% if sidebar_menu != blank and sidebar_menu.links.size > 0 %}
           {% for link in sidebar_menu.links %}
-            <li class="category-hero__sidebar-item">
-              <a href="{{ link.url }}">
+            <li class="category-hero__mobile-item">
+              <a href="{{ link.url }}" class="category-hero__mobile-link">
                 {% if link.type == 'collection_link' and link.object.featured_image != blank %}
-                  <img src="{{ link.object.featured_image | image_url: width: 60 }}" alt="{{ link.title | escape }}" class="category-hero__sidebar-icon" loading="lazy" width="22" height="22">
+                  <img src="{{ link.object.featured_image | image_url: width: 40 }}" alt="{{ link.title | escape }}" class="category-hero__mobile-icon" loading="lazy" width="18" height="18">
                 {% else %}
-                  <span class="category-hero__sidebar-icon-placeholder">🏷️</span>
+                  <span>🏷️</span>
                 {% endif %}
                 <span>{{ link.title }}</span>
               </a>
             </li>
           {% endfor %}
         {% else %}
-          {% comment %} Fallback to Category Blocks if set {% endcomment %}
           {% assign category_blocks = section.blocks | where: 'type', 'category_item' %}
           {% if category_blocks.size > 0 %}
             {% for block in category_blocks %}
-              <li class="category-hero__sidebar-item" {{ block.shopify_attributes }}>
-                <a href="{{ block.settings.url | default: '#' }}">
+              <li class="category-hero__mobile-item" {{ block.shopify_attributes }}>
+                <a href="{{ block.settings.url | default: '#' }}" class="category-hero__mobile-link">
                   {% if block.settings.icon != blank %}
-                    <img src="{{ block.settings.icon | image_url: width: 60 }}" alt="{{ block.settings.title | escape }}" class="category-hero__sidebar-icon" loading="lazy" width="22" height="22">
+                    <img src="{{ block.settings.icon | image_url: width: 40 }}" alt="{{ block.settings.title | escape }}" class="category-hero__mobile-icon" loading="lazy" width="18" height="18">
                   {% endif %}
                   <span>{{ block.settings.title }}</span>
                 </a>
               </li>
             {% endfor %}
           {% else %}
-            {% comment %} Demo fallback categories {% endcomment %}
-            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>📱 Mobiles & Tablets</span></a></li>
-            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>👔 Men's Fashion</span></a></li>
-            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>👗 Women Fashion</span></a></li>
-            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🔌 Appliances</span></a></li>
-            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>📺 TV & Video</span></a></li>
-            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🧸 Kidsmart</span></a></li>
-            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🏠 Home & Living</span></a></li>
-            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>💻 Computer & Gaming</span></a></li>
-            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🚗 Automotive</span></a></li>
-            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>❤️ Health & Care</span></a></li>
-            <li class="category-hero__sidebar-item"><a href="/collections/all"><span>📷 Camera</span></a></li>
+            <li class="category-hero__mobile-item"><a href="/collections/all" class="category-hero__mobile-link">📱 Mobiles</a></li>
+            <li class="category-hero__mobile-item"><a href="/collections/all" class="category-hero__mobile-link">👔 Men's Fashion</a></li>
+            <li class="category-hero__mobile-item"><a href="/collections/all" class="category-hero__mobile-link">👗 Women Fashion</a></li>
+            <li class="category-hero__mobile-item"><a href="/collections/all" class="category-hero__mobile-link">🔌 Appliances</a></li>
+            <li class="category-hero__mobile-item"><a href="/collections/all" class="category-hero__mobile-link">📺 TV & Video</a></li>
+            <li class="category-hero__mobile-item"><a href="/collections/all" class="category-hero__mobile-link">🎧 Audio</a></li>
           {% endif %}
         {% endif %}
       </ul>
-    </aside>
+    </div>
+  {% endif %}
+
+  <div class="category-hero__container {{ container_class }}">
+    
+    {% comment %} --- Left Sidebar: TOP CATEGORIES (Desktop) --- {% endcomment %}
+    {% if show_categories_desktop %}
+      <aside class="category-hero__sidebar hero-hide-mobile">
+        <div class="category-hero__sidebar-header">
+          <span>{{ section.settings.sidebar_heading | default: 'TOP CATEGORIES' }}</span>
+        </div>
+        <ul class="category-hero__sidebar-list" role="list">
+          {% if sidebar_menu != blank and sidebar_menu.links.size > 0 %}
+            {% for link in sidebar_menu.links %}
+              <li class="category-hero__sidebar-item">
+                <a href="{{ link.url }}">
+                  {% if link.type == 'collection_link' and link.object.featured_image != blank %}
+                    <img src="{{ link.object.featured_image | image_url: width: 60 }}" alt="{{ link.title | escape }}" class="category-hero__sidebar-icon" loading="lazy" width="22" height="22">
+                  {% else %}
+                    <span class="category-hero__sidebar-icon-placeholder">🏷️</span>
+                  {% endif %}
+                  <span>{{ link.title }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          {% else %}
+            {% assign category_blocks = section.blocks | where: 'type', 'category_item' %}
+            {% if category_blocks.size > 0 %}
+              {% for block in category_blocks %}
+                <li class="category-hero__sidebar-item" {{ block.shopify_attributes }}>
+                  <a href="{{ block.settings.url | default: '#' }}">
+                    {% if block.settings.icon != blank %}
+                      <img src="{{ block.settings.icon | image_url: width: 60 }}" alt="{{ block.settings.title | escape }}" class="category-hero__sidebar-icon" loading="lazy" width="22" height="22">
+                    {% endif %}
+                    <span>{{ block.settings.title }}</span>
+                  </a>
+                </li>
+              {% endfor %}
+            {% else %}
+              <li class="category-hero__sidebar-item"><a href="/collections/all"><span>📱 Mobiles & Tablets</span></a></li>
+              <li class="category-hero__sidebar-item"><a href="/collections/all"><span>👔 Men's Fashion</span></a></li>
+              <li class="category-hero__sidebar-item"><a href="/collections/all"><span>👗 Women Fashion</span></a></li>
+              <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🔌 Appliances</span></a></li>
+              <li class="category-hero__sidebar-item"><a href="/collections/all"><span>📺 TV & Video</span></a></li>
+              <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🧸 Kidsmart</span></a></li>
+              <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🏠 Home & Living</span></a></li>
+              <li class="category-hero__sidebar-item"><a href="/collections/all"><span>💻 Computer & Gaming</span></a></li>
+              <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🚗 Automotive</span></a></li>
+              <li class="category-hero__sidebar-item"><a href="/collections/all"><span>❤️ Health & Care</span></a></li>
+              <li class="category-hero__sidebar-item"><a href="/collections/all"><span>📷 Camera</span></a></li>
+            {% endif %}
+          {% endif %}
+        </ul>
+      </aside>
+    {% endif %}
 
     {% comment %} --- Middle Column: Main Hero Banner Slider --- {% endcomment %}
     <main class="category-hero__main">
@@ -65,10 +137,19 @@
         {% if slide_blocks.size > 0 %}
           {% for block in slide_blocks %}
             <div class="category-hero__slide" {{ block.shopify_attributes }}>
-              {% if block.settings.image != blank %}
-                <img src="{{ block.settings.image | image_url: width: 1600 }}" alt="{{ block.settings.title | escape }}" class="category-hero__slide-img" loading="eager" width="800" height="400">
-              {% else %}
-                <div class="category-hero__slide-img" style="background: linear-gradient(135deg, #111111 0%, #2b303a 100%);"></div>
+              {% if block.settings.slide_url != blank %}
+                <a href="{{ block.settings.slide_url }}" class="category-hero__slide-link">
+              {% endif %}
+
+              {% comment %} Mobile Specific Image vs Desktop Image {% endcomment %}
+              {% if block.settings.image_mobile != blank %}
+                <img src="{{ block.settings.image_mobile | image_url: width: 800 }}" alt="{{ block.settings.title | escape }}" class="category-hero__slide-img-mobile category-hero__slide-img-mobile--active" loading="eager" width="400" height="280">
+              {% endif %}
+
+              {% if block.settings.image_desktop != blank %}
+                <img src="{{ block.settings.image_desktop | image_url: width: 1600 }}" alt="{{ block.settings.title | escape }}" class="category-hero__slide-img-desktop" loading="eager" width="800" height="400">
+              {% elsif block.settings.image_mobile == blank %}
+                <div class="category-hero__slide-img-desktop" style="background: linear-gradient(135deg, #111111 0%, #2b303a 100%); width:100%; height:100%;"></div>
               {% endif %}
 
               {% if block.settings.title != blank or block.settings.subtitle != blank %}
@@ -80,16 +161,19 @@
                     <p class="category-hero__slide-subtitle">{{ block.settings.subtitle }}</p>
                   {% endif %}
                   {% if block.settings.button_label != blank %}
-                    <a href="{{ block.settings.button_link | default: '#' }}" class="category-hero__slide-btn">{{ block.settings.button_label }}</a>
+                    <span class="category-hero__slide-btn">{{ block.settings.button_label }}</span>
                   {% endif %}
                 </div>
+              {% endif %}
+
+              {% if block.settings.slide_url != blank %}
+                </a>
               {% endif %}
             </div>
           {% endfor %}
         {% else %}
-          {% comment %} Demo Banner Slide {% endcomment %}
           <div class="category-hero__slide">
-            <div class="category-hero__slide-img" style="background: linear-gradient(135deg, #050505 0%, #1c2517 100%);"></div>
+            <div class="category-hero__slide-img-desktop" style="background: linear-gradient(135deg, #050505 0%, #1c2517 100%); width:100%; height:100%;"></div>
             <div class="category-hero__slide-overlay">
               <h2 class="category-hero__slide-title">SOUND. STYLE.<br>SMART LIVING.</h2>
               <p class="category-hero__slide-subtitle">Premium Audio. Smarter Tech. Better Every Day.</p>
@@ -106,7 +190,15 @@
     </main>
 
     {% comment %} --- Right Column: Stacked Promo Banners --- {% endcomment %}
-    <aside class="category-hero__right">
+    {% assign promo_class = '' %}
+    {% if show_promos_desktop == false %}
+      {% assign promo_class = promo_class | append: ' hero-hide-desktop' %}
+    {% endif %}
+    {% if show_promos_mobile == false %}
+      {% assign promo_class = promo_class | append: ' hero-hide-mobile' %}
+    {% endif %}
+
+    <aside class="category-hero__right {{ promo_class }}">
       {% assign promo_blocks = section.blocks | where: 'type', 'promo_banner' %}
       {% if promo_blocks.size > 0 %}
         {% for block in promo_blocks limit: 2 %}
@@ -124,7 +216,6 @@
           </a>
         {% endfor %}
       {% else %}
-        {% comment %} Demo Banners {% endcomment %}
         <a href="/collections/all" class="category-hero__promo-card">
           <span class="category-hero__promo-badge">STARTING FROM RS. 599/-</span>
           <div style="background: linear-gradient(135deg, #dce4ee 0%, #b8c4d4 100%); width: 100%; height: 100%; min-height: 180px; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; color: #0f172a;">
@@ -143,12 +234,112 @@
   </div>
 </div>
 
+{% comment %} --- Auto Play Carousel Script --- {% endcomment %}
+{% if section.settings.enable_autoplay %}
+  <script>
+    (function() {
+      const slider = document.getElementById('HeroSlider-{{ section.id }}');
+      if (!slider) return;
+      
+      const speed = ({{ section.settings.autoplay_speed | default: 5 }}) * 1000;
+      let autoplayTimer = setInterval(nextSlide, speed);
+
+      function nextSlide() {
+        const maxScroll = slider.scrollWidth - slider.clientWidth;
+        if (slider.scrollLeft >= maxScroll - 10) {
+          slider.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          slider.scrollBy({ left: slider.clientWidth, behavior: 'smooth' });
+        }
+      }
+
+      slider.addEventListener('mouseenter', () => clearInterval(autoplayTimer));
+      slider.addEventListener('mouseleave', () => {
+        clearInterval(autoplayTimer);
+        autoplayTimer = setInterval(nextSlide, speed);
+      });
+    })();
+  </script>
+{% endif %}
+
 {% schema %}
 {
   "name": "Category Hero Banner",
   "tag": "section",
   "class": "section-category-hero-banner",
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Display Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_categories_desktop",
+      "label": "Show Categories Sidebar (Desktop)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_categories_mobile",
+      "label": "Show Categories Carousel (Mobile)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promos_desktop",
+      "label": "Show Side Promo Banners (Desktop)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promos_mobile",
+      "label": "Show Side Promo Banners (Mobile)",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "hero_height_desktop",
+      "min": 250,
+      "max": 650,
+      "step": 10,
+      "unit": "px",
+      "label": "Hero Height (Desktop)",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "hero_height_mobile",
+      "min": 180,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Hero Height (Mobile)",
+      "default": 280
+    },
+    {
+      "type": "header",
+      "content": "Auto-Play Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable Banner Auto-Play",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Auto-Play Speed",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Sidebar Settings"
+    },
     {
       "type": "text",
       "id": "sidebar_heading",
@@ -190,8 +381,18 @@
       "settings": [
         {
           "type": "image_picker",
-          "id": "image",
-          "label": "Banner Image"
+          "id": "image_desktop",
+          "label": "Desktop Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Banner Image (Optional)"
+        },
+        {
+          "type": "url",
+          "id": "slide_url",
+          "label": "Slide Click URL / Link"
         },
         {
           "type": "text",
