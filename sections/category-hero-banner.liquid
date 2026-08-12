@@ -87,7 +87,7 @@
     
     {% comment %} --- Mobile Top Categories Horizontal Carousel Pill Bar --- {% endcomment %}
     {% if show_categories_mobile %}
-      <div class="category-hero__mobile-bar category-hero__mobile-bar--show">
+      <div class="category-hero__mobile-bar category-hero__mobile-bar--show" id="MobileCategoryBarContainer-{{ section.id }}">
         <ul class="category-hero__mobile-list" role="list">
           {% if sidebar_menu != blank and sidebar_menu.links.size > 0 %}
             {% for link in sidebar_menu.links %}
@@ -293,33 +293,56 @@
   </div>
 {% endif %}
 
-{% comment %} --- Auto Play Carousel Script --- {% endcomment %}
-{% if section.settings.enable_autoplay and show_hero_content %}
-  <script>
-    (function() {
+{% comment %} --- Auto Play Carousel Script (Hero Slider & Mobile Categories Bar) --- {% endcomment %}
+<script>
+  (function() {
+    {% if section.settings.enable_autoplay and show_hero_content %}
       const slider = document.getElementById('HeroSlider-{{ section.id }}');
-      if (!slider) return;
-      
-      const speed = ({{ section.settings.autoplay_speed | default: 5 }}) * 1000;
-      let autoplayTimer = setInterval(nextSlide, speed);
+      if (slider) {
+        const speed = ({{ section.settings.autoplay_speed | default: 5 }}) * 1000;
+        let autoplayTimer = setInterval(nextSlide, speed);
 
-      function nextSlide() {
-        const maxScroll = slider.scrollWidth - slider.clientWidth;
-        if (slider.scrollLeft >= maxScroll - 10) {
-          slider.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          slider.scrollBy({ left: slider.clientWidth, behavior: 'smooth' });
+        function nextSlide() {
+          const maxScroll = slider.scrollWidth - slider.clientWidth;
+          if (slider.scrollLeft >= maxScroll - 10) {
+            slider.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            slider.scrollBy({ left: slider.clientWidth, behavior: 'smooth' });
+          }
         }
-      }
 
-      slider.addEventListener('mouseenter', () => clearInterval(autoplayTimer));
-      slider.addEventListener('mouseleave', () => {
-        clearInterval(autoplayTimer);
-        autoplayTimer = setInterval(nextSlide, speed);
-      });
-    })();
-  </script>
-{% endif %}
+        slider.addEventListener('mouseenter', () => clearInterval(autoplayTimer));
+        slider.addEventListener('mouseleave', () => {
+          clearInterval(autoplayTimer);
+          autoplayTimer = setInterval(nextSlide, speed);
+        });
+      }
+    {% endif %}
+
+    {% if section.settings.enable_mobile_category_autoplay and show_categories_mobile %}
+      const catBar = document.getElementById('MobileCategoryBarContainer-{{ section.id }}');
+      if (catBar) {
+        const catSpeed = ({{ section.settings.mobile_category_autoplay_speed | default: 3 }}) * 1000;
+        let catTimer = setInterval(scrollNextCat, catSpeed);
+
+        function scrollNextCat() {
+          const maxScroll = catBar.scrollWidth - catBar.clientWidth;
+          if (catBar.scrollLeft >= maxScroll - 15) {
+            catBar.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            catBar.scrollBy({ left: 160, behavior: 'smooth' });
+          }
+        }
+
+        catBar.addEventListener('touchstart', () => clearInterval(catTimer), {passive: true});
+        catBar.addEventListener('touchend', () => {
+          clearInterval(catTimer);
+          catTimer = setInterval(scrollNextCat, catSpeed);
+        }, {passive: true});
+      }
+    {% endif %}
+  })();
+</script>
 
 {% schema %}
 {
@@ -405,7 +428,7 @@
     },
     {
       "type": "header",
-      "content": "Auto-Play Settings"
+      "content": "Hero Banner Auto-Play Settings"
     },
     {
       "type": "checkbox",
@@ -420,8 +443,28 @@
       "max": 10,
       "step": 1,
       "unit": "s",
-      "label": "Auto-Play Speed",
+      "label": "Banner Auto-Play Speed",
       "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Mobile Categories Auto-Play Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_mobile_category_autoplay",
+      "label": "Enable Mobile Categories Auto-Scroll",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "mobile_category_autoplay_speed",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "s",
+      "label": "Mobile Categories Auto-Scroll Speed",
+      "default": 3
     },
     {
       "type": "header",
