@@ -109,27 +109,14 @@
     <div>
       <a
         href="{{ link.url }}"
-        class="mega-menu__link {% if link.links != blank %}mega-menu__link--parent{% endif %}"
+        class="mega-menu__item-boat {% if link.links != blank %}mega-menu__link--parent{% endif %}"
       >
-        {% if menu_content_type == 'collection_images' %}
-          {%- capture collection_image_sizes -%}
-            {%- if parent_link.links.size <= 4 -%}
-              {%- assign columns_per_item = 2 -%}
-            {%- else -%}
-              {%- assign columns_per_item = 1 -%}
-            {%- endif -%}
-            {%- render 'util-mega-menu-img-sizes-attr',
-              menu_content_type: 'collection_images',
-              settings: settings,
-              grid_columns: grid_columns_count,
-              grid_columns_tablet: grid_columns_count_tablet,
-              grid_columns_collection_images: grid_columns_count_collection_images,
-              parent_links_size: parent_link.links.size,
-              columns_per_item: columns_per_item
-            -%}
-          {%- endcapture -%}
-
-          {% render 'link-featured-image', link: link, class: 'mega-menu__link-image', sizes: collection_image_sizes %}
+        {% if link.type == 'collection_link' and link.object.featured_image != blank %}
+          <img src="{{ link.object.featured_image | image_url: width: 100 }}" alt="{{ link.title | escape }}" class="mega-menu__item-thumb" loading="lazy" width="42" height="42">
+        {% elsif link.type == 'product_link' and link.object.featured_image != blank %}
+          <img src="{{ link.object.featured_image | image_url: width: 100 }}" alt="{{ link.title | escape }}" class="mega-menu__item-thumb" loading="lazy" width="42" height="42">
+        {% else %}
+          <span class="mega-menu__item-thumb" style="display:inline-flex;align-items:center;justify-content:center;font-size:1.2rem;">🎧</span>
         {% endif %}
         <span class="wrap-text">
           {{- link.title -}}

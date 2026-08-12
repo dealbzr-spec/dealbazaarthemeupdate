@@ -15,8 +15,15 @@
   position: absolute !important;
   left: 0 !important;
   right: 0 !important;
+  top: 100% !important;
+  width: 100vw !important;
+  margin-left: calc(-50vw + 50%) !important;
+  background-color: #ffffff !important;
   background: #ffffff !important;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15) !important;
+  opacity: 1 !important;
+  z-index: 9999999 !important;
+  border-bottom: 1px solid #e5e7eb !important;
 }
 
 .menu-list__link {
@@ -83,12 +90,21 @@
   box-shadow: 0 0 0 2px rgba(0,0,0,0.05) !important;
 }
 
-/* --- Mega Menu Grid with Thumbnail Icons (SS3/SS2 Style) --- */
+/* --- Mega Menu Overlay & 5-Column Category Cards Grid (SS2 Style) --- */
 .mega-menu {
+  background-color: #ffffff !important;
   background: #ffffff !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08) !important;
-  border-bottom: 1px solid #eeeeee !important;
-  padding: 24px 0 !important;
+  box-shadow: none !important;
+  border-bottom: none !important;
+  padding: 32px 0 !important;
+  width: 100% !important;
+  opacity: 1 !important;
+}
+
+.mega-menu__grid {
+  max-width: 1440px !important;
+  margin: 0 auto !important;
+  padding: 0 32px !important;
 }
 
 .mega-menu__list {
@@ -96,45 +112,48 @@
   grid-template-columns: repeat(5, 1fr) !important;
   gap: 20px 24px !important;
   align-items: start !important;
-  max-width: 1380px;
-  margin: 0 auto;
-  padding: 0 24px;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .mega-menu__column {
   margin: 0 !important;
   padding: 0 !important;
+  column-count: auto !important;
 }
 
-.mega-menu__link--with-icon {
-  display: inline-flex !important;
+.mega-menu__item-boat {
+  display: flex !important;
   align-items: center !important;
   gap: 12px !important;
-  padding: 8px 12px !important;
-  border-radius: 24px !important;
+  padding: 10px 14px !important;
+  border-radius: 28px !important;
   background: #ffffff !important;
   text-decoration: none !important;
   color: #121212 !important;
   font-size: 0.88rem !important;
   font-weight: 600 !important;
   transition: all 0.2s ease !important;
+  border: 1px solid #f0f2f5 !important;
   width: 100%;
 }
 
-.mega-menu__link--with-icon:hover {
+.mega-menu__item-boat:hover {
   background: #f4f6f9 !important;
   color: #d8232a !important;
   transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
 }
 
-.mega-menu__link-thumb {
-  width: 40px !important;
-  height: 40px !important;
+.mega-menu__item-thumb {
+  width: 42px !important;
+  height: 42px !important;
   border-radius: 50% !important;
   object-fit: cover !important;
   flex-shrink: 0 !important;
   border: 1px solid #eaeaea !important;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.04) !important;
+  background: #f9fafb !important;
 }
 
 /* --- Category Hero Banner (SS2 Style: Dynamic Layout & Sidebar Flyout) --- */
