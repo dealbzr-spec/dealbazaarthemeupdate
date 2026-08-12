@@ -132,7 +132,7 @@
     {% if show_categories_desktop or show_hero_content or show_promos_desktop %}
       <div class="category-hero__container {{ container_class }}">
         
-        {% comment %} --- Left Sidebar: TOP CATEGORIES (Desktop) --- {% endcomment %}
+        {% comment %} --- Left Sidebar: TOP CATEGORIES (Desktop) with Hover Flyout Mega Menu --- {% endcomment %}
         {% if show_categories_desktop %}
           <aside class="category-hero__sidebar hero-hide-mobile">
             <div class="category-hero__sidebar-header">
@@ -141,15 +141,41 @@
             <ul class="category-hero__sidebar-list" role="list">
               {% if sidebar_menu != blank and sidebar_menu.links.size > 0 %}
                 {% for link in sidebar_menu.links %}
-                  <li class="category-hero__sidebar-item">
-                    <a href="{{ link.url }}">
-                      {% if link.type == 'collection_link' and link.object.featured_image != blank %}
-                        <img src="{{ link.object.featured_image | image_url: width: 60 }}" alt="{{ link.title | escape }}" class="category-hero__sidebar-icon" loading="lazy" width="22" height="22">
-                      {% else %}
-                        <span class="category-hero__sidebar-icon-placeholder">🏷️</span>
+                  <li class="category-hero__sidebar-item{% if link.links.size > 0 %} category-hero__sidebar-item--has-flyout{% endif %}">
+                    <a href="{{ link.url }}" class="category-hero__sidebar-link">
+                      <div class="category-hero__sidebar-left-info">
+                        {% if link.type == 'collection_link' and link.object.featured_image != blank %}
+                          <img src="{{ link.object.featured_image | image_url: width: 60 }}" alt="{{ link.title | escape }}" class="category-hero__sidebar-icon" loading="lazy" width="22" height="22">
+                        {% else %}
+                          <span class="category-hero__sidebar-icon-placeholder">🏷️</span>
+                        {% endif %}
+                        <span>{{ link.title }}</span>
+                      </div>
+                      {% if link.links.size > 0 %}
+                        <span class="category-hero__sidebar-chevron">›</span>
                       {% endif %}
-                      <span>{{ link.title }}</span>
                     </a>
+
+                    {% if link.links.size > 0 %}
+                      <div class="category-hero__flyout">
+                        <div class="category-hero__flyout-inner">
+                          {% for sub_link in link.links %}
+                            <div class="category-hero__flyout-column">
+                              <a href="{{ sub_link.url }}" class="category-hero__flyout-heading">{{ sub_link.title }}</a>
+                              {% if sub_link.links.size > 0 %}
+                                <ul class="category-hero__flyout-list" role="list">
+                                  {% for child_link in sub_link.links %}
+                                    <li>
+                                      <a href="{{ child_link.url }}">{{ child_link.title }}</a>
+                                    </li>
+                                  {% endfor %}
+                                </ul>
+                              {% endif %}
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    {% endif %}
                   </li>
                 {% endfor %}
               {% else %}
@@ -157,33 +183,80 @@
                 {% if category_blocks.size > 0 %}
                   {% for block in category_blocks %}
                     <li class="category-hero__sidebar-item" {{ block.shopify_attributes }}>
-                      <a href="{{ block.settings.url | default: '#' }}">
-                        {% if block.settings.icon != blank %}
-                          <img src="{{ block.settings.icon | image_url: width: 60 }}" alt="{{ block.settings.title | escape }}" class="category-hero__sidebar-icon" loading="lazy" width="22" height="22">
-                        {% endif %}
-                        <span>{{ block.settings.title }}</span>
+                      <a href="{{ block.settings.url | default: '#' }}" class="category-hero__sidebar-link">
+                        <div class="category-hero__sidebar-left-info">
+                          {% if block.settings.icon != blank %}
+                            <img src="{{ block.settings.icon | image_url: width: 60 }}" alt="{{ block.settings.title | escape }}" class="category-hero__sidebar-icon" loading="lazy" width="22" height="22">
+                          {% endif %}
+                          <span>{{ block.settings.title }}</span>
+                        </div>
                       </a>
                     </li>
                   {% endfor %}
                 {% else %}
-                  <li class="category-hero__sidebar-item"><a href="/collections/all"><span>📱 Mobiles & Tablets</span></a></li>
-                  <li class="category-hero__sidebar-item"><a href="/collections/all"><span>👔 Men's Fashion</span></a></li>
-                  <li class="category-hero__sidebar-item"><a href="/collections/all"><span>👗 Women Fashion</span></a></li>
-                  <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🔌 Appliances</span></a></li>
-                  <li class="category-hero__sidebar-item"><a href="/collections/all"><span>📺 TV & Video</span></a></li>
-                  <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🧸 Kidsmart</span></a></li>
-                  <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🏠 Home & Living</span></a></li>
-                  <li class="category-hero__sidebar-item"><a href="/collections/all"><span>💻 Computer & Gaming</span></a></li>
-                  <li class="category-hero__sidebar-item"><a href="/collections/all"><span>🚗 Automotive</span></a></li>
-                  <li class="category-hero__sidebar-item"><a href="/collections/all"><span>❤️ Health & Care</span></a></li>
-                  <li class="category-hero__sidebar-item"><a href="/collections/all"><span>📷 Camera</span></a></li>
+                  {% comment %} Demo Fallback with Hover Flyout (Matching Screenshot) {% endcomment %}
+                  <li class="category-hero__sidebar-item category-hero__sidebar-item--has-flyout">
+                    <a href="/collections/all" class="category-hero__sidebar-link">
+                      <div class="category-hero__sidebar-left-info">
+                        <span class="category-hero__sidebar-icon">📱</span>
+                        <span>Mobiles & Tablets</span>
+                      </div>
+                      <span class="category-hero__sidebar-chevron">›</span>
+                    </a>
+                    <div class="category-hero__flyout">
+                      <div class="category-hero__flyout-inner">
+                        <div class="category-hero__flyout-column">
+                          <a href="/collections/all" class="category-hero__flyout-heading">Smartphones</a>
+                          <ul class="category-hero__flyout-list" role="list">
+                            <li><a href="/collections/all">Apple iPhones</a></li>
+                            <li><a href="/collections/all">Asus Mobiles</a></li>
+                            <li><a href="/collections/all">Gfive Mobiles</a></li>
+                            <li><a href="/collections/all">Huawei Mobiles</a></li>
+                            <li><a href="/collections/all">View more</a></li>
+                          </ul>
+                          <a href="/collections/all" class="category-hero__flyout-heading" style="margin-top: 16px;">Tablet Accessories</a>
+                        </div>
+                        <div class="category-hero__flyout-column">
+                          <a href="/collections/all" class="category-hero__flyout-heading">Mobile Accessories</a>
+                          <ul class="category-hero__flyout-list" role="list">
+                            <li><a href="/collections/all">Wireless Chargers</a></li>
+                            <li><a href="/collections/all">Gadgets & Accessories</a></li>
+                            <li><a href="/collections/all">Memory Cards</a></li>
+                            <li><a href="/collections/all">Customised Cases & Covers</a></li>
+                            <li><a href="/collections/all">View more</a></li>
+                          </ul>
+                          <a href="/collections/all" class="category-hero__flyout-heading" style="margin-top: 16px;">Feature Phones</a>
+                        </div>
+                        <div class="category-hero__flyout-column">
+                          <a href="/collections/all" class="category-hero__flyout-heading">Tablets</a>
+                          <ul class="category-hero__flyout-list" role="list">
+                            <li><a href="/collections/all">iOS Tablet</a></li>
+                            <li><a href="/collections/all">Windows Tablets</a></li>
+                            <li><a href="/collections/all">Android Tablets</a></li>
+                            <li><a href="/collections/all">Amazon Tablets</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li class="category-hero__sidebar-item"><a href="/collections/all" class="category-hero__sidebar-link"><div class="category-hero__sidebar-left-info"><span class="category-hero__sidebar-icon">👔</span><span>Men's Fashion</span></div></a></li>
+                  <li class="category-hero__sidebar-item"><a href="/collections/all" class="category-hero__sidebar-link"><div class="category-hero__sidebar-left-info"><span class="category-hero__sidebar-icon">👗</span><span>Women Fashion</span></div></a></li>
+                  <li class="category-hero__sidebar-item"><a href="/collections/all" class="category-hero__sidebar-link"><div class="category-hero__sidebar-left-info"><span class="category-hero__sidebar-icon">🔌</span><span>Appliances</span></div></a></li>
+                  <li class="category-hero__sidebar-item"><a href="/collections/all" class="category-hero__sidebar-link"><div class="category-hero__sidebar-left-info"><span class="category-hero__sidebar-icon">📺</span><span>TV & Video</span></div></a></li>
+                  <li class="category-hero__sidebar-item"><a href="/collections/all" class="category-hero__sidebar-link"><div class="category-hero__sidebar-left-info"><span class="category-hero__sidebar-icon">🧸</span><span>Kidsmart</span></div></a></li>
+                  <li class="category-hero__sidebar-item"><a href="/collections/all" class="category-hero__sidebar-link"><div class="category-hero__sidebar-left-info"><span class="category-hero__sidebar-icon">🏠</span><span>Home & Living</span></div></a></li>
+                  <li class="category-hero__sidebar-item"><a href="/collections/all" class="category-hero__sidebar-link"><div class="category-hero__sidebar-left-info"><span class="category-hero__sidebar-icon">💻</span><span>Computer & Gaming</span></div></a></li>
+                  <li class="category-hero__sidebar-item"><a href="/collections/all" class="category-hero__sidebar-link"><div class="category-hero__sidebar-left-info"><span class="category-hero__sidebar-icon">🚗</span><span>Automotive</span></div></a></li>
+                  <li class="category-hero__sidebar-item"><a href="/collections/all" class="category-hero__sidebar-link"><div class="category-hero__sidebar-left-info"><span class="category-hero__sidebar-icon">❤️</span><span>Health & Care</span></div></a></li>
+                  <li class="category-hero__sidebar-item"><a href="/collections/all" class="category-hero__sidebar-link"><div class="category-hero__sidebar-left-info"><span class="category-hero__sidebar-icon">📷</span><span>Camera</span></div></a></li>
                 {% endif %}
               {% endif %}
             </ul>
           </aside>
         {% endif %}
 
-        {% comment %} --- Middle Column: Main Hero Banner Slider --- {% endcomment %}
+        {% comment %} --- Middle Column: Main Hero Banner Slider (Multi Banner Support) --- {% endcomment %}
         {% if show_hero_content %}
           <main class="category-hero__main">
             {% assign slide_blocks = section.blocks | where: 'type', 'slide_item' %}
@@ -239,6 +312,12 @@
             {% if slide_blocks.size > 1 %}
               <button type="button" class="category-hero__slider-nav category-hero__slider-nav--prev" onclick="document.getElementById('HeroSlider-{{ section.id }}').scrollBy({left: -600, behavior: 'smooth'})" aria-label="Previous Slide">‹</button>
               <button type="button" class="category-hero__slider-nav category-hero__slider-nav--next" onclick="document.getElementById('HeroSlider-{{ section.id }}').scrollBy({left: 600, behavior: 'smooth'})" aria-label="Next Slide">›</button>
+
+              <div class="category-hero__slider-dots" id="HeroDots-{{ section.id }}">
+                {% for block in slide_blocks %}
+                  <button type="button" class="category-hero__dot{% if forloop.first %} category-hero__dot--active{% endif %}" onclick="document.getElementById('HeroSlider-{{ section.id }}').scrollTo({left: {{ forloop.index0 }} * document.getElementById('HeroSlider-{{ section.id }}').clientWidth, behavior: 'smooth'})" aria-label="Slide {{ forloop.index }}"></button>
+                {% endfor %}
+              </div>
             {% endif %}
           </main>
         {% endif %}
@@ -298,18 +377,43 @@
   (function() {
     {% if section.settings.enable_autoplay and show_hero_content %}
       const slider = document.getElementById('HeroSlider-{{ section.id }}');
+      const dots = document.querySelectorAll('#HeroDots-{{ section.id }} .category-hero__dot');
+
       if (slider) {
         const speed = ({{ section.settings.autoplay_speed | default: 5 }}) * 1000;
         let autoplayTimer = setInterval(nextSlide, speed);
 
+        function updateDots(index) {
+          if (!dots || dots.length === 0) return;
+          dots.forEach((dot, idx) => {
+            if (idx === index) {
+              dot.classList.add('category-hero__dot--active');
+            } else {
+              dot.classList.remove('category-hero__dot--active');
+            }
+          });
+        }
+
         function nextSlide() {
-          const maxScroll = slider.scrollWidth - slider.clientWidth;
+          const slideWidth = slider.clientWidth;
+          const maxScroll = slider.scrollWidth - slideWidth;
+          let nextScroll = slider.scrollLeft + slideWidth;
+          
           if (slider.scrollLeft >= maxScroll - 10) {
             slider.scrollTo({ left: 0, behavior: 'smooth' });
+            updateDots(0);
           } else {
-            slider.scrollBy({ left: slider.clientWidth, behavior: 'smooth' });
+            slider.scrollBy({ left: slideWidth, behavior: 'smooth' });
+            const currentIndex = Math.round((slider.scrollLeft + slideWidth) / slideWidth);
+            updateDots(currentIndex);
           }
         }
+
+        slider.addEventListener('scroll', () => {
+          const slideWidth = slider.clientWidth;
+          const currentIndex = Math.round(slider.scrollLeft / slideWidth);
+          updateDots(currentIndex);
+        });
 
         slider.addEventListener('mouseenter', () => clearInterval(autoplayTimer));
         slider.addEventListener('mouseleave', () => {
