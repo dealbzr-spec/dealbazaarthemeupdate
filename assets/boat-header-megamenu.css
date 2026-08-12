@@ -23,7 +23,8 @@
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15) !important;
   opacity: 1 !important;
   z-index: 9999999 !important;
-  border-bottom: 1px solid #e5e7eb !important;
+  border-top: 1px solid #eaeaea !important;
+  border-bottom: 1px solid #eaeaea !important;
 }
 
 .menu-list__link {
@@ -90,70 +91,88 @@
   box-shadow: 0 0 0 2px rgba(0,0,0,0.05) !important;
 }
 
-/* --- Mega Menu Overlay & 5-Column Category Cards Grid (SS2 Style) --- */
+/* --- SAME TO SAME boAt Mega Menu Overlay & 5-Column Grid --- */
 .mega-menu {
   background-color: #ffffff !important;
   background: #ffffff !important;
   box-shadow: none !important;
   border-bottom: none !important;
-  padding: 32px 0 !important;
+  padding: 36px 0 !important;
   width: 100% !important;
   opacity: 1 !important;
 }
 
 .mega-menu__grid {
-  max-width: 1440px !important;
+  max-width: 1400px !important;
   margin: 0 auto !important;
-  padding: 0 32px !important;
+  padding: 0 40px !important;
 }
 
-.mega-menu__list {
+.boat-megamenu-wrapper {
+  width: 100%;
+}
+
+.boat-megamenu-grid {
   display: grid !important;
   grid-template-columns: repeat(5, 1fr) !important;
-  gap: 20px 24px !important;
+  gap: 24px 36px !important;
   align-items: start !important;
   list-style: none !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.mega-menu__column {
-  margin: 0 !important;
-  padding: 0 !important;
-  column-count: auto !important;
-}
-
-.mega-menu__item-boat {
+.boat-megamenu-card {
   display: flex !important;
   align-items: center !important;
-  gap: 12px !important;
-  padding: 10px 14px !important;
-  border-radius: 28px !important;
-  background: #ffffff !important;
+  gap: 14px !important;
+  padding: 6px 4px !important;
   text-decoration: none !important;
   color: #121212 !important;
-  font-size: 0.88rem !important;
-  font-weight: 600 !important;
   transition: all 0.2s ease !important;
-  border: 1px solid #f0f2f5 !important;
-  width: 100%;
+  border: none !important;
+  background: transparent !important;
 }
 
-.mega-menu__item-boat:hover {
-  background: #f4f6f9 !important;
-  color: #d8232a !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
+.boat-megamenu-card:hover {
+  transform: translateX(4px) !important;
 }
 
-.mega-menu__item-thumb {
-  width: 42px !important;
-  height: 42px !important;
+.boat-megamenu-avatar {
+  width: 46px !important;
+  height: 46px !important;
   border-radius: 50% !important;
-  object-fit: cover !important;
+  background: #f2f4f8 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   flex-shrink: 0 !important;
-  border: 1px solid #eaeaea !important;
-  background: #f9fafb !important;
+  overflow: hidden !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04) !important;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.boat-megamenu-card:hover .boat-megamenu-avatar {
+  background: #e5e7eb !important;
+  transform: scale(1.06);
+}
+
+.boat-megamenu-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.boat-megamenu-title {
+  font-size: 0.86rem !important;
+  font-weight: 600 !important;
+  color: #1a1a1a !important;
+  line-height: 1.25 !important;
+  transition: color 0.2s ease;
+}
+
+.boat-megamenu-card:hover .boat-megamenu-title {
+  color: #d8232a !important;
 }
 
 /* --- Category Hero Banner (SS2 Style: Dynamic Layout & Sidebar Flyout) --- */
