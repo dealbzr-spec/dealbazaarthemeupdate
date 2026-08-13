@@ -1,5 +1,5 @@
 {% doc %}
-  Renders the predictive search empty state with DYNAMIC store collections & Draggable Search Tag Pill Carousel (SS1, SS2 & SS4 style)
+  Renders the predictive search empty state with DYNAMIC store collections & Silky Smooth Draggable Search Tag Pill Carousel (SS1, SS2 & SS4 style)
 {% enddoc %}
 
 <div
@@ -10,7 +10,7 @@
 >
   <div class="boat-search-modal-container" style="padding: 20px 24px;">
     
-    {% comment %} --- SS1 & SS4 Style Draggable / Swipeable Horizontal Search Tag Pills Carousel --- {% endcomment %}
+    {% comment %} --- SS1 & SS4 Style Silky Smooth Draggable / Swipeable Search Tag Pills Carousel --- {% endcomment %}
     <div class="boat-search-tags-carousel" id="BoatSearchTagsCarousel">
       {% if section.settings.search_tags_collections != blank %}
         {% for collection in section.settings.search_tags_collections %}
@@ -102,64 +102,82 @@
   </div>
 </div>
 
-{% comment %} --- Mouse Drag & Touch Slide Script for Search Tag Pills --- {% endcomment %}
+{% comment %} --- High Performance Momentum Drag & Touch Inertia Script --- {% endcomment %}
 <script>
   (function() {
-    function initDragScroll() {
+    function initSilkySmoothDrag() {
       const slider = document.getElementById('BoatSearchTagsCarousel');
-      if (slider && !slider.dataset.dragInit) {
-        slider.dataset.dragInit = 'true';
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-        let isDragging = false;
+      if (!slider || slider.dataset.silkyInit) return;
+      slider.dataset.silkyInit = 'true';
 
-        slider.addEventListener('mousedown', (e) => {
-          isDown = true;
-          isDragging = false;
-          slider.style.cursor = 'grabbing';
-          startX = e.pageX - slider.offsetLeft;
-          scrollLeft = slider.scrollLeft;
-        });
+      let isDown = false;
+      let startX = 0;
+      let scrollLeft = 0;
+      let velX = 0;
+      let lastX = 0;
+      let momentumId = null;
+      let hasDragged = false;
 
-        slider.addEventListener('mouseleave', () => {
-          isDown = false;
-          slider.style.cursor = 'grab';
-        });
-
-        slider.addEventListener('mouseup', (e) => {
-          isDown = false;
-          slider.style.cursor = 'grab';
-          if (isDragging) {
-            e.preventDefault();
+      function endDrag() {
+        if (!isDown) return;
+        isDown = false;
+        slider.style.cursor = 'grab';
+        
+        // Momentum Physics Animation
+        cancelAnimationFrame(momentumId);
+        function momentumLoop() {
+          if (Math.abs(velX) > 0.5) {
+            slider.scrollLeft -= velX;
+            velX *= 0.92; // Friction damping
+            momentumId = requestAnimationFrame(momentumLoop);
           }
-        });
-
-        slider.addEventListener('mousemove', (e) => {
-          if (!isDown) return;
-          const x = e.pageX - slider.offsetLeft;
-          const walk = (x - startX) * 2.5;
-          if (Math.abs(walk) > 5) {
-            isDragging = true;
-          }
-          slider.scrollLeft = scrollLeft - walk;
-        });
-
-        // Prevent clicking links while dragging
-        slider.querySelectorAll('a').forEach(link => {
-          link.addEventListener('click', (e) => {
-            if (isDragging) {
-              e.preventDefault();
-              e.stopPropagation();
-            }
-          });
-        });
+        }
+        momentumId = requestAnimationFrame(momentumLoop);
       }
+
+      slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        hasDragged = false;
+        cancelAnimationFrame(momentumId);
+        slider.style.cursor = 'grabbing';
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+        lastX = e.pageX;
+        velX = 0;
+      });
+
+      slider.addEventListener('mouseleave', endDrag);
+      slider.addEventListener('mouseup', endDrag);
+
+      slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        
+        if (Math.abs(e.pageX - lastX) > 3) {
+          hasDragged = true;
+        }
+
+        velX = e.pageX - lastX;
+        lastX = e.pageX;
+        slider.scrollLeft = scrollLeft - walk;
+      });
+
+      // Prevent link click when dragging
+      slider.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          if (hasDragged) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        });
+      });
     }
+
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initDragScroll);
+      document.addEventListener('DOMContentLoaded', initSilkySmoothDrag);
     } else {
-      initDragScroll();
+      initSilkySmoothDrag();
     }
   })();
 </script>
