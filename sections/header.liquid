@@ -1774,6 +1774,55 @@
       "visible_if": "{{ section.settings.enable_transparent_header_collection }}"
     }
   ],
+  "blocks": [
+    {
+      "type": "search_tag_item",
+      "name": "Search Tag Pill",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection"
+        },
+        {
+          "type": "text",
+          "id": "custom_label",
+          "label": "Custom Tag Label (Optional)"
+        },
+        {
+          "type": "url",
+          "id": "custom_url",
+          "label": "Custom Link (Optional)"
+        }
+      ]
+    },
+    {
+      "type": "search_category_card",
+      "name": "Search Category Card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Custom Title (Optional)"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom Icon / Image (Optional)"
+        },
+        {
+          "type": "url",
+          "id": "custom_url",
+          "label": "Custom Link (Optional)"
+        }
+      ]
+    }
+  ],
   "presets": []
 }
 {% endschema %}

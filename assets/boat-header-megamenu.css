@@ -115,25 +115,17 @@ header.header,
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* --- Silky Smooth Draggable Search Tag Pills Carousel (SS1) --- */
+/* --- Standard Smooth Carousel Search Tag Pills (SS1) --- */
 .boat-search-tags-carousel {
   display: flex !important;
   gap: 10px !important;
   overflow-x: auto !important;
-  scroll-behavior: auto !important;
+  scroll-behavior: smooth !important;
   scrollbar-width: none !important;
   -webkit-overflow-scrolling: touch !important;
-  cursor: grab !important;
-  user-select: none !important;
-  touch-action: pan-x !important;
   padding: 6px 4px 16px 4px !important;
   margin-bottom: 8px !important;
   width: 100% !important;
-  will-change: scroll-position !important;
-}
-
-.boat-search-tags-carousel:active {
-  cursor: grabbing !important;
 }
 
 .boat-search-tags-carousel::-webkit-scrollbar {
@@ -141,6 +133,7 @@ header.header,
 }
 
 .boat-search-tag-pill {
+  scroll-snap-align: start !important;
   flex-shrink: 0 !important;
   display: inline-flex !important;
   align-items: center !important;
