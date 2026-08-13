@@ -115,16 +115,19 @@ header.header,
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* --- Standard Smooth Carousel Search Tag Pills (SS1) --- */
+/* --- Tag Pills 2-Row Layout --- */
 .boat-search-tags-carousel {
-  display: flex !important;
-  gap: 10px !important;
+  display: grid !important;
+  grid-template-rows: repeat(2, auto) !important;
+  grid-auto-flow: column !important;
+  gap: 8px 10px !important;
   overflow-x: auto !important;
   scroll-behavior: smooth !important;
   scrollbar-width: none !important;
   -webkit-overflow-scrolling: touch !important;
-  padding: 6px 4px 16px 4px !important;
+  padding: 4px 2px 12px 2px !important;
   margin-bottom: 8px !important;
+  max-height: 96px !important;
   width: 100% !important;
 }
 
