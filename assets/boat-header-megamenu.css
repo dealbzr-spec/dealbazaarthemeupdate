@@ -98,10 +98,16 @@ header.header,
   width: 100%;
 }
 
-/* --- Search Bar Pill Styling (SS2 Style) --- */
+/* --- Search Bar & Desktop Duplicate Removal --- */
+@media screen and (min-width: 750px) {
+  .search-action--hidden-on-menu,
+  .boat-search-action-wrapper.search-action--hidden-on-menu {
+    display: none !important;
+  }
+}
+
 .header__search-form,
-.search-modal__form,
-.search-action {
+.search-modal__form {
   background: #f4f5f8 !important;
   border-radius: 30px !important;
   border: 1px solid #e5e7eb !important;
@@ -109,9 +115,39 @@ header.header,
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.header__search-form:focus-within {
-  border-color: #000000 !important;
-  box-shadow: 0 0 0 2px rgba(0,0,0,0.05) !important;
+/* --- Mobile Centered Search Bar (SS3 Style) --- */
+@media screen and (max-width: 749px) {
+  .boat-search-action-wrapper {
+    width: 100% !important;
+    justify-content: center !important;
+    margin: 8px 0 !important;
+  }
+
+  .boat-search-pill-button {
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-content: space-between !important;
+    padding: 8px 12px 8px 16px !important;
+    background: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+  }
+
+  .boat-search-pill-text {
+    display: inline-block !important;
+    font-size: 0.88rem !important;
+    color: #94a3b8 !important;
+  }
+
+  .boat-search-pill-icon {
+    order: 2;
+    background: #1d4ed8 !important;
+    color: #ffffff !important;
+    padding: 8px 14px !important;
+    border-radius: 4px !important;
+    margin-right: -6px !important;
+  }
 }
 
 /* --- SAME TO SAME boAt Mega Menu Overlay & 5-Column Grid --- */
