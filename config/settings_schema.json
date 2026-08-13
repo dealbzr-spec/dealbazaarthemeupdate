@@ -61,48 +61,25 @@
     "settings": [
       {
         "type": "header",
-        "content": "TOP SEARCH TAG PILLS"
+        "content": "SEARCH POPUP FEATURED PRODUCTS (4 ROWS x 2 COLUMNS)"
       },
       {
-        "type": "collection_list",
-        "id": "search_tags_collections",
-        "label": "Top Tag Pills (Select Collections)",
-        "limit": 15
+        "type": "text",
+        "id": "search_modal_heading",
+        "label": "Search Popup Section Title",
+        "default": "Trending Products"
+      },
+      {
+        "type": "collection",
+        "id": "search_featured_collection",
+        "label": "Select Collection (8 Products in 4 Rows x 2 Columns)",
+        "info": "8 products from this selected collection will be displayed with image, title, and price in a 2-column grid."
       },
       {
         "type": "text",
         "id": "search_tags",
         "label": "Top Tag Pills (Comma Separated Keywords)",
-        "default": "westpoint, smartwatch, earbuds, official warranty, clearance sale, air fryer, soundbar"
-      },
-      {
-        "type": "header",
-        "content": "MOST SEARCHED AND BOUGHT CATEGORIES (2 ROWS MAX)"
-      },
-      {
-        "type": "text",
-        "id": "search_modal_heading",
-        "label": "Categories Section Heading",
-        "default": "Most Searched And Bought"
-      },
-      {
-        "type": "link_list",
-        "id": "search_menu",
-        "label": "Select Navigation Menu (Select Menu)",
-        "info": "Select any Navigation Menu from Shopify Admin (Max 4 items displayed for 2 rows)"
-      },
-      {
-        "type": "collection_list",
-        "id": "search_modal_categories",
-        "label": "Select Collections (Max 4 Items for 2 Rows)",
-        "limit": 4
-      },
-      {
-        "type": "text",
-        "id": "search_modal_categories_text",
-        "label": "Custom Category Names (Comma Separated Text)",
-        "default": "Sale, Appliances, Smart Watches, Earbuds & Headphones",
-        "info": "Type custom category names separated by commas (Max 4 items for 2 rows)"
+        "default": "sale, westpoint, smartwatch, earbuds, official warranty, clearance sale"
       },
       {
         "type": "header",
@@ -113,7 +90,7 @@
         "id": "search_placeholder_keywords",
         "label": "Auto-Rotating Search Keywords (Comma Separated)",
         "default": "Smartwatches, Earbuds, Headphones, Speakers, Powerbanks",
-        "info": "Keywords that rotate automatically inside the fixed-size search bar"
+        "info": "Keywords that rotate automatically inside the search bar"
       }
     ]
   },

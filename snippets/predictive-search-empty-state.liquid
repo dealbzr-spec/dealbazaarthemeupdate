@@ -1,5 +1,5 @@
 {% doc %}
-  Renders the predictive search empty state with 2-Row Tag Pills, Manual Navigation Menu / Collections support (Strictly 2 Columns x 2 Rows = 4 items max, Sale is 1st)
+  Renders the predictive search empty state with Top Tag Pills and 8 Featured Collection Products (4 Rows x 2 Columns)
 {% enddoc %}
 
 <div
@@ -11,35 +11,10 @@
   <div class="boat-search-modal-container" style="padding: 20px 24px;">
     
     {% comment %} --- Top 2-Row Search Tag Pills --- {% endcomment %}
-    {% assign tag_blocks = section.blocks | where: 'type', 'search_tag_item' %}
-    
-    {% assign tag_collections = section.settings.search_tags_collections %}
-    {% if tag_collections == blank or tag_collections.size == 0 %}
-      {% assign tag_collections = settings.search_tags_collections %}
-    {% endif %}
-
-    {% assign text_tags = section.settings.search_tags %}
-    {% if text_tags == blank %}
-      {% assign text_tags = settings.search_tags %}
-    {% endif %}
+    {% assign text_tags = section.settings.search_tags | default: settings.search_tags %}
 
     <div class="boat-search-tags-carousel" id="BoatSearchTagsCarousel">
-      {% if tag_blocks.size > 0 %}
-        {% for block in tag_blocks %}
-          {% assign col = block.settings.collection %}
-          {% assign url = block.settings.custom_url | default: col.url | default: '#' %}
-          {% assign label = block.settings.custom_label | default: col.title | default: 'Tag' %}
-          <a href="{{ url }}" class="boat-search-tag-pill" {{ block.shopify_attributes }}>
-            {{ label }}
-          </a>
-        {% endfor %}
-      {% elsif tag_collections != blank and tag_collections.size > 0 %}
-        {% for collection in tag_collections %}
-          <a href="{{ collection.url }}" class="boat-search-tag-pill">
-            {{ collection.title }}
-          </a>
-        {% endfor %}
-      {% elsif text_tags != blank %}
+      {% if text_tags != blank %}
         {% assign tags = text_tags | split: ',' %}
         {% for tag in tags %}
           {% assign clean_tag = tag | strip %}
@@ -50,132 +25,71 @@
           {% endif %}
         {% endfor %}
       {% else %}
-        {% comment %} Default Random Trending Search Tags {% endcomment %}
         <a href="{{ routes.search_url }}?q=sale" class="boat-search-tag-pill">sale</a>
         <a href="{{ routes.search_url }}?q=westpoint" class="boat-search-tag-pill">westpoint</a>
         <a href="{{ routes.search_url }}?q=smartwatch" class="boat-search-tag-pill">smartwatch</a>
         <a href="{{ routes.search_url }}?q=earbuds" class="boat-search-tag-pill">earbuds</a>
         <a href="{{ routes.search_url }}?q=official+warranty" class="boat-search-tag-pill">official warranty</a>
         <a href="{{ routes.search_url }}?q=clearance+sale" class="boat-search-tag-pill">clearance sale</a>
-        <a href="{{ routes.search_url }}?q=air+fryer" class="boat-search-tag-pill">air fryer</a>
-        <a href="{{ routes.search_url }}?q=soundbar" class="boat-search-tag-pill">soundbar</a>
       {% endif %}
     </div>
 
-    {% comment %} --- Dynamic Section Heading --- {% endcomment %}
-    <h3 class="boat-search-modal-title" style="font-size: 1.1rem; font-weight: 700; color: #1e293b; margin: 12px 0 16px 0; font-family: 'Plus Jakarta Sans', sans-serif;">
-      {{ section.settings.search_modal_heading | default: settings.search_modal_heading | default: 'Most Searched And Bought' }}
+    {% comment %} --- Dynamic Section Title --- {% endcomment %}
+    <h3 class="boat-search-modal-title" style="font-size: 1.1rem; font-weight: 700; color: #1e293b; margin: 14px 0 16px 0; font-family: 'Plus Jakarta Sans', sans-serif;">
+      {{ section.settings.search_modal_heading | default: settings.search_modal_heading | default: 'Trending Products' }}
     </h3>
 
-    {% comment %} --- Parse Navigation Menu --- {% endcomment %}
-    {% assign menu_links = nil %}
-    {% assign target_menu = section.settings.search_menu %}
-    {% if target_menu == blank %}
-      {% assign target_menu = settings.search_menu %}
+    {% comment %} --- Selected Collection (8 Products in 4 Rows x 2 Columns) --- {% endcomment %}
+    {% assign selected_col = section.settings.search_featured_collection | default: settings.search_featured_collection %}
+    {% if selected_col == blank %}
+      {% assign selected_col = collections.all %}
     {% endif %}
 
-    {% if target_menu != blank %}
-      {% if target_menu.links != blank and target_menu.links.size > 0 %}
-        {% assign menu_links = target_menu.links %}
-      {% elsif linklists[target_menu].links != blank and linklists[target_menu].links.size > 0 %}
-        {% assign menu_links = linklists[target_menu].links %}
-      {% endif %}
-    {% endif %}
-
-    {% assign modal_collections = section.settings.search_modal_categories %}
-    {% if modal_collections == blank or modal_collections.size == 0 %}
-      {% assign modal_collections = settings.search_modal_categories %}
-    {% endif %}
-
-    {% assign text_categories = section.settings.search_modal_categories_text %}
-    {% if text_categories == blank %}
-      {% assign text_categories = settings.search_modal_categories_text %}
-    {% endif %}
-
-    {% assign card_blocks = section.blocks | where: 'type', 'search_category_card' %}
-
-    {% comment %} --- STRICT 2 COLUMNS x 2 ROWS GRID (Max 4 Items Total - SALE IS FIRST) --- {% endcomment %}
-    <div class="boat-search-modal-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 20px;">
-      {% if card_blocks.size > 0 %}
-        {% for block in card_blocks limit: 4 %}
-          {% assign col = block.settings.collection %}
-          {% assign url = block.settings.custom_url | default: col.url | default: '#' %}
-          {% assign title = block.settings.custom_title | default: col.title | default: 'Category' %}
-          {% assign img = block.settings.custom_image | default: col.featured_image %}
-          <a href="{{ url }}" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;" {{ block.shopify_attributes }}>
-            <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);">
-              {% if img != blank %}
-                <img src="{{ img | image_url: width: 100 }}" alt="{{ title | escape }}" loading="lazy" width="42" height="42" style="width:100%;height:100%;object-fit:cover;">
+    <div class="boat-search-products-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 18px;">
+      {% if selected_col != blank and selected_col.products.size > 0 %}
+        {% for product in selected_col.products limit: 8 %}
+          <a href="{{ product.url }}" class="boat-search-product-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; padding: 6px 8px; border-radius: 8px; transition: background 0.15s ease; background: #f8fafc; border: 1px solid #f1f5f9;">
+            <div style="width: 48px; height: 48px; border-radius: 8px; background: #ffffff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+              {% if product.featured_media != blank %}
+                <img src="{{ product.featured_media | image_url: width: 120 }}" alt="{{ product.title | escape }}" loading="lazy" width="48" height="48" style="width:100%;height:100%;object-fit:cover;">
               {% else %}
                 <span style="font-size: 1.2rem;">🛍️</span>
               {% endif %}
             </div>
-            <span>{{ title }}</span>
-          </a>
-        {% endfor %}
-      {% elsif menu_links != blank and menu_links.size > 0 %}
-        {% for link in menu_links limit: 4 %}
-          {% assign link_col = link.object %}
-          <a href="{{ link.url }}" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-            <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);">
-              {% if link_col.featured_image != blank %}
-                <img src="{{ link_col.featured_image | image_url: width: 100 }}" alt="{{ link.title | escape }}" loading="lazy" width="42" height="42" style="width:100%;height:100%;object-fit:cover;">
-              {% else %}
-                <span style="font-size: 1.2rem;">🛍️</span>
-              {% endif %}
-            </div>
-            <span>{{ link.title }}</span>
-          </a>
-        {% endfor %}
-      {% elsif modal_collections != blank and modal_collections.size > 0 %}
-        {% for collection in modal_collections limit: 4 %}
-          <a href="{{ collection.url }}" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-            <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);">
-              {% if collection.featured_image != blank %}
-                <img src="{{ collection.featured_image | image_url: width: 100 }}" alt="{{ collection.title | escape }}" loading="lazy" width="42" height="42" style="width:100%;height:100%;object-fit:cover;">
-              {% else %}
-                <span style="font-size: 1.2rem;">🛍️</span>
-              {% endif %}
-            </div>
-            <span>{{ collection.title }}</span>
-          </a>
-        {% endfor %}
-      {% elsif text_categories != blank %}
-        {% assign cat_array = text_categories | split: ',' %}
-        {% for cat in cat_array limit: 4 %}
-          {% assign clean_cat = cat | strip %}
-          {% if clean_cat != blank %}
-            {% assign matched_col = collections[clean_cat | handleize] %}
-            <a href="{{ matched_col.url | default: '/collections/all' }}" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-              <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);">
-                {% if matched_col.featured_image != blank %}
-                  <img src="{{ matched_col.featured_image | image_url: width: 100 }}" alt="{{ clean_cat | escape }}" loading="lazy" width="42" height="42" style="width:100%;height:100%;object-fit:cover;">
-                {% else %}
-                  <span style="font-size: 1.2rem;">🛍️</span>
+
+            <div style="display: flex; flex-direction: column; gap: 2px; overflow: hidden; flex: 1;">
+              <span style="font-size: 0.85rem; font-weight: 600; color: #1e293b; font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                {{ product.title }}
+              </span>
+              
+              <div style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 700; color: #d8232a; font-family: 'Plus Jakarta Sans', sans-serif;">
+                <span>{{ product.price | money }}</span>
+                {% if product.compare_at_price > product.price %}
+                  <span style="font-size: 0.75rem; text-decoration: line-through; color: #94a3b8; font-weight: 500;">
+                    {{ product.compare_at_price | money }}
+                  </span>
                 {% endif %}
               </div>
-              <span>{{ clean_cat }}</span>
-            </a>
-          {% endif %}
+            </div>
+          </a>
         {% endfor %}
       {% else %}
-        {% comment %} Pre-configured Default 4-Item Categories (Sale is FIRST) {% endcomment %}
-        <a href="/collections/sale" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-          <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">🔥</div>
-          <span>Sale</span>
-        </a>
-        <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-          <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">🔴</div>
-          <span>Appliances</span>
-        </a>
-        <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-          <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">⌚</div>
-          <span>Smart Watches</span>
-        </a>
-        <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-          <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">🎧</div>
-          <span>Earbuds & Headphones</span>
-        </a>
+        {% comment %} Fallback Product Cards when collection has no products yet {% endcomment %}
+        {% for i in (1..8) %}
+          <a href="/collections/all" class="boat-search-product-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; padding: 6px 8px; border-radius: 8px; background: #f8fafc; border: 1px solid #f1f5f9;">
+            <div style="width: 48px; height: 48px; border-radius: 8px; background: #ffffff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">
+              📦
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-size: 0.85rem; font-weight: 600; color: #1e293b; font-family: 'Plus Jakarta Sans', sans-serif;">
+                Sample Product {{ i }}
+              </span>
+              <span style="font-size: 0.82rem; font-weight: 700; color: #d8232a; font-family: 'Plus Jakarta Sans', sans-serif;">
+                Rs. 1,499.00
+              </span>
+            </div>
+          </a>
+        {% endfor %}
       {% endif %}
     </div>
   </div>

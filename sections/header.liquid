@@ -1310,54 +1310,26 @@
     },
     {
       "type": "header",
-      "content": "TOP SEARCH TAG PILLS"
+      "content": "SEARCH POPUP FEATURED PRODUCTS (4 ROWS x 2 COLUMNS)"
     },
     {
-      "type": "collection_list",
-      "id": "search_tags_collections",
-      "label": "Top Tag Pills (Select Collections)",
-      "limit": 15,
-      "info": "Select collections to display as top clickable tag pills inside search popup."
+      "type": "text",
+      "id": "search_modal_heading",
+      "label": "Search Popup Section Title",
+      "default": "Trending Products"
+    },
+    {
+      "type": "collection",
+      "id": "search_featured_collection",
+      "label": "Select Collection (8 Products in 4 Rows x 2 Columns)",
+      "info": "8 products from this selected collection will be displayed with image, title, and price in a 2-column grid."
     },
     {
       "type": "text",
       "id": "search_tags",
       "label": "Top Tag Pills (Comma Separated Keywords)",
-      "default": "westpoint, smartwatch, earbuds, official warranty, clearance sale, air fryer, soundbar",
-      "info": "Used if no collections are selected above"
-    },
-    {
-      "type": "header",
-      "content": "MOST SEARCHED AND BOUGHT CATEGORIES (2 ROWS MAX)"
-    },
-    {
-      "type": "text",
-      "id": "search_modal_heading",
-      "label": "Categories Section Heading",
-      "default": "Most Searched And Bought"
-    },
-    {
-      "type": "link_list",
-      "id": "search_menu",
-      "label": "Select Navigation Menu (Select Menu)",
-      "info": "Select any Navigation Menu from Shopify Admin (Max 4 items displayed for 2 rows)"
-    },
-    {
-      "type": "collection_list",
-      "id": "search_modal_categories",
-      "label": "Select Collections (Max 4 Items for 2 Rows)",
-      "limit": 4
-    },
-    {
-      "type": "text",
-      "id": "search_modal_categories_text",
-      "label": "Custom Category Names (Comma Separated Text)",
-      "default": "Sale, Appliances, Smart Watches, Earbuds & Headphones",
-      "info": "Type custom category names separated by commas (Max 4 items for 2 rows)"
-    },
-    {
-      "type": "header",
-      "content": "AUTO-ROTATING SEARCH BAR PLACEHOLDER"
+      "default": "sale, westpoint, smartwatch, earbuds, official warranty, clearance sale",
+      "info": "Top search tag keywords"
     },
     {
       "type": "text",
@@ -1807,55 +1779,6 @@
       "label": "t:settings.text_color_transparent",
       "placeholder": "t:settings.default",
       "visible_if": "{{ section.settings.enable_transparent_header_collection }}"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "search_tag_item",
-      "name": "Search Tag Pill",
-      "settings": [
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Select Collection"
-        },
-        {
-          "type": "text",
-          "id": "custom_label",
-          "label": "Custom Tag Label (Optional)"
-        },
-        {
-          "type": "url",
-          "id": "custom_url",
-          "label": "Custom Link (Optional)"
-        }
-      ]
-    },
-    {
-      "type": "search_category_card",
-      "name": "Search Category Card",
-      "settings": [
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Select Collection"
-        },
-        {
-          "type": "text",
-          "id": "custom_title",
-          "label": "Custom Title (Optional)"
-        },
-        {
-          "type": "image_picker",
-          "id": "custom_image",
-          "label": "Custom Icon / Image (Optional)"
-        },
-        {
-          "type": "url",
-          "id": "custom_url",
-          "label": "Custom Link (Optional)"
-        }
-      ]
     }
   ],
   "presets": []
