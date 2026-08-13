@@ -1,5 +1,5 @@
 {% doc %}
-  Renders the predictive search empty state with DYNAMIC store collections & 2-row layout (SS1, SS2 & SS3 style)
+  Renders the predictive search empty state with Top Tag Pills, DYNAMIC store collections & 2-row category grid (SS1, SS2 & SS3 style)
 {% enddoc %}
 
 <div
@@ -10,15 +10,59 @@
 >
   <div class="boat-search-modal-container" style="padding: 20px 24px;">
     
+    {% comment %} --- Top Horizontal Search Tag Pills Carousel --- {% endcomment %}
+    {% assign tag_collections = settings.search_tags_collections | default: section.settings.search_tags_collections %}
+    {% assign tag_blocks = section.blocks | where: 'type', 'search_tag_item' %}
+    {% assign text_tags = settings.search_tags | default: section.settings.search_tags %}
+
+    <div class="boat-search-tags-carousel" id="BoatSearchTagsCarousel">
+      {% if tag_blocks.size > 0 %}
+        {% for block in tag_blocks %}
+          {% assign col = block.settings.collection %}
+          {% assign url = block.settings.custom_url | default: col.url | default: '#' %}
+          {% assign label = block.settings.custom_label | default: col.title | default: 'Tag' %}
+          <a href="{{ url }}" class="boat-search-tag-pill" {{ block.shopify_attributes }}>
+            {{ label }}
+          </a>
+        {% endfor %}
+      {% elsif tag_collections != blank and tag_collections.size > 0 %}
+        {% for collection in tag_collections %}
+          <a href="{{ collection.url }}" class="boat-search-tag-pill">
+            {{ collection.title }}
+          </a>
+        {% endfor %}
+      {% elsif text_tags != blank %}
+        {% assign tags = text_tags | split: ',' %}
+        {% for tag in tags %}
+          {% assign clean_tag = tag | strip %}
+          {% if clean_tag != blank %}
+            <a href="{{ routes.search_url }}?q={{ clean_tag | url_param_escape }}" class="boat-search-tag-pill">
+              {{ clean_tag }}
+            </a>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        {% comment %} Default Random Trending Search Tags {% endcomment %}
+        <a href="{{ routes.search_url }}?q=westpoint" class="boat-search-tag-pill">westpoint</a>
+        <a href="{{ routes.search_url }}?q=smartwatch" class="boat-search-tag-pill">smartwatch</a>
+        <a href="{{ routes.search_url }}?q=earbuds" class="boat-search-tag-pill">earbuds</a>
+        <a href="{{ routes.search_url }}?q=official+warranty" class="boat-search-tag-pill">official warranty</a>
+        <a href="{{ routes.search_url }}?q=clearance+sale" class="boat-search-tag-pill">clearance sale</a>
+        <a href="{{ routes.search_url }}?q=air+fryer" class="boat-search-tag-pill">air fryer</a>
+        <a href="{{ routes.search_url }}?q=soundbar" class="boat-search-tag-pill">soundbar</a>
+        <a href="{{ routes.search_url }}?q=water+bottle" class="boat-search-tag-pill">water bottle</a>
+      {% endif %}
+    </div>
+
     {% comment %} --- Dynamic Section Heading --- {% endcomment %}
-    <h3 class="boat-search-modal-title" style="font-size: 1.1rem; font-weight: 700; color: #1e293b; margin: 0 0 16px 0; font-family: 'Plus Jakarta Sans', sans-serif;">
+    <h3 class="boat-search-modal-title" style="font-size: 1.1rem; font-weight: 700; color: #1e293b; margin: 12px 0 16px 0; font-family: 'Plus Jakarta Sans', sans-serif;">
       {{ section.settings.search_modal_heading | default: settings.search_modal_heading | default: 'Most Searched And Bought' }}
     </h3>
 
     {% assign modal_collections = section.settings.search_modal_categories | default: settings.search_modal_categories %}
     {% assign card_blocks = section.blocks | where: 'type', 'search_category_card' %}
 
-    {% comment %} --- 2-Row Maximum Grid (Max 4 to 6 items) --- {% endcomment %}
+    {% comment %} --- 2-Row Maximum Grid (Max 6 items) --- {% endcomment %}
     <div class="boat-search-modal-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 20px;">
       {% if card_blocks.size > 0 %}
         {% for block in card_blocks limit: 6 %}
@@ -69,6 +113,26 @@
             {% endif %}
           {% endunless %}
         {% endfor %}
+
+        {% if count == 0 %}
+          {% comment %} Fallback items if store has no collections yet {% endcomment %}
+          <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+            <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">🎧</div>
+            <span>True Wireless Earphones</span>
+          </a>
+          <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+            <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">⌚</div>
+            <span>Smart Watches</span>
+          </a>
+          <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+            <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">🎁</div>
+            <span>Personalized Products</span>
+          </a>
+          <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+            <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">🔊</div>
+            <span>Bluetooth Speakers</span>
+          </a>
+        {% endif %}
       {% endif %}
     </div>
   </div>
