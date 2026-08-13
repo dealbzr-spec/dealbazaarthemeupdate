@@ -1,10 +1,14 @@
 {%- doc -%}
-  Renders the search action button as a boAt Pill Search Bar.
+  Renders the search action button as a boAt Pill Search Bar with Auto-Rotating Placeholder Keywords.
 
   @param {string} [style] - The style of the search action.
   @param {string} [class] - Additional classes for the search action.
   @param {string} [display_style] - The display style ('icon' or 'text').
 {%- enddoc -%}
+
+{% assign raw_keywords = section.settings.search_placeholder_keywords | default: settings.search_placeholder_keywords | default: 'Smartwatches, Earbuds, Headphones, Speakers, Powerbanks' %}
+{% assign keyword_array = raw_keywords | split: ',' %}
+{% assign first_keyword = keyword_array.first | strip | default: 'Smartwatches' %}
 
 {% unless style == 'none' %}
   <search-button
@@ -21,11 +25,47 @@
       </span>
 
       <span class="boat-search-pill-text">
-        Search <strong>"{{ section.settings.search_placeholder_text | default: 'Smartwatches' }}"</strong>
+        Search <strong class="boat-rotating-keyword" style="transition: opacity 0.3s ease, transform 0.3s ease; display: inline-block;">"{{ first_keyword }}"</strong>
       </span>
     </button>
   </search-button>
 {% endunless %}
+
+<script>
+  (function() {
+    const keywords = [
+      {% for kw in keyword_array %}
+        "{{ kw | strip }}"{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ];
+
+    if (keywords.length <= 1) return;
+
+    let currentIndex = 0;
+
+    function rotateSearchKeywords() {
+      const elements = document.querySelectorAll('.boat-rotating-keyword');
+      if (!elements.length) return;
+
+      currentIndex = (currentIndex + 1) % keywords.length;
+      const nextWord = keywords[currentIndex];
+
+      elements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(-4px)';
+        setTimeout(() => {
+          el.textContent = `"${nextWord}"`;
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, 300);
+      });
+    }
+
+    if (!window.boatKeywordRotatorInterval) {
+      window.boatKeywordRotatorInterval = setInterval(rotateSearchKeywords, 3000);
+    }
+  })();
+</script>
 
 {% stylesheet %}
   .boat-search-action-wrapper {
@@ -43,44 +83,23 @@
     border-radius: 30px !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
-    min-width: 220px !important;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.02) !important;
   }
 
   .boat-search-pill-button:hover {
-    background: #eaedf2 !important;
+    background: #ffffff !important;
     border-color: #cbd5e1 !important;
-  }
-
-  .boat-search-pill-icon {
-    width: 18px !important;
-    height: 18px !important;
-    color: #475569 !important;
-    flex-shrink: 0 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
   }
 
   .boat-search-pill-text {
-    font-size: 0.88rem !important;
-    color: #64748b !important;
-    white-space: nowrap !important;
+    font-size: 0.9rem !important;
+    color: #475569 !important;
+    font-weight: 500 !important;
     font-family: 'Plus Jakarta Sans', sans-serif !important;
   }
 
   .boat-search-pill-text strong {
     color: #0f172a !important;
     font-weight: 700 !important;
-  }
-
-  @media screen and (max-width: 749px) {
-    .boat-search-pill-button {
-      min-width: unset !important;
-      padding: 8px 12px !important;
-    }
-    .boat-search-pill-text {
-      display: none !important;
-    }
-    .search-action--hidden-on-drawer {
-      display: none !important;
-    }
   }
 {% endstylesheet %}

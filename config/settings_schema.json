@@ -61,38 +61,32 @@
     "settings": [
       {
         "type": "header",
-        "content": "SEARCH POPUP TAG PILLS"
-      },
-      {
-        "type": "collection_list",
-        "id": "search_tags_collections",
-        "label": "Search Bar Tag Pills (Select Collections)",
-        "limit": 15,
-        "info": "Select collections to display as top clickable tag pills inside search popup."
+        "content": "SEARCH POPUP CATEGORIES"
       },
       {
         "type": "text",
-        "id": "search_tags",
-        "label": "Search Bar Tag Pills (Comma Separated Fallback Text)",
-        "default": "westpoint, westpoint wf 1253, westpoint wf 2064, official warranty, organizer, oven",
-        "info": "Used if no collections are selected above"
-      },
-      {
-        "type": "header",
-        "content": "MOST SEARCHED AND BOUGHT CATEGORIES"
+        "id": "search_modal_heading",
+        "label": "Search Popup Section Heading",
+        "default": "Most Searched And Bought",
+        "info": "Dynamic title displayed above the categories grid"
       },
       {
         "type": "collection_list",
         "id": "search_modal_categories",
-        "label": "Most Searched And Bought (Select Collections)",
-        "limit": 14,
-        "info": "Select collections to display in the 2-column grid under 'Most Searched And Bought'."
+        "label": "Select Collections (Max 4-6 for 2 Rows)",
+        "limit": 6,
+        "info": "Select collections to display in the 2-row grid inside the search popup."
+      },
+      {
+        "type": "header",
+        "content": "AUTO-ROTATING SEARCH BAR PLACEHOLDER"
       },
       {
         "type": "text",
-        "id": "search_placeholder_text",
-        "label": "Search Bar Placeholder Keyword",
-        "default": "Smartwatches"
+        "id": "search_placeholder_keywords",
+        "label": "Auto-Rotating Search Keywords (Comma Separated)",
+        "default": "Smartwatches, Earbuds, Headphones, Speakers, Powerbanks",
+        "info": "Enter 2-5 keywords that will automatically rotate in the search bar (e.g. Smartwatches, Earbuds, Speakers)"
       }
     ]
   },
