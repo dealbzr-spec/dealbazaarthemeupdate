@@ -26,6 +26,8 @@
   if featured_img == blank
     assign featured_img = product.featured_media.preview_image
   endif
+
+  assign form_id = 'BoatProductCardForm-' | append: product.id | append: '-' | append: selected_variant.id
 %}
 
 <div class="boat-pick-card" data-product-id="{{ product.id }}">
@@ -89,7 +91,6 @@
 
               assign var_img_url = var.featured_image | default: featured_img | image_url: width: 600
               
-              # Fallback swatch colors
               assign swatch_bg = '#0f172a'
               if forloop.index == 2
                 assign swatch_bg = '#0284c7'
@@ -119,21 +120,16 @@
       {% endif %}
     </div>
 
-    {% comment %} --- Theme Native AJAX Form with Real-time Cart Drawer Trigger --- {% endcomment %}
-    <form action="/cart/add" method="post" enctype="multipart/form-data" class="boat-pick-card__form" onsubmit="handleBoatAddToCart(event, this)">
+    {% comment %} --- Theme Native Add to Cart Component with Icon & Real-time AJAX Counter --- {% endcomment %}
+    {% form 'product', product, id: form_id, class: 'boat-pick-card__form', data-type: 'add-to-cart-form', onsubmit: 'handleBoatAddToCart(event, this)' %}
       <input type="hidden" name="id" value="{{ selected_variant.id }}">
-      <button 
-        type="submit" 
-        name="add" 
-        class="boat-pick-card__add-btn"
-        {% unless selected_variant.available %}disabled{% endunless %}
-      >
-        {% if selected_variant.available %}
-          <span>ADD TO CART</span>
-        {% else %}
-          <span>SOLD OUT</span>
-        {% endif %}
-      </button>
-    </form>
+      
+      {% render 'add-to-cart-button', 
+        product: product, 
+        can_add_to_cart: selected_variant.available, 
+        add_to_cart_text: 'ADD TO CART', 
+        class: 'boat-pick-card__add-btn' 
+      %}
+    {% endform %}
   </div>
 </div>
