@@ -2,6 +2,20 @@
    boAt Inspired Header, Mega Menu & Category Hero Banner Styles
    ========================================================================== */
 
+/* --- Fix Screen Shaking / Page Shift When Dialog Opens --- */
+html, body {
+  scrollbar-gutter: stable !important;
+}
+
+body[scroll-lock],
+html[scroll-lock],
+body.dialog-open,
+body.prevent-scroll {
+  overflow-y: auto !important;
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+
 /* --- Font Family & Header Border Line (SS1 & SS2 Style) --- */
 header.header,
 .section-header,
