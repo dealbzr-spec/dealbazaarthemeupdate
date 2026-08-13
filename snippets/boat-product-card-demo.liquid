@@ -16,16 +16,32 @@
 %}
 
 <div class="boat-pick-card">
-  <a href="/collections/all" class="boat-pick-card__image-link">
-    <div class="boat-pick-card__badge">
-      {{ item_badge }}
-    </div>
+  <div class="boat-pick-card__media-container">
+    <a href="/collections/all" class="boat-pick-card__image-link">
+      <div class="boat-pick-card__badge">
+        {{ item_badge }}
+      </div>
 
-    <div style="width:100%; height:100%; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:10px;">
-      <span style="font-size:2.5rem; margin-bottom:4px;">🎧</span>
-      <span style="font-size:0.75rem; font-weight:700; opacity:0.8;">boAt Audio</span>
-    </div>
-  </a>
+      <div style="width:100%; height:100%; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:10px;">
+        <span style="font-size:2.5rem; margin-bottom:4px;">🎧</span>
+        <span style="font-size:0.75rem; font-weight:700; opacity:0.8;">boAt Audio</span>
+      </div>
+    </a>
+
+    <form action="/cart/add" method="post" enctype="multipart/form-data" class="boat-pick-card__hover-form" onsubmit="handleBoatAddToCart(event, this)">
+      <input type="hidden" name="id" value="123456789">
+      <button 
+        type="submit" 
+        class="boat-pick-card__hover-atc" 
+        aria-label="Add to cart"
+        title="Add to Cart"
+      >
+        <span aria-hidden="true" class="svg-wrapper add-to-cart-icon">
+          {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
+        </span>
+      </button>
+    </form>
+  </div>
 
   <div class="boat-pick-card__yellow-bar">
     <span>{{ item_feature }}</span>
@@ -48,15 +64,5 @@
         <span>+1</span>
       </div>
     </div>
-
-    <form action="/cart/add" method="post" enctype="multipart/form-data" class="boat-pick-card__form" onsubmit="handleBoatAddToCart(event, this)">
-      <input type="hidden" name="id" value="123456789">
-      <button type="submit" class="boat-pick-card__add-btn">
-        <span aria-hidden="true" class="svg-wrapper add-to-cart-icon">
-          {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
-        </span>
-        <span>ADD TO CART</span>
-      </button>
-    </form>
   </div>
 </div>

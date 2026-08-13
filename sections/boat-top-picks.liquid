@@ -181,11 +181,70 @@
     border-color: #cbd5e1;
   }
 
+  .boat-pick-card__media-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #f8fafc;
+  }
+
+  .boat-pick-card__hover-form {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 5;
+    margin: 0;
+  }
+
+  .boat-pick-card__hover-atc {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: none !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+    opacity: 0;
+    transform: translateY(6px) scale(0.9);
+    transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.2s ease !important;
+    padding: 0 !important;
+  }
+
+  .boat-pick-card:hover .boat-pick-card__hover-atc {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .boat-pick-card__hover-atc:hover {
+    background: #d8232a !important;
+    transform: scale(1.1) !important;
+  }
+
+  @media (max-width: 768px) {
+    .boat-pick-card__hover-atc {
+      opacity: 1 !important;
+      transform: translateY(0) scale(1) !important;
+    }
+  }
+
+  .boat-pick-card__hover-atc .add-to-cart-icon svg,
+  .boat-pick-card__hover-atc svg {
+    width: 18px !important;
+    height: 18px !important;
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
+  }
+
   .boat-pick-card__image-link {
     position: relative;
     display: block;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     overflow: hidden;
     background: #f8fafc;
   }
@@ -562,7 +621,7 @@
         const responseData = await response.json();
 
         btn.style.background = '#16a34a';
-        btn.innerHTML = '<span>ADDED! ✓</span>';
+        btn.innerHTML = '<span style="font-size:16px; font-weight:800; color:#fff;">✓</span>';
 
         // 1. Fetch updated cart JSON
         const cartRes = await fetch('/cart.js');
