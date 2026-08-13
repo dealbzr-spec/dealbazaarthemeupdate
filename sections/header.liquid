@@ -464,6 +464,44 @@
       {{ navigation_bar }}
     </div>
   {% endif %}
+
+  {% comment %} --- Telemart Mobile & Desktop Full-Width Search Bar & Categories Bar (SS1 & SS2 Style) --- {% endcomment %}
+  <div class="boat-telemart-header-search-bar" style="padding: 8px 16px; background: #ffffff; border-bottom: 1px solid #e2e8f0; width: 100%;">
+    {% render 'search', style: 'pill' %}
+  </div>
+
+  <div class="boat-telemart-categories-bar" style="padding: 8px 16px; background: #ffffff; border-bottom: 1px solid #f1f5f9; display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; width: 100%;">
+    {% assign cat_collection = section.settings.search_featured_collection | default: settings.search_featured_collection %}
+    {% if cat_collection != blank and cat_collection.products.size > 0 %}
+      {% for product in cat_collection.products limit: 8 %}
+        <a href="{{ product.url }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.82rem; white-space: nowrap; flex-shrink: 0;">
+          {% if product.featured_media != blank %}
+            <img src="{{ product.featured_media | image_url: width: 60 }}" alt="{{ product.title | escape }}" width="22" height="22" style="width: 22px; height: 22px; border-radius: 50%; object-fit: cover;">
+          {% else %}
+            <span>🛍️</span>
+          {% endif %}
+          <span>{{ product.title | truncate: 18 }}</span>
+        </a>
+      {% endfor %}
+    {% else %}
+      <a href="/collections/all" style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.82rem; white-space: nowrap; flex-shrink: 0;">
+        <span style="font-size: 1rem;">🔴</span>
+        <span>Appliances</span>
+      </a>
+      <a href="/collections/all" style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.82rem; white-space: nowrap; flex-shrink: 0;">
+        <span style="font-size: 1rem;">🔥</span>
+        <span>Sale</span>
+      </a>
+      <a href="/collections/all" style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.82rem; white-space: nowrap; flex-shrink: 0;">
+        <span style="font-size: 1rem;">⌚</span>
+        <span>Smart Watches</span>
+      </a>
+      <a href="/collections/all" style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.82rem; white-space: nowrap; flex-shrink: 0;">
+        <span style="font-size: 1rem;">🎧</span>
+        <span>Earbuds</span>
+      </a>
+    {% endif %}
+  </div>
 </header-component>
 
 <script
