@@ -1,5 +1,5 @@
 {% doc %}
-  Renders the predictive search empty state with Top Tag Pills, DYNAMIC store collections & 2-row category grid (SS1, SS2 & SS3 style)
+  Renders the predictive search empty state with Top Tag Pills, DYNAMIC custom text/collections & 2-row category grid (SS1, SS2 & SS3 style)
 {% enddoc %}
 
 <div
@@ -59,6 +59,7 @@
       {{ section.settings.search_modal_heading | default: settings.search_modal_heading | default: 'Most Searched And Bought' }}
     </h3>
 
+    {% assign text_categories = settings.search_modal_categories_text | default: section.settings.search_modal_categories_text %}
     {% assign modal_collections = section.settings.search_modal_categories | default: settings.search_modal_categories %}
     {% assign card_blocks = section.blocks | where: 'type', 'search_category_card' %}
 
@@ -80,6 +81,24 @@
             </div>
             <span>{{ title }}</span>
           </a>
+        {% endfor %}
+      {% elsif text_categories != blank %}
+        {% assign cat_array = text_categories | split: ',' %}
+        {% for cat in cat_array limit: 6 %}
+          {% assign clean_cat = cat | strip %}
+          {% if clean_cat != blank %}
+            {% assign matched_col = collections[clean_cat | handleize] %}
+            <a href="{{ matched_col.url | default: '/collections/all' }}" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+              <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);">
+                {% if matched_col.featured_image != blank %}
+                  <img src="{{ matched_col.featured_image | image_url: width: 100 }}" alt="{{ clean_cat | escape }}" loading="lazy" width="42" height="42" style="width:100%;height:100%;object-fit:cover;">
+                {% else %}
+                  <span style="font-size: 1.2rem;">🛍️</span>
+                {% endif %}
+              </div>
+              <span>{{ clean_cat }}</span>
+            </a>
+          {% endif %}
         {% endfor %}
       {% elsif modal_collections != blank and modal_collections.size > 0 %}
         {% for collection in modal_collections limit: 6 %}
@@ -113,26 +132,6 @@
             {% endif %}
           {% endunless %}
         {% endfor %}
-
-        {% if count == 0 %}
-          {% comment %} Fallback items if store has no collections yet {% endcomment %}
-          <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-            <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">🎧</div>
-            <span>True Wireless Earphones</span>
-          </a>
-          <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-            <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">⌚</div>
-            <span>Smart Watches</span>
-          </a>
-          <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-            <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">🎁</div>
-            <span>Personalized Products</span>
-          </a>
-          <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-            <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">🔊</div>
-            <span>Bluetooth Speakers</span>
-          </a>
-        {% endif %}
       {% endif %}
     </div>
   </div>

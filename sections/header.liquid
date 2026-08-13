@@ -1333,16 +1333,21 @@
     {
       "type": "text",
       "id": "search_modal_heading",
-      "label": "Categories Grid Section Heading",
-      "default": "Most Searched And Bought",
-      "info": "Dynamic title displayed above the categories grid"
+      "label": "Categories Section Heading",
+      "default": "Most Searched And Bought"
+    },
+    {
+      "type": "text",
+      "id": "search_modal_categories_text",
+      "label": "Custom Category Names (Comma Separated Text)",
+      "default": "Appliances, Baby Care, Clearance Sale, Health & Beauty, Home & Living, Smart Accessories",
+      "info": "Type custom category names separated by commas (e.g. Appliances, Smartwatches, Earbuds, Sale)"
     },
     {
       "type": "collection_list",
       "id": "search_modal_categories",
-      "label": "Select Collections (Max 6 for 2 Rows)",
-      "limit": 6,
-      "info": "Select collections to display in 2-row grid under 'Most Searched And Bought'."
+      "label": "Select Collections (Collection List Picker)",
+      "limit": 6
     },
     {
       "type": "header",
