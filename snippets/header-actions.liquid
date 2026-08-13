@@ -113,6 +113,21 @@
     </div>
   {% endif %}
 
+  {% comment %} Mobile Search Icon Trigger {% endcomment %}
+  <search-button class="search-action header-actions__action mobile-search-icon-action desktop:hidden" style="display: flex; align-items: center; justify-content: center; cursor: pointer;">
+    <button
+      on:click="#search-modal/showDialog"
+      class="button-unstyled"
+      aria-label="{{ 'content.search_input_label' | t }}"
+      aria-haspopup="dialog"
+      style="background: transparent; border: none; padding: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: currentColor;"
+    >
+      <span class="svg-wrapper" style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;">
+        {{ 'icon-search.svg' | inline_asset_content }}
+      </span>
+    </button>
+  </search-button>
+
   {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
     <button
       class="header-actions__action button-unstyled{% if display_style == 'text' %} header-actions__text-style{% endif %}"
