@@ -9,7 +9,7 @@
     assign discount_percent = discount_amount | times: 100 | divided_by: compare_price
   endif
 
-  # 1. Collection / Product Category Name Display (SS4 Fix)
+  # 1. Collection / Product Category Name Display
   assign display_tag = product.collections.first.title
   if display_tag == blank or display_tag == 'All' or display_tag == 'Home page'
     assign display_tag = product.type
@@ -91,7 +91,7 @@
       {% endif %}
     </a>
 
-    {% comment %} --- Floating Hover Add to Cart Icon Button (No Text Overlay) --- {% endcomment %}
+    {% comment %} --- Floating Hover Add to Cart Icon Button --- {% endcomment %}
     {% form 'product', product, id: form_id, class: 'boat-pick-card__hover-form', data-type: 'add-to-cart-form', onsubmit: 'handleBoatAddToCart(event, this)' %}
       <input type="hidden" name="id" value="{{ selected_variant.id }}">
       <button 
@@ -109,7 +109,7 @@
     {% endform %}
   </div>
 
-  {% comment %} --- Yellow Feature Banner Bar (Collection Name + Deterministic Rating) --- {% endcomment %}
+  {% comment %} --- Yellow Feature Banner Bar (Collection Name + Rating) --- {% endcomment %}
   <div class="boat-pick-card__yellow-bar">
     <span class="boat-pick-card__collection-name">{{ display_tag }}</span>
     <span class="boat-pick-card__rating">⭐ {{ calc_rating }}</span>
@@ -129,43 +129,78 @@
         </span>
       </div>
 
-      {% comment %} --- Dynamic Variant Swatch Dots --- {% endcomment %}
+      {% comment %} --- Dynamic Smart Swatches (Color Dots / Size Pills) --- {% endcomment %}
       {% if product.variants.size > 1 %}
-        <div class="boat-pick-card__swatch-dots">
-          {% for var in product.variants limit: 3 %}
-            {% liquid
-              assign var_discount = 0
-              if var.compare_at_price > var.price
-                assign var_diff = var.compare_at_price | minus: var.price
-                assign var_discount = var_diff | times: 100 | divided_by: var.compare_at_price
-              endif
+        <div class="boat-pick-card__swatches">
+          {% assign swatch_count = 0 %}
+          {% for option in product.options_with_values %}
+            {% assign downcased_option = option.name | downcase %}
+            
+            {% if downcased_option contains 'color' or downcased_option contains 'colour' or downcased_option contains 'shade' or downcased_option contains 'finish' %}
+              {% for value in option.values limit: 3 %}
+                {% assign variant_match = product.variants | where: option.name, value | first %}
+                {% if variant_match == blank %}
+                  {% assign variant_match = product.variants[forloop.index0] %}
+                {% endif %}
 
-              assign var_img_url = var.featured_image | default: featured_img | image_url: width: 600
-              
-              assign swatch_bg = '#0f172a'
-              if forloop.index == 2
-                assign swatch_bg = '#0284c7'
-              elsif forloop.index == 3
-                assign swatch_bg = '#16a34a'
-              endif
-            %}
-            <button 
-              type="button" 
-              class="boat-swatch-dot{% if var.id == selected_variant.id %} active{% endif %}"
-              style="background: {{ swatch_bg }};"
-              title="{{ var.title }}"
-              data-variant-id="{{ var.id }}"
-              data-variant-image="{{ var_img_url }}"
-              data-variant-price="{{ var.price | money }}"
-              data-variant-compare="{% if var.compare_at_price > var.price %}{{ var.compare_at_price | money }}{% endif %}"
-              data-variant-discount="{% if var.compare_at_price > var.price %}{{ var_discount }}% off{% endif %}"
-              data-variant-available="{{ var.available }}"
-              onclick="selectBoatVariant(this)"
-            ></button>
+                {% assign var_img = variant_match.featured_image | default: featured_img | image_url: width: 600 %}
+                {% assign var_discount = 0 %}
+                {% if variant_match.compare_at_price > variant_match.price %}
+                  {% assign var_diff = variant_match.compare_at_price | minus: variant_match.price %}
+                  {% assign var_discount = var_diff | times: 100 | divided_by: variant_match.compare_at_price %}
+                {% endif %}
+
+                <button 
+                  type="button"
+                  class="boat-swatch-dot{% if variant_match.id == selected_variant.id %} active{% endif %}"
+                  style="{% if value.swatch.color %}background-color: {{ value.swatch.color }};{% else %}background-color: {% cycle '#0f172a', '#0284c7', '#16a34a' %};{% endif %}"
+                  title="{{ value }}"
+                  data-variant-id="{{ variant_match.id }}"
+                  data-variant-image="{{ var_img }}"
+                  data-variant-price="{{ variant_match.price | money }}"
+                  data-variant-compare="{% if variant_match.compare_at_price > variant_match.price %}{{ variant_match.compare_at_price | money }}{% endif %}"
+                  data-variant-discount="{% if variant_match.compare_at_price > variant_match.price %}{{ var_discount }}% off{% endif %}"
+                  data-variant-available="{{ variant_match.available }}"
+                  onclick="selectBoatVariant(this)"
+                ></button>
+                {% assign swatch_count = swatch_count | plus: 1 %}
+              {% endfor %}
+
+            {% elsif downcased_option contains 'size' or downcased_option contains 'storage' or downcased_option contains 'ram' %}
+              {% for value in option.values limit: 3 %}
+                {% assign variant_match = product.variants | where: option.name, value | first %}
+                {% if variant_match == blank %}
+                  {% assign variant_match = product.variants[forloop.index0] %}
+                {% endif %}
+
+                {% assign var_img = variant_match.featured_image | default: featured_img | image_url: width: 600 %}
+                {% assign var_discount = 0 %}
+                {% if variant_match.compare_at_price > variant_match.price %}
+                  {% assign var_diff = variant_match.compare_at_price | minus: variant_match.price %}
+                  {% assign var_discount = var_diff | times: 100 | divided_by: variant_match.compare_at_price %}
+                {% endif %}
+
+                <button 
+                  type="button"
+                  class="boat-swatch-pill{% if variant_match.id == selected_variant.id %} active{% endif %}"
+                  title="{{ value }}"
+                  data-variant-id="{{ variant_match.id }}"
+                  data-variant-image="{{ var_img }}"
+                  data-variant-price="{{ variant_match.price | money }}"
+                  data-variant-compare="{% if variant_match.compare_at_price > variant_match.price %}{{ variant_match.compare_at_price | money }}{% endif %}"
+                  data-variant-discount="{% if variant_match.compare_at_price > variant_match.price %}{{ var_discount }}% off{% endif %}"
+                  data-variant-available="{{ variant_match.available }}"
+                  onclick="selectBoatVariant(this)"
+                >
+                  {{ value }}
+                </button>
+                {% assign swatch_count = swatch_count | plus: 1 %}
+              {% endfor %}
+            {% endif %}
           {% endfor %}
 
           {% if product.variants.size > 3 %}
-            <span>+{{ product.variants.size | minus: 3 }}</span>
+            <span class="boat-swatch-more">+{{ product.variants.size | minus: 3 }}</span>
           {% endif %}
         </div>
       {% endif %}
