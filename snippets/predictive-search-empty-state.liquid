@@ -11,7 +11,11 @@
   <div class="boat-search-modal-container" style="padding: 20px 24px;">
     
     {% comment %} --- Top 2-Row Search Tag Pills --- {% endcomment %}
-    {% assign tag_collections = settings.search_tags_collections | default: section.settings.search_tags_collections %}
+    {% assign tag_collections = settings.search_tags_collections %}
+    {% if tag_collections == blank or tag_collections.size == 0 %}
+      {% assign tag_collections = section.settings.search_tags_collections %}
+    {% endif %}
+
     {% assign tag_blocks = section.blocks | where: 'type', 'search_tag_item' %}
     {% assign text_tags = settings.search_tags | default: section.settings.search_tags %}
 
@@ -49,8 +53,26 @@
       {{ section.settings.search_modal_heading | default: settings.search_modal_heading | default: 'Most Searched And Bought' }}
     </h3>
 
-    {% assign nav_menu = section.settings.search_menu | default: settings.search_menu %}
-    {% assign modal_collections = section.settings.search_modal_categories | default: settings.search_modal_categories %}
+    {% comment %} --- Parse Navigation Menu --- {% endcomment %}
+    {% assign menu_links = nil %}
+    {% assign target_menu = settings.search_menu %}
+    {% if target_menu == blank %}
+      {% assign target_menu = section.settings.search_menu %}
+    {% endif %}
+
+    {% if target_menu != blank %}
+      {% if target_menu.links != blank and target_menu.links.size > 0 %}
+        {% assign menu_links = target_menu.links %}
+      {% elsif linklists[target_menu].links != blank and linklists[target_menu].links.size > 0 %}
+        {% assign menu_links = linklists[target_menu].links %}
+      {% endif %}
+    {% endif %}
+
+    {% assign modal_collections = settings.search_modal_categories %}
+    {% if modal_collections == blank or modal_collections.size == 0 %}
+      {% assign modal_collections = section.settings.search_modal_categories %}
+    {% endif %}
+
     {% assign text_categories = settings.search_modal_categories_text | default: section.settings.search_modal_categories_text %}
     {% assign card_blocks = section.blocks | where: 'type', 'search_category_card' %}
 
@@ -73,8 +95,8 @@
             <span>{{ title }}</span>
           </a>
         {% endfor %}
-      {% elsif nav_menu != blank and linklists[nav_menu].links.size > 0 %}
-        {% for link in linklists[nav_menu].links limit: 4 %}
+      {% elsif menu_links != blank and menu_links.size > 0 %}
+        {% for link in menu_links limit: 4 %}
           {% assign link_col = link.object %}
           <a href="{{ link.url }}" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
             <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);">
