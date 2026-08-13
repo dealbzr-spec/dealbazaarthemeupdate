@@ -595,25 +595,11 @@
           }
         }
 
-        // 4. Dispatch standard Theme Cart Events
+        // 4. Dispatch standard Theme Cart Events (update header counter bubble in background)
         const detail = { cart: cartData, itemCount: itemCount, totalQuantity: itemCount };
         document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true, detail }));
         document.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true, detail }));
         document.dispatchEvent(new CustomEvent('cart-lines-update', { bubbles: true, detail }));
-
-        // 5. Open Theme Cart Drawer
-        const cartDrawer = document.getElementById('cart-drawer') || document.querySelector('theme-drawer[id*="cart"]') || document.querySelector('cart-drawer');
-        if (cartDrawer) {
-          if (typeof cartDrawer.show === 'function') {
-            cartDrawer.show();
-          } else if (typeof cartDrawer.open === 'function') {
-            cartDrawer.open();
-          } else {
-            cartDrawer.setAttribute('open', '');
-            const dialog = cartDrawer.querySelector('dialog');
-            if (dialog && typeof dialog.showModal === 'function') dialog.showModal();
-          }
-        }
 
         setTimeout(() => {
           btn.disabled = false;
