@@ -1,12 +1,5 @@
 {% doc %}
-  Renders the predictive search empty state
-
-  @param {number} shadow_opacity - shadow opacity for the empty state container shadow
-  @param {string} products_test_id - a playwright test id, used to differentiate empty state from 'real' search results
-  @param {boolean} [load_empty_state] - Load the empty state or not
-
-  @example
-  {% render 'predictive-search-empty-state', shadow_opacity: 0.1, products_test_id: 'empty-state' %}
+  Renders the predictive search empty state with boAt "Most Searched And Bought" categories (SS2 style)
 {% enddoc %}
 
 <div
@@ -14,31 +7,77 @@
   class="predictive-search-dropdown"
   role="listbox"
   aria-expanded="true"
-  style="--color-shadow: rgb(var(--color-foreground-rgb) / {{ shadow_opacity }});"
 >
-  {% if load_empty_state %}
-    <div class="predictive-search-results__inner">
-      {% liquid
-        assign collection = settings.empty_state_collection | default: collections.all
-        assign default_title = 'content.search_results_resource_products' | t
-        assign title = settings.empty_state_collection.title | default: default_title
-      %}
-      {% paginate collection.products by 4 %}
-        {% assign products = collection.products %}
-        {% comment %} Only show products section if there are products to display {% endcomment %}
-        {% if products.size > 0 %}
-          {% render 'predictive-search-products-list',
-            products_test_id: products_test_id,
-            title: title,
-            products: products,
-            limit: 4
-          %}
-        {% else %}
-          <div class="predictive-search-results__no-results">
-            <p>{{ 'content.no_products_found' | t }}</p>
-          </div>
-        {% endif %}
-      {% endpaginate %}
+  <div class="boat-search-modal-container" style="padding: 20px 24px;">
+    <h3 class="boat-search-modal-title" style="font-size: 1.15rem; font-weight: 700; color: #1e293b; margin: 0 0 20px 0; font-family: 'Plus Jakarta Sans', sans-serif;">
+      Most Searched And Bought
+    </h3>
+
+    <div class="boat-search-modal-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 20px;">
+      <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">🎧</div>
+        <span>True Wireless Earphones</span>
+      </a>
+
+      <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">🎁</div>
+        <span>Personalized Products</span>
+      </a>
+
+      <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">⌚</div>
+        <span>Smart Watches</span>
+      </a>
+
+      <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">✨</div>
+        <span>Nirvana</span>
+      </a>
+
+      <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">🎧</div>
+        <span>Wireless Neckbands</span>
+      </a>
+
+      <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">🔊</div>
+        <span>Bluetooth Speakers</span>
+      </a>
+
+      <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">🎧</div>
+        <span>Wireless Headphones</span>
+      </a>
+
+      <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">🔋</div>
+        <span>Powerbanks</span>
+      </a>
+
+      <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">📷</div>
+        <span>Dashcams</span>
+      </a>
+
+      <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">📹</div>
+        <span>Projectors</span>
+      </a>
+
+      <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">🪒</div>
+        <span>Trimmers</span>
+      </a>
+
+      <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">🎧</div>
+        <span>Wired Earphones</span>
+      </a>
+
+      <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">🔈</div>
+        <span>Soundbars</span>
+      </a>
     </div>
-  {% endif %}
+  </div>
 </div>

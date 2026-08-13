@@ -2,7 +2,25 @@
    boAt Inspired Header, Mega Menu & Category Hero Banner Styles
    ========================================================================== */
 
-/* --- Top Header Navigation Bar Styling (SS2 Style) --- */
+/* --- Font Family & Header Border Line (SS1 & SS2 Style) --- */
+header.header,
+.section-header,
+.header__inner {
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+.menu-list__link,
+.boat-megamenu-title,
+.category-hero__sidebar-link,
+.category-hero__flyout-heading,
+.category-hero__slide-title,
+.boat-search-pill-text,
+.boat-search-modal-title,
+.boat-search-modal-card,
+.category-hero__sidebar-header {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
 #header-group,
 .header,
 .header__inner,

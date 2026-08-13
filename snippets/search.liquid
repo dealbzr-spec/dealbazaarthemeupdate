@@ -1,78 +1,86 @@
 {%- doc -%}
-  Renders the search action button.
+  Renders the search action button as a boAt Pill Search Bar.
 
   @param {string} [style] - The style of the search action.
   @param {string} [class] - Additional classes for the search action.
   @param {string} [display_style] - The display style ('icon' or 'text').
-
-  @example
-  {% render 'search', style: 'default', class: 'custom-class', display_style: 'icon' %}
 {%- enddoc -%}
 
 {% unless style == 'none' %}
   <search-button
-    class="search-action{% if display_style == 'text' %} search-action--text{% endif %}{% if class != blank %} {{ class | strip }}{% endif %}"
+    class="search-action boat-search-action-wrapper{% if class != blank %} {{ class | strip }}{% endif %}"
   >
     <button
       on:click="#search-modal/showDialog"
-      class="button-unstyled header-actions__action{% if display_style == 'text' %} header-actions__text-style{% endif %}"
+      class="button-unstyled boat-search-pill-button"
       aria-label="{{ 'content.search_input_label' | t }}"
       aria-haspopup="dialog"
     >
-      <span class="{% if display_style == 'icon' %}hidden{% else %}mobile:hidden{% endif %}">
-        {{ 'content.search' | t }}
+      <span class="svg-wrapper boat-search-pill-icon">
+        {{ 'icon-search.svg' | inline_asset_content }}
       </span>
 
-      <span class="svg-wrapper {% if display_style != 'icon' %}desktop:hidden{% endif %}">
-        {{ 'icon-search.svg' | inline_asset_content }}
+      <span class="boat-search-pill-text">
+        Search <strong>"Smartwatches"</strong>
       </span>
     </button>
   </search-button>
 {% endunless %}
 
 {% stylesheet %}
-  .search-action {
-    --search-border-radius: var(--style-border-radius-inputs);
-    --search-border-width: var(--style-border-width-inputs);
-
+  .boat-search-action-wrapper {
     display: flex;
+    align-items: center;
+  }
+
+  .boat-search-pill-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 8px 18px !important;
+    background: #f4f5f8 !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 30px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    min-width: 220px !important;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.02) !important;
+  }
+
+  .boat-search-pill-button:hover {
+    background: #eaedf2 !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  .boat-search-pill-icon {
+    width: 18px !important;
+    height: 18px !important;
+    color: #475569 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .boat-search-pill-text {
+    font-size: 0.88rem !important;
+    color: #64748b !important;
+    white-space: nowrap !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+  }
+
+  .boat-search-pill-text strong {
+    color: #0f172a !important;
+    font-weight: 700 !important;
   }
 
   @media screen and (max-width: 749px) {
+    .boat-search-pill-button {
+      min-width: unset !important;
+      padding: 8px 12px !important;
+    }
+    .boat-search-pill-text {
+      display: none !important;
+    }
     .search-action--hidden-on-drawer {
-      display: none;
-    }
-  }
-
-  @media screen and (min-width: 750px) {
-    [data-menu-style='drawer'] .search-action--hidden-on-drawer {
-      display: none;
-    }
-
-    [data-menu-style='menu'] .search-action--hidden-on-menu {
-      display: none;
-    }
-  }
-
-  [data-menu-style='menu'] .header__column--left .search-action {
-    @media screen and (min-width: 750px) {
-      margin-inline: calc(var(--padding-lg) * -1);
-    }
-  }
-
-  .header__column--right .search-action {
-    @media screen and (min-width: 750px) {
-      margin-inline: calc(var(--gap-md) * -1) calc(var(--gap-xs) * -1);
-    }
-  }
-
-  @media screen and (min-width: 750px) {
-    .header__column--right .search-action--text {
-      margin-inline: 0;
-    }
-
-    [data-menu-style='menu'] .header__column--left .search-action--text {
-      margin-inline: 0;
+      display: none !important;
     }
   }
 {% endstylesheet %}
