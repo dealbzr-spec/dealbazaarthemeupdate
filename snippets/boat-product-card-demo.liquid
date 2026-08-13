@@ -43,16 +43,17 @@
       </div>
 
       <div class="boat-pick-card__swatch-dots">
-        <span class="boat-pick-card__dot" style="background:#0f172a;"></span>
-        <span class="boat-pick-card__dot" style="background:#0284c7;"></span>
+        <button type="button" class="boat-swatch-dot active" style="background:#0f172a;" title="Black"></button>
+        <button type="button" class="boat-swatch-dot" style="background:#0284c7;" title="Blue"></button>
         <span>+1</span>
       </div>
     </div>
 
-    <div class="boat-pick-card__form">
-      <button type="button" class="boat-pick-card__add-btn">
+    <form action="/cart/add" method="post" enctype="multipart/form-data" class="boat-pick-card__form" onsubmit="handleBoatAddToCart(event, this)">
+      <input type="hidden" name="id" value="123456789">
+      <button type="submit" class="boat-pick-card__add-btn">
         <span>ADD TO CART</span>
       </button>
-    </div>
+    </form>
   </div>
 </div>

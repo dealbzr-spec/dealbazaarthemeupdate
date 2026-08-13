@@ -1,7 +1,7 @@
 {% liquid
-  assign variant = product.selected_or_first_available_variant
-  assign price = variant.price
-  assign compare_price = variant.compare_at_price
+  assign selected_variant = product.selected_or_first_available_variant
+  assign price = selected_variant.price
+  assign compare_price = selected_variant.compare_at_price
   
   assign discount_percent = 0
   if compare_price > price
@@ -9,7 +9,7 @@
     assign discount_percent = discount_amount | times: 100 | divided_by: compare_price
   endif
 
-  # Feature tag fallback generator based on product title/tags
+  # Feature tag generator
   assign feature_tag = 'Powerful Sound'
   if product.title contains 'ANC' or product.tags contains 'ANC'
     assign feature_tag = 'Up To 35dB ANC'
@@ -20,9 +20,15 @@
   elsif product.title contains 'Earbuds' or product.title contains 'Air'
     assign feature_tag = '45 Hrs Playback'
   endif
+
+  # Determine initial image
+  assign featured_img = selected_variant.featured_image
+  if featured_img == blank
+    assign featured_img = product.featured_media.preview_image
+  endif
 %}
 
-<div class="boat-pick-card">
+<div class="boat-pick-card" data-product-id="{{ product.id }}">
   <a href="{{ product.url }}" class="boat-pick-card__image-link" aria-label="{{ product.title | escape }}">
     {% if compare_price > price %}
       <div class="boat-pick-card__badge">
@@ -36,9 +42,9 @@
       </div>
     {% endif %}
 
-    {% if product.featured_media != blank %}
+    {% if featured_img != blank %}
       <img 
-        src="{{ product.featured_media | image_url: width: 600 }}" 
+        src="{{ featured_img | image_url: width: 600 }}" 
         alt="{{ product.title | escape }}" 
         class="boat-pick-card__image"
         loading="lazy"
@@ -53,7 +59,7 @@
   {% comment %} --- Yellow Feature Banner Bar --- {% endcomment %}
   <div class="boat-pick-card__yellow-bar">
     <span>{{ feature_tag }}</span>
-    <span class="boat-pick-card__rating">⭐ 4.8</span>
+    <span class="boat-pick-card__rating">⭐ 4.9</span>
   </div>
 
   <div class="boat-pick-card__details">
@@ -62,34 +68,72 @@
     <div class="boat-pick-card__price-row">
       <div class="boat-pick-card__price-wrap">
         <span class="boat-pick-card__price">{{ price | money }}</span>
-        {% if compare_price > price %}
-          <span class="boat-pick-card__compare-price">{{ compare_price | money }}</span>
-          <span class="boat-pick-card__discount">{{ discount_percent }}% off</span>
-        {% endif %}
+        <span class="boat-pick-card__compare-price" style="{% unless compare_price > price %}display:none;{% endunless %}">
+          {% if compare_price > price %}{{ compare_price | money }}{% endif %}
+        </span>
+        <span class="boat-pick-card__discount" style="{% unless compare_price > price %}display:none;{% endunless %}">
+          {% if compare_price > price %}{{ discount_percent }}% off{% endif %}
+        </span>
       </div>
 
-      <div class="boat-pick-card__swatch-dots">
-        <span class="boat-pick-card__dot" style="background:#0f172a;"></span>
-        <span class="boat-pick-card__dot" style="background:#0284c7;"></span>
-        <span>+1</span>
-      </div>
+      {% comment %} --- Dynamic Variant Swatch Dots --- {% endcomment %}
+      {% if product.variants.size > 1 %}
+        <div class="boat-pick-card__swatch-dots">
+          {% for var in product.variants limit: 3 %}
+            {% liquid
+              assign var_discount = 0
+              if var.compare_at_price > var.price
+                assign var_diff = var.compare_at_price | minus: var.price
+                assign var_discount = var_diff | times: 100 | divided_by: var.compare_at_price
+              endif
+
+              assign var_img_url = var.featured_image | default: featured_img | image_url: width: 600
+              
+              # Fallback swatch colors
+              assign swatch_bg = '#0f172a'
+              if forloop.index == 2
+                assign swatch_bg = '#0284c7'
+              elsif forloop.index == 3
+                assign swatch_bg = '#16a34a'
+              endif
+            %}
+            <button 
+              type="button" 
+              class="boat-swatch-dot{% if var.id == selected_variant.id %} active{% endif %}"
+              style="background: {{ swatch_bg }};"
+              title="{{ var.title }}"
+              data-variant-id="{{ var.id }}"
+              data-variant-image="{{ var_img_url }}"
+              data-variant-price="{{ var.price | money }}"
+              data-variant-compare="{% if var.compare_at_price > var.price %}{{ var.compare_at_price | money }}{% endif %}"
+              data-variant-discount="{% if var.compare_at_price > var.price %}{{ var_discount }}% off{% endif %}"
+              data-variant-available="{{ var.available }}"
+              onclick="selectBoatVariant(this)"
+            ></button>
+          {% endfor %}
+
+          {% if product.variants.size > 3 %}
+            <span>+{{ product.variants.size | minus: 3 }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
     </div>
 
-    {% comment %} --- Theme Native AJAX Product Form --- {% endcomment %}
-    {% form 'product', product, id: nil, class: 'boat-pick-card__form', data-type: 'add-to-cart-form' %}
-      <input type="hidden" name="id" value="{{ variant.id }}">
+    {% comment %} --- Theme Native AJAX Form with Real-time Cart Drawer Trigger --- {% endcomment %}
+    <form action="/cart/add" method="post" enctype="multipart/form-data" class="boat-pick-card__form" onsubmit="handleBoatAddToCart(event, this)">
+      <input type="hidden" name="id" value="{{ selected_variant.id }}">
       <button 
         type="submit" 
         name="add" 
         class="boat-pick-card__add-btn"
-        {% unless variant.available %}disabled{% endunless %}
+        {% unless selected_variant.available %}disabled{% endunless %}
       >
-        {% if variant.available %}
+        {% if selected_variant.available %}
           <span>ADD TO CART</span>
         {% else %}
           <span>SOLD OUT</span>
         {% endif %}
       </button>
-    {% endform %}
+    </form>
   </div>
 </div>
