@@ -11,25 +11,43 @@
   <div class="boat-search-modal-container" style="padding: 20px 24px;">
     
     {% comment %} --- SS1 & SS4 Style Draggable / Swipeable Horizontal Search Tag Pills Carousel --- {% endcomment %}
-    {% assign tags_setting = section.settings.search_tags | default: settings.search_tags %}
-    {% if tags_setting == blank %}
-      {% assign tags_setting = "westpoint, westpoint wf 1253, westpoint wf 2064, westpoint wf 9901, official warranty, organizer, oven, office, home office" %}
-    {% endif %}
-    {% assign tag_array = tags_setting | split: ',' %}
-
     <div class="boat-search-tags-carousel" id="BoatSearchTagsCarousel">
-      {% for tag in tag_array %}
-        {% assign clean_tag = tag | strip %}
-        {% if clean_tag != blank %}
-          <a href="{{ routes.search_url }}?q={{ clean_tag | url_param_escape }}" class="boat-search-tag-pill">
-            {{ clean_tag }}
+      {% if section.settings.search_tags_collections != blank %}
+        {% for collection in section.settings.search_tags_collections %}
+          <a href="{{ collection.url }}" class="boat-search-tag-pill">
+            {{ collection.title }}
           </a>
-        {% endif %}
-      {% endfor %}
+        {% endfor %}
+      {% elsif settings.search_tags != blank %}
+        {% assign tags = settings.search_tags | split: ',' %}
+        {% for tag in tags %}
+          {% assign clean_tag = tag | strip %}
+          {% if clean_tag != blank %}
+            <a href="{{ routes.search_url }}?q={{ clean_tag | url_param_escape }}" class="boat-search-tag-pill">
+              {{ clean_tag }}
+            </a>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        {% for collection in collections limit: 8 %}
+          {% unless collection.handle == 'frontpage' %}
+            <a href="{{ collection.url }}" class="boat-search-tag-pill">
+              {{ collection.title }}
+            </a>
+          {% endunless %}
+        {% else %}
+          <a href="{{ routes.search_url }}?q=official+warranty" class="boat-search-tag-pill">official warranty</a>
+          <a href="{{ routes.search_url }}?q=organizer" class="boat-search-tag-pill">organizer</a>
+          <a href="{{ routes.search_url }}?q=oven" class="boat-search-tag-pill">oven</a>
+          <a href="{{ routes.search_url }}?q=office" class="boat-search-tag-pill">office</a>
+          <a href="{{ routes.search_url }}?q=home+office" class="boat-search-tag-pill">home office</a>
+          <a href="{{ routes.search_url }}?q=office+school" class="boat-search-tag-pill">office school</a>
+        {% endfor %}
+      {% endif %}
     </div>
 
     {% comment %} --- SS2 DYNAMIC Store Collections ("Most Searched And Bought") --- {% endcomment %}
-    <h3 class="boat-search-modal-title" style="font-size: 1.15rem; font-weight: 700; color: #1e293b; margin: 0 0 20px 0; font-family: 'Plus Jakarta Sans', sans-serif;">
+    <h3 class="boat-search-modal-title" style="font-size: 1.15rem; font-weight: 700; color: #1e293b; margin: 12px 0 20px 0; font-family: 'Plus Jakarta Sans', sans-serif;">
       Most Searched And Bought
     </h3>
 
@@ -94,9 +112,11 @@
         let isDown = false;
         let startX;
         let scrollLeft;
+        let isDragging = false;
 
         slider.addEventListener('mousedown', (e) => {
           isDown = true;
+          isDragging = false;
           slider.style.cursor = 'grabbing';
           startX = e.pageX - slider.offsetLeft;
           scrollLeft = slider.scrollLeft;
@@ -107,17 +127,32 @@
           slider.style.cursor = 'grab';
         });
 
-        slider.addEventListener('mouseup', () => {
+        slider.addEventListener('mouseup', (e) => {
           isDown = false;
           slider.style.cursor = 'grab';
+          if (isDragging) {
+            e.preventDefault();
+          }
         });
 
         slider.addEventListener('mousemove', (e) => {
-          if(!isDown) return;
-          e.preventDefault();
+          if (!isDown) return;
           const x = e.pageX - slider.offsetLeft;
-          const walk = (x - startX) * 2;
+          const walk = (x - startX) * 2.5;
+          if (Math.abs(walk) > 5) {
+            isDragging = true;
+          }
           slider.scrollLeft = scrollLeft - walk;
+        });
+
+        // Prevent clicking links while dragging
+        slider.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', (e) => {
+            if (isDragging) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          });
         });
       }
     }

@@ -1309,11 +1309,19 @@
       "visible_if": "{{ section.settings.show_search }}"
     },
     {
+      "type": "collection_list",
+      "id": "search_tags_collections",
+      "label": "Search Bar Collection Tag Pills (Select Collections)",
+      "limit": 15,
+      "info": "Select collections to display as clickable tag pills in the search bar popup.",
+      "visible_if": "{{ section.settings.show_search }}"
+    },
+    {
       "type": "text",
       "id": "search_tags",
-      "label": "Search Bar Tag Pills (Comma Separated)",
+      "label": "Search Bar Tag Pills (Comma Separated Fallback)",
       "default": "westpoint, westpoint wf 1253, westpoint wf 2064, westpoint wf 9901, official warranty, organizer, oven, office, home office",
-      "info": "Enter comma-separated keywords for search bar tag pills",
+      "info": "Used if no collections are selected above",
       "visible_if": "{{ section.settings.show_search }}"
     },
     {

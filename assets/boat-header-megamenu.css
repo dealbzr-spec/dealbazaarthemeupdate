@@ -115,6 +115,55 @@ header.header,
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* --- Draggable Search Tag Pills Carousel (SS1) --- */
+.boat-search-tags-carousel {
+  display: flex !important;
+  gap: 10px !important;
+  overflow-x: auto !important;
+  scroll-snap-type: x mandatory !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  cursor: grab !important;
+  user-select: none !important;
+  touch-action: pan-x !important;
+  padding: 6px 4px 16px 4px !important;
+  margin-bottom: 8px !important;
+  width: 100% !important;
+}
+
+.boat-search-tags-carousel:active {
+  cursor: grabbing !important;
+}
+
+.boat-search-tags-carousel::-webkit-scrollbar {
+  display: none !important;
+}
+
+.boat-search-tag-pill {
+  scroll-snap-align: start !important;
+  flex-shrink: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 8px 18px !important;
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 24px !important;
+  text-decoration: none !important;
+  color: #1e293b !important;
+  font-size: 0.86rem !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  transition: background 0.2s ease, transform 0.2s ease !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.boat-search-tag-pill:hover {
+  background: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  transform: translateY(-1px) !important;
+}
+
 /* --- Mobile Centered Search Bar (SS3 Style) --- */
 @media screen and (max-width: 749px) {
   .boat-search-action-wrapper {
