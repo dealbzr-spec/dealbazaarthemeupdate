@@ -9,19 +9,51 @@
     assign discount_percent = discount_amount | times: 100 | divided_by: compare_price
   endif
 
-  # Feature tag generator
-  assign feature_tag = 'Powerful Sound'
-  if product.title contains 'ANC' or product.tags contains 'ANC'
-    assign feature_tag = 'Up To 35dB ANC'
-  elsif product.title contains 'Bar' or product.title contains 'Speaker'
-    assign feature_tag = '450W Powerful Sound'
-  elsif product.title contains 'Watch'
-    assign feature_tag = 'BT Calling'
-  elsif product.title contains 'Earbuds' or product.title contains 'Air'
-    assign feature_tag = '45 Hrs Playback'
+  # 1. Collection / Product Category Name Display (SS4 Fix)
+  assign display_tag = product.collections.first.title
+  if display_tag == blank or display_tag == 'All' or display_tag == 'Home page'
+    assign display_tag = product.type
+  endif
+  if display_tag == blank
+    assign display_tag = product.vendor | default: 'Top Pick'
   endif
 
-  # Determine initial image
+  # 2. Consistent Deterministic Product Rating (3.7 to 5.0) per product
+  assign id_num = product.id | modulo: 15
+  case id_num
+    when 0
+      assign calc_rating = '4.9'
+    when 1
+      assign calc_rating = '4.7'
+    when 2
+      assign calc_rating = '4.2'
+    when 3
+      assign calc_rating = '4.8'
+    when 4
+      assign calc_rating = '3.9'
+    when 5
+      assign calc_rating = '4.5'
+    when 6
+      assign calc_rating = '5.0'
+    when 7
+      assign calc_rating = '4.1'
+    when 8
+      assign calc_rating = '4.6'
+    when 9
+      assign calc_rating = '3.8'
+    when 10
+      assign calc_rating = '4.4'
+    when 11
+      assign calc_rating = '4.9'
+    when 12
+      assign calc_rating = '4.3'
+    when 13
+      assign calc_rating = '4.8'
+    else
+      assign calc_rating = '3.7'
+  endcase
+
+  # Determine featured image
   assign featured_img = selected_variant.featured_image
   if featured_img == blank
     assign featured_img = product.featured_media.preview_image
@@ -59,7 +91,7 @@
       {% endif %}
     </a>
 
-    {% comment %} --- Floating Hover Add to Cart Icon Button (boAt Style) --- {% endcomment %}
+    {% comment %} --- Floating Hover Add to Cart Icon Button (No Text Overlay) --- {% endcomment %}
     {% form 'product', product, id: form_id, class: 'boat-pick-card__hover-form', data-type: 'add-to-cart-form', onsubmit: 'handleBoatAddToCart(event, this)' %}
       <input type="hidden" name="id" value="{{ selected_variant.id }}">
       <button 
@@ -77,10 +109,10 @@
     {% endform %}
   </div>
 
-  {% comment %} --- Yellow Feature Banner Bar --- {% endcomment %}
+  {% comment %} --- Yellow Feature Banner Bar (Collection Name + Deterministic Rating) --- {% endcomment %}
   <div class="boat-pick-card__yellow-bar">
-    <span>{{ feature_tag }}</span>
-    <span class="boat-pick-card__rating">⭐ 4.9</span>
+    <span class="boat-pick-card__collection-name">{{ display_tag }}</span>
+    <span class="boat-pick-card__rating">⭐ {{ calc_rating }}</span>
   </div>
 
   <div class="boat-pick-card__details">

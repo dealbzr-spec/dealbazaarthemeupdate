@@ -1,17 +1,19 @@
 {% liquid
   assign titles = 'boAt PartyPal 650,boAt Airdopes Plus 421 ANC,boAt Aavante Bar Prime B450,boAt Aavante Bar Prime DA600,boAt Stone 120,boAt Airdopes Prime 800D' | split: ','
+  assign collections_names = 'Speakers,Earbuds,Soundbars,Home Audio,Portable Audio,Wireless Earbuds' | split: ','
+  assign ratings = '4.9,4.7,4.2,4.8,3.9,4.5' | split: ','
   assign prices = '19,999,1,399,9,999,15,999,799,1,499' | split: ','
   assign compares = '49,990,4,999,35,990,44,990,2,990,4,590' | split: ','
   assign discounts = '60% off,72% off,72% off,64% off,73% off,67% off' | split: ','
-  assign features = '300W Powerful Sound,Up To 35dB ANC,450W Powerful Sound,600W Powerful Sound,5W Powerful,45 Hrs Playback' | split: ','
   assign badges = '⚡ Free Spotify,⚡ Free Spotify,✨ New Launch,✨ New Launch,✨ New Launch,⚡ Free Spotify' | split: ','
   
   assign idx = index | minus: 1
   assign item_title = titles[idx] | default: 'boAt Premium Audio'
+  assign item_collection = collections_names[idx] | default: 'Top Pick'
+  assign item_rating = ratings[idx] | default: '4.8'
   assign item_price = prices[idx] | default: '1,499'
   assign item_compare = compares[idx] | default: '4,999'
   assign item_discount = discounts[idx] | default: '70% off'
-  assign item_feature = features[idx] | default: 'Powerful Sound'
   assign item_badge = badges[idx] | default: '✨ New Launch'
 %}
 
@@ -44,8 +46,8 @@
   </div>
 
   <div class="boat-pick-card__yellow-bar">
-    <span>{{ item_feature }}</span>
-    <span class="boat-pick-card__rating">⭐ 4.9</span>
+    <span class="boat-pick-card__collection-name">{{ item_collection }}</span>
+    <span class="boat-pick-card__rating">⭐ {{ item_rating }}</span>
   </div>
 
   <div class="boat-pick-card__details">

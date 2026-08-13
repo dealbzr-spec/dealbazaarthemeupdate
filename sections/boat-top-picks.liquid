@@ -677,6 +677,64 @@
       formElement.submit();
     }
   }
+
+  // Global Real-Time Header Cart Bubble Synchronizer for Cart Drawer + / - quantity changes
+  (function initGlobalHeaderCartSync() {
+    async function updateHeaderCartBubble() {
+      try {
+        const res = await fetch('/cart.js');
+        if (!res.ok) return;
+        const cart = await res.json();
+        const count = cart.item_count;
+
+        const bubbles = document.querySelectorAll('.cart-bubble, [ref="cartBubble"], .cart-bubble-count, .cart-count-bubble, [data-cart-count]');
+        bubbles.forEach(b => {
+          if (count > 0) {
+            b.classList.remove('visually-hidden', 'hidden');
+            b.removeAttribute('hidden');
+            b.style.display = 'inline-flex';
+            b.style.visibility = 'visible';
+            b.style.opacity = '1';
+          } else {
+            b.classList.add('visually-hidden', 'hidden');
+            b.style.display = 'none';
+          }
+        });
+
+        const countTexts = document.querySelectorAll('.cart-bubble__text-count, [ref="cartBubbleCount"], #cart-bubble-text, .cart-count-bubble, [data-cart-count]');
+        countTexts.forEach(ct => {
+          ct.textContent = count > 0 ? count : '';
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    if (!window.boatFetchIntercepted) {
+      window.boatFetchIntercepted = true;
+      const origFetch = window.fetch;
+      window.fetch = async function(...args) {
+        const res = await origFetch.apply(this, args);
+        const url = typeof args[0] === 'string' ? args[0] : (args[0] && args[0].url ? args[0].url : '');
+        if (url.includes('/cart/change') || url.includes('/cart/update') || url.includes('/cart/add') || url.includes('/cart/clear')) {
+          setTimeout(updateHeaderCartBubble, 150);
+          setTimeout(updateHeaderCartBubble, 600);
+        }
+        return res;
+      };
+    }
+
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('#cart-drawer, cart-drawer, .cart-drawer, .theme-drawer')) {
+        setTimeout(updateHeaderCartBubble, 250);
+        setTimeout(updateHeaderCartBubble, 800);
+      }
+    });
+
+    ['cart:refresh', 'cart:updated', 'cart-lines-update'].forEach(evt => {
+      document.addEventListener(evt, () => setTimeout(updateHeaderCartBubble, 100));
+    });
+  })();
 </script>
 
 {% schema %}
