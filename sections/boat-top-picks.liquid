@@ -1,0 +1,562 @@
+{{ 'boat-header-megamenu.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign title = section.settings.title | default: 'Top Picks For You'
+  assign view_all_text = section.settings.view_all_text | default: 'View All'
+  assign view_all_link = section.settings.view_all_link | default: '/collections/all'
+  assign max_products = section.settings.max_products | default: 6
+  assign columns_desktop = section.settings.columns_desktop | default: 6
+%}
+
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  /* --- Top Picks Section Wrapper --- */
+  .boat-top-picks {
+    width: 100%;
+    max-width: var(--page-width, 1400px);
+    margin: 0 auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  /* --- Section Header Row --- */
+  .boat-top-picks__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .boat-top-picks__title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .boat-top-picks__heading {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+  }
+
+  .boat-top-picks__heading span.underline-red {
+    position: relative;
+    display: inline-block;
+  }
+
+  .boat-top-picks__heading span.underline-red::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #d8232a;
+    border-radius: 2px;
+  }
+
+  .boat-top-picks__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #1e293b;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .boat-top-picks__view-all:hover {
+    color: #d8232a;
+    transform: translateX(2px);
+  }
+
+  .boat-top-picks__view-all-arrow {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid #1e293b;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+  }
+
+  /* --- Filter Tabs Bar --- */
+  .boat-top-picks__tabs {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .boat-top-picks__tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .boat-top-picks__tab-btn {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    font-size: 0.88rem;
+    font-weight: 700;
+    padding: 7px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .boat-top-picks__tab-btn:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+  }
+
+  .boat-top-picks__tab-btn.active {
+    background: #e0f2fe;
+    color: #0369a1;
+    border-color: #bae6fd;
+  }
+
+  /* --- Product Grid & Cards (SS2 Style) --- */
+  .boat-top-picks__grid {
+    display: grid;
+    grid-template-columns: repeat({{ columns_desktop }}, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 1200px) {
+    .boat-top-picks__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .boat-top-picks__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .boat-top-picks__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+  }
+
+  /* --- Individual Product Card --- */
+  .boat-pick-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  .boat-pick-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.09);
+    border-color: #cbd5e1;
+  }
+
+  .boat-pick-card__image-link {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #f8fafc;
+  }
+
+  .boat-pick-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+  }
+
+  .boat-pick-card:hover .boat-pick-card__image {
+    transform: scale(1.04);
+  }
+
+  /* --- Top Badge (e.g. Free Spotify / New Launch) --- */
+  .boat-pick-card__badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 2;
+    background: #000000;
+    color: #ffffff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  /* --- Yellow Feature Banner Bar --- */
+  .boat-pick-card__yellow-bar {
+    background: #ffc107;
+    color: #000000;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    letter-spacing: -0.2px;
+  }
+
+  .boat-pick-card__rating {
+    background: #ffffff;
+    color: #000000;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 1px 7px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  /* --- Card Details --- */
+  .boat-pick-card__details {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+  }
+
+  .boat-pick-card__title {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.3;
+    margin: 0 0 8px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-decoration: none;
+  }
+  .boat-pick-card__title:hover {
+    color: #d8232a;
+  }
+
+  /* --- Price & Discount Section --- */
+  .boat-pick-card__price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 4px;
+    border-top: 1px dashed #e2e8f0;
+  }
+
+  .boat-pick-card__price-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .boat-pick-card__price {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #000000;
+  }
+
+  .boat-pick-card__compare-price {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    text-decoration: line-through;
+    font-weight: 500;
+  }
+
+  .boat-pick-card__discount {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #00b853;
+  }
+
+  .boat-pick-card__swatch-dots {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #64748b;
+  }
+  .boat-pick-card__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid #cbd5e1;
+    display: inline-block;
+  }
+
+  /* --- Add to Cart Form Button --- */
+  .boat-pick-card__form {
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .boat-pick-card__add-btn {
+    width: 100%;
+    background: #000000;
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 800;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .boat-pick-card__add-btn:hover {
+    background: #d8232a;
+  }
+</style>
+
+<div class="boat-top-picks section-{{ section.id }}-padding">
+  
+  {% comment %} --- Section Header & Tabs --- {% endcomment %}
+  <div class="boat-top-picks__header">
+    <div class="boat-top-picks__title-group">
+      <h2 class="boat-top-picks__heading">
+        Top Picks <span class="underline-red">For You</span>
+      </h2>
+
+      {% assign blocks_tabs = section.blocks | where: 'type', 'tab_block' %}
+      {% if blocks_tabs.size > 0 %}
+        <div class="boat-top-picks__tabs">
+          {% for block in blocks_tabs %}
+            <button 
+              type="button" 
+              class="boat-top-picks__tab-btn{% if forloop.first %} active{% endif %}"
+              onclick="switchBoatTab('{{ section.id }}', 'tab-{{ block.id }}', this)"
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.tab_title }}
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    {% if view_all_text != blank %}
+      <a href="{{ view_all_link }}" class="boat-top-picks__view-all">
+        <span>{{ view_all_text }}</span>
+        <span class="boat-top-picks__view-all-arrow">➔</span>
+      </a>
+    {% endif %}
+  </div>
+
+  {% comment %} --- Product Cards Container --- {% endcomment %}
+  {% assign blocks_tabs = section.blocks | where: 'type', 'tab_block' %}
+  
+  {% if blocks_tabs.size > 0 %}
+    {% for block in blocks_tabs %}
+      {% assign current_collection = collections[block.settings.collection] %}
+      
+      <div 
+        id="boat-tab-{{ section.id }}-tab-{{ block.id }}" 
+        class="boat-top-picks__tab-content"
+        style="{% unless forloop.first %}display: none;{% endunless %}"
+      >
+        <div class="boat-top-picks__grid">
+          {% if current_collection != blank and current_collection.products.size > 0 %}
+            {% for product in current_collection.products limit: max_products %}
+              {% render 'boat-product-card-item', product: product %}
+            {% endfor %}
+          {% else %}
+            {% comment %} Demo Placeholder Products (SS2 boat Style) {% endcomment %}
+            {% for i in (1..max_products) %}
+              {% render 'boat-product-card-demo', index: i %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    {% comment %} Default Single Collection Fallback {% endcomment %}
+    {% assign fallback_collection = section.settings.collection %}
+    {% assign current_collection = collections[fallback_collection] %}
+
+    <div class="boat-top-picks__grid">
+      {% if current_collection != blank and current_collection.products.size > 0 %}
+        {% for product in current_collection.products limit: max_products %}
+          {% render 'boat-product-card-item', product: product %}
+        {% endfor %}
+      {% else %}
+        {% for i in (1..max_products) %}
+          {% render 'boat-product-card-demo', index: i %}
+        {% endfor %}
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>
+
+<script>
+  function switchBoatTab(sectionId, tabId, btnElement) {
+    // Hide all tab contents in this section
+    const container = btnElement.closest('.boat-top-picks');
+    const contents = container.querySelectorAll('.boat-top-picks__tab-content');
+    contents.forEach(content => content.style.display = 'none');
+
+    // Deactivate all tab buttons
+    const buttons = container.querySelectorAll('.boat-top-picks__tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+
+    // Show target content & activate clicked button
+    const targetContent = document.getElementById('boat-tab-' + sectionId + '-' + tabId);
+    if (targetContent) targetContent.style.display = 'block';
+    btnElement.classList.add('active');
+  }
+</script>
+
+{% schema %}
+{
+  "name": "boAt Top Picks Section",
+  "tag": "section",
+  "class": "section-boat-top-picks",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Heading",
+      "default": "Top Picks For You"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Default Collection (if no tabs added)"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Maximum Products to Show",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on Desktop",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All Button Text",
+      "default": "View All"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab_block",
+      "name": "Collection Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_title",
+          "label": "Tab Title",
+          "default": "New Launches"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "boAt Top Picks Section",
+      "blocks": [
+        {
+          "type": "tab_block",
+          "settings": {
+            "tab_title": "New Launches"
+          }
+        },
+        {
+          "type": "tab_block",
+          "settings": {
+            "tab_title": "Personalisation"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

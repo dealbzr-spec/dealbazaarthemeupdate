@@ -1,0 +1,58 @@
+{% liquid
+  assign titles = 'boAt PartyPal 650,boAt Airdopes Plus 421 ANC,boAt Aavante Bar Prime B450,boAt Aavante Bar Prime DA600,boAt Stone 120,boAt Airdopes Prime 800D' | split: ','
+  assign prices = '19,999,1,399,9,999,15,999,799,1,499' | split: ','
+  assign compares = '49,990,4,999,35,990,44,990,2,990,4,590' | split: ','
+  assign discounts = '60% off,72% off,72% off,64% off,73% off,67% off' | split: ','
+  assign features = '300W Powerful Sound,Up To 35dB ANC,450W Powerful Sound,600W Powerful Sound,5W Powerful,45 Hrs Playback' | split: ','
+  assign badges = '⚡ Free Spotify,⚡ Free Spotify,✨ New Launch,✨ New Launch,✨ New Launch,⚡ Free Spotify' | split: ','
+  
+  assign idx = index | minus: 1
+  assign item_title = titles[idx] | default: 'boAt Premium Audio'
+  assign item_price = prices[idx] | default: '1,499'
+  assign item_compare = compares[idx] | default: '4,999'
+  assign item_discount = discounts[idx] | default: '70% off'
+  assign item_feature = features[idx] | default: 'Powerful Sound'
+  assign item_badge = badges[idx] | default: '✨ New Launch'
+%}
+
+<div class="boat-pick-card">
+  <a href="/collections/all" class="boat-pick-card__image-link">
+    <div class="boat-pick-card__badge">
+      {{ item_badge }}
+    </div>
+
+    <div style="width:100%; height:100%; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:10px;">
+      <span style="font-size:2.5rem; margin-bottom:4px;">🎧</span>
+      <span style="font-size:0.75rem; font-weight:700; opacity:0.8;">boAt Audio</span>
+    </div>
+  </a>
+
+  <div class="boat-pick-card__yellow-bar">
+    <span>{{ item_feature }}</span>
+    <span class="boat-pick-card__rating">⭐ 4.9</span>
+  </div>
+
+  <div class="boat-pick-card__details">
+    <a href="/collections/all" class="boat-pick-card__title">{{ item_title }}</a>
+
+    <div class="boat-pick-card__price-row">
+      <div class="boat-pick-card__price-wrap">
+        <span class="boat-pick-card__price">Rs. {{ item_price }}</span>
+        <span class="boat-pick-card__compare-price">Rs. {{ item_compare }}</span>
+        <span class="boat-pick-card__discount">{{ item_discount }}</span>
+      </div>
+
+      <div class="boat-pick-card__swatch-dots">
+        <span class="boat-pick-card__dot" style="background:#0f172a;"></span>
+        <span class="boat-pick-card__dot" style="background:#0284c7;"></span>
+        <span>+1</span>
+      </div>
+    </div>
+
+    <div class="boat-pick-card__form">
+      <button type="button" class="boat-pick-card__add-btn">
+        <span>ADD TO CART</span>
+      </button>
+    </div>
+  </div>
+</div>

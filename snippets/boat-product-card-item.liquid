@@ -1,0 +1,95 @@
+{% liquid
+  assign variant = product.selected_or_first_available_variant
+  assign price = variant.price
+  assign compare_price = variant.compare_at_price
+  
+  assign discount_percent = 0
+  if compare_price > price
+    assign discount_amount = compare_price | minus: price
+    assign discount_percent = discount_amount | times: 100 | divided_by: compare_price
+  endif
+
+  # Feature tag fallback generator based on product title/tags
+  assign feature_tag = 'Powerful Sound'
+  if product.title contains 'ANC' or product.tags contains 'ANC'
+    assign feature_tag = 'Up To 35dB ANC'
+  elsif product.title contains 'Bar' or product.title contains 'Speaker'
+    assign feature_tag = '450W Powerful Sound'
+  elsif product.title contains 'Watch'
+    assign feature_tag = 'BT Calling'
+  elsif product.title contains 'Earbuds' or product.title contains 'Air'
+    assign feature_tag = '45 Hrs Playback'
+  endif
+%}
+
+<div class="boat-pick-card">
+  <a href="{{ product.url }}" class="boat-pick-card__image-link" aria-label="{{ product.title | escape }}">
+    {% if compare_price > price %}
+      <div class="boat-pick-card__badge">
+        <span>⚡</span>
+        <span>Sale</span>
+      </div>
+    {% else %}
+      <div class="boat-pick-card__badge">
+        <span>✨</span>
+        <span>New Launch</span>
+      </div>
+    {% endif %}
+
+    {% if product.featured_media != blank %}
+      <img 
+        src="{{ product.featured_media | image_url: width: 600 }}" 
+        alt="{{ product.title | escape }}" 
+        class="boat-pick-card__image"
+        loading="lazy"
+        width="300"
+        height="300"
+      >
+    {% else %}
+      <div style="width:100%; height:100%; background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-size:2rem;">📦</div>
+    {% endif %}
+  </a>
+
+  {% comment %} --- Yellow Feature Banner Bar --- {% endcomment %}
+  <div class="boat-pick-card__yellow-bar">
+    <span>{{ feature_tag }}</span>
+    <span class="boat-pick-card__rating">⭐ 4.8</span>
+  </div>
+
+  <div class="boat-pick-card__details">
+    <a href="{{ product.url }}" class="boat-pick-card__title">{{ product.title }}</a>
+
+    <div class="boat-pick-card__price-row">
+      <div class="boat-pick-card__price-wrap">
+        <span class="boat-pick-card__price">{{ price | money }}</span>
+        {% if compare_price > price %}
+          <span class="boat-pick-card__compare-price">{{ compare_price | money }}</span>
+          <span class="boat-pick-card__discount">{{ discount_percent }}% off</span>
+        {% endif %}
+      </div>
+
+      <div class="boat-pick-card__swatch-dots">
+        <span class="boat-pick-card__dot" style="background:#0f172a;"></span>
+        <span class="boat-pick-card__dot" style="background:#0284c7;"></span>
+        <span>+1</span>
+      </div>
+    </div>
+
+    {% comment %} --- Theme Native AJAX Product Form --- {% endcomment %}
+    {% form 'product', product, id: nil, class: 'boat-pick-card__form', data-type: 'add-to-cart-form' %}
+      <input type="hidden" name="id" value="{{ variant.id }}">
+      <button 
+        type="submit" 
+        name="add" 
+        class="boat-pick-card__add-btn"
+        {% unless variant.available %}disabled{% endunless %}
+      >
+        {% if variant.available %}
+          <span>ADD TO CART</span>
+        {% else %}
+          <span>SOLD OUT</span>
+        {% endif %}
+      </button>
+    {% endform %}
+  </div>
+</div>
