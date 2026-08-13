@@ -9,13 +9,10 @@
     assign discount_percent = discount_amount | times: 100 | divided_by: compare_price
   endif
 
-  # 1. Collection / Product Category Name Display
+  # 1. Collection / Product Category Name Display (Only show if real collection exists)
   assign display_tag = product.collections.first.title
-  if display_tag == blank or display_tag == 'All' or display_tag == 'Home page'
-    assign display_tag = product.type
-  endif
-  if display_tag == blank
-    assign display_tag = product.vendor | default: 'Top Pick'
+  if display_tag == 'All' or display_tag == 'Home page' or display_tag == blank
+    assign display_tag = ''
   endif
 
   # 2. Consistent Deterministic Product Rating (3.7 to 5.0) per product
@@ -110,8 +107,10 @@
   </div>
 
   {% comment %} --- Yellow Feature Banner Bar (Collection Name + Rating) --- {% endcomment %}
-  <div class="boat-pick-card__yellow-bar">
-    <span class="boat-pick-card__collection-name">{{ display_tag }}</span>
+  <div class="boat-pick-card__yellow-bar" style="{% if display_tag == blank %}justify-content: flex-end;{% endif %}">
+    {% if display_tag != blank %}
+      <span class="boat-pick-card__collection-name">{{ display_tag }}</span>
+    {% endif %}
     <span class="boat-pick-card__rating">⭐ {{ calc_rating }}</span>
   </div>
 

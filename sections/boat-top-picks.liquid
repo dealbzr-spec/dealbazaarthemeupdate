@@ -214,8 +214,8 @@
       display: none !important;
     }
     .boat-top-picks__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-      gap: 0.65rem !important;
+      grid-template-columns: repeat({{ section.settings.columns_mobile | default: 3 }}, minmax(0, 1fr)) !important;
+      gap: 0.5rem !important;
     }
   }
 
@@ -488,7 +488,12 @@
   <div class="boat-top-picks__header">
     <div class="boat-top-picks__title-group">
       <h2 class="boat-top-picks__heading">
-        {{ title | remove: underline_word }} <span class="underline-red">{{ underline_word }}</span>
+        {% if underline_word != blank and title contains underline_word %}
+          {% assign title_parts = title | split: underline_word %}
+          {{ title_parts[0] }}<span class="underline-red">{{ underline_word }}</span>{{ title_parts[1] }}
+        {% else %}
+          {{ title }}
+        {% endif %}
       </h2>
 
       {% assign blocks_tabs = section.blocks | where: 'type', 'tab_block' %}
@@ -805,9 +810,9 @@
       "id": "max_products",
       "label": "Maximum Products to Show",
       "min": 4,
-      "max": 16,
-      "step": 1,
-      "default": 8
+      "max": 32,
+      "step": 2,
+      "default": 12
     },
     {
       "type": "range",
@@ -817,6 +822,15 @@
       "max": 6,
       "step": 1,
       "default": 6
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns on Mobile",
+      "min": 2,
+      "max": 3,
+      "step": 1,
+      "default": 3
     },
     {
       "type": "range",
