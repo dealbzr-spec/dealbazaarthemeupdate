@@ -1,5 +1,5 @@
 {% doc %}
-  Renders the predictive search empty state with 2-Row Tag Pills, Manual Navigation Menu / Collections support (Strictly 2 Columns x 2 Rows = 4 items max)
+  Renders the predictive search empty state with 2-Row Tag Pills, Manual Navigation Menu / Collections support (Strictly 2 Columns x 2 Rows = 4 items max, Sale is 1st)
 {% enddoc %}
 
 <div
@@ -49,6 +49,16 @@
             </a>
           {% endif %}
         {% endfor %}
+      {% else %}
+        {% comment %} Default Random Trending Search Tags {% endcomment %}
+        <a href="{{ routes.search_url }}?q=sale" class="boat-search-tag-pill">sale</a>
+        <a href="{{ routes.search_url }}?q=westpoint" class="boat-search-tag-pill">westpoint</a>
+        <a href="{{ routes.search_url }}?q=smartwatch" class="boat-search-tag-pill">smartwatch</a>
+        <a href="{{ routes.search_url }}?q=earbuds" class="boat-search-tag-pill">earbuds</a>
+        <a href="{{ routes.search_url }}?q=official+warranty" class="boat-search-tag-pill">official warranty</a>
+        <a href="{{ routes.search_url }}?q=clearance+sale" class="boat-search-tag-pill">clearance sale</a>
+        <a href="{{ routes.search_url }}?q=air+fryer" class="boat-search-tag-pill">air fryer</a>
+        <a href="{{ routes.search_url }}?q=soundbar" class="boat-search-tag-pill">soundbar</a>
       {% endif %}
     </div>
 
@@ -84,7 +94,7 @@
 
     {% assign card_blocks = section.blocks | where: 'type', 'search_category_card' %}
 
-    {% comment %} --- STRICT 2 COLUMNS x 2 ROWS GRID (Max 4 Items Total) --- {% endcomment %}
+    {% comment %} --- STRICT 2 COLUMNS x 2 ROWS GRID (Max 4 Items Total - SALE IS FIRST) --- {% endcomment %}
     <div class="boat-search-modal-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 20px;">
       {% if card_blocks.size > 0 %}
         {% for block in card_blocks limit: 4 %}
@@ -148,6 +158,24 @@
             </a>
           {% endif %}
         {% endfor %}
+      {% else %}
+        {% comment %} Pre-configured Default 4-Item Categories (Sale is FIRST) {% endcomment %}
+        <a href="/collections/sale" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+          <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">🔥</div>
+          <span>Sale</span>
+        </a>
+        <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+          <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">🔴</div>
+          <span>Appliances</span>
+        </a>
+        <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+          <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">⌚</div>
+          <span>Smart Watches</span>
+        </a>
+        <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+          <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;">🎧</div>
+          <span>Earbuds & Headphones</span>
+        </a>
       {% endif %}
     </div>
   </div>
