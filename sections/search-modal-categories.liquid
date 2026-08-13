@@ -5,20 +5,37 @@
   "class": "section-search-modal-categories",
   "settings": [
     {
-      "type": "paragraph",
-      "content": "Customize the tag pills and 'Most Searched And Bought' category cards displayed inside the Search Popup!"
+      "type": "header",
+      "content": "MOST SEARCHED AND BOUGHT CATEGORIES"
     },
     {
       "type": "text",
-      "id": "search_placeholder_text",
-      "label": "Search Bar Placeholder Keyword",
-      "default": "Smartwatches"
+      "id": "search_modal_heading",
+      "label": "Categories Section Title",
+      "default": "Most Searched And Bought"
+    },
+    {
+      "type": "collection_list",
+      "id": "search_modal_categories",
+      "label": "Select Collections (Most Searched And Bought)",
+      "limit": 6,
+      "info": "Select up to 6 collections to display in the 2-row grid inside the search popup."
+    },
+    {
+      "type": "header",
+      "content": "TOP SEARCH TAG PILLS"
     },
     {
       "type": "collection_list",
       "id": "search_tags_collections",
-      "label": "Search Bar Collection Tag Pills",
+      "label": "Select Tag Collections",
       "limit": 15
+    },
+    {
+      "type": "text",
+      "id": "search_tags",
+      "label": "Custom Tag Keywords (Comma Separated)",
+      "default": "westpoint, smartwatch, earbuds, official warranty, clearance sale"
     }
   ],
   "blocks": [
