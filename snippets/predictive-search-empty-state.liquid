@@ -1,5 +1,5 @@
 {% doc %}
-  Renders the predictive search empty state with DYNAMIC store collections & Search Tag Pill Carousel (SS2 & SS4 style)
+  Renders the predictive search empty state with DYNAMIC store collections & Draggable Search Tag Pill Carousel (SS1, SS2 & SS4 style)
 {% enddoc %}
 
 <div
@@ -10,21 +10,22 @@
 >
   <div class="boat-search-modal-container" style="padding: 20px 24px;">
     
-    {% comment %} --- SS4 Style Horizontal Scrollable Search Tag Pills --- {% endcomment %}
-    <div class="boat-search-tags-carousel" style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 4px 0 16px 0; margin-bottom: 8px;">
-      {% if settings.search_tags != blank %}
-        {% assign tags = settings.search_tags | split: ',' %}
-        {% for tag in tags %}
-          <a href="{{ routes.search_url }}?q={{ tag | strip | url_param_escape }}" class="boat-search-tag-pill" style="display: inline-flex; align-items: center; padding: 6px 16px; background: #f1f5f9; border-radius: 20px; text-decoration: none; color: #1e293b; font-size: 0.84rem; font-weight: 500; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif;">{{ tag | strip }}</a>
-        {% endfor %}
-      {% else %}
-        <a href="{{ routes.search_url }}?q=official+warranty" class="boat-search-tag-pill" style="display: inline-flex; align-items: center; padding: 6px 16px; background: #f1f5f9; border-radius: 20px; text-decoration: none; color: #1e293b; font-size: 0.84rem; font-weight: 500; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif;">official warranty</a>
-        <a href="{{ routes.search_url }}?q=organizer" class="boat-search-tag-pill" style="display: inline-flex; align-items: center; padding: 6px 16px; background: #f1f5f9; border-radius: 20px; text-decoration: none; color: #1e293b; font-size: 0.84rem; font-weight: 500; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif;">organizer</a>
-        <a href="{{ routes.search_url }}?q=oven" class="boat-search-tag-pill" style="display: inline-flex; align-items: center; padding: 6px 16px; background: #f1f5f9; border-radius: 20px; text-decoration: none; color: #1e293b; font-size: 0.84rem; font-weight: 500; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif;">oven</a>
-        <a href="{{ routes.search_url }}?q=office" class="boat-search-tag-pill" style="display: inline-flex; align-items: center; padding: 6px 16px; background: #f1f5f9; border-radius: 20px; text-decoration: none; color: #1e293b; font-size: 0.84rem; font-weight: 500; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif;">office</a>
-        <a href="{{ routes.search_url }}?q=home+office" class="boat-search-tag-pill" style="display: inline-flex; align-items: center; padding: 6px 16px; background: #f1f5f9; border-radius: 20px; text-decoration: none; color: #1e293b; font-size: 0.84rem; font-weight: 500; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif;">home office</a>
-        <a href="{{ routes.search_url }}?q=office+school" class="boat-search-tag-pill" style="display: inline-flex; align-items: center; padding: 6px 16px; background: #f1f5f9; border-radius: 20px; text-decoration: none; color: #1e293b; font-size: 0.84rem; font-weight: 500; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif;">office school</a>
-      {% endif %}
+    {% comment %} --- SS1 & SS4 Style Draggable / Swipeable Horizontal Search Tag Pills Carousel --- {% endcomment %}
+    {% assign tags_setting = section.settings.search_tags | default: settings.search_tags %}
+    {% if tags_setting == blank %}
+      {% assign tags_setting = "westpoint, westpoint wf 1253, westpoint wf 2064, westpoint wf 9901, official warranty, organizer, oven, office, home office" %}
+    {% endif %}
+    {% assign tag_array = tags_setting | split: ',' %}
+
+    <div class="boat-search-tags-carousel" id="BoatSearchTagsCarousel">
+      {% for tag in tag_array %}
+        {% assign clean_tag = tag | strip %}
+        {% if clean_tag != blank %}
+          <a href="{{ routes.search_url }}?q={{ clean_tag | url_param_escape }}" class="boat-search-tag-pill">
+            {{ clean_tag }}
+          </a>
+        {% endif %}
+      {% endfor %}
     </div>
 
     {% comment %} --- SS2 DYNAMIC Store Collections ("Most Searched And Bought") --- {% endcomment %}
@@ -82,3 +83,48 @@
     </div>
   </div>
 </div>
+
+{% comment %} --- Mouse Drag & Touch Slide Script for Search Tag Pills --- {% endcomment %}
+<script>
+  (function() {
+    function initDragScroll() {
+      const slider = document.getElementById('BoatSearchTagsCarousel');
+      if (slider && !slider.dataset.dragInit) {
+        slider.dataset.dragInit = 'true';
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        slider.addEventListener('mousedown', (e) => {
+          isDown = true;
+          slider.style.cursor = 'grabbing';
+          startX = e.pageX - slider.offsetLeft;
+          scrollLeft = slider.scrollLeft;
+        });
+
+        slider.addEventListener('mouseleave', () => {
+          isDown = false;
+          slider.style.cursor = 'grab';
+        });
+
+        slider.addEventListener('mouseup', () => {
+          isDown = false;
+          slider.style.cursor = 'grab';
+        });
+
+        slider.addEventListener('mousemove', (e) => {
+          if(!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - slider.offsetLeft;
+          const walk = (x - startX) * 2;
+          slider.scrollLeft = scrollLeft - walk;
+        });
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initDragScroll);
+    } else {
+      initDragScroll();
+    }
+  })();
+</script>
