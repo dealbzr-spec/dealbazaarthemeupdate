@@ -1,0 +1,87 @@
+{% schema %}
+{
+  "name": "Search Categories & Tags",
+  "tag": "section",
+  "class": "section-search-modal-categories",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Customize the tag pills and 'Most Searched And Bought' category cards displayed inside the Search Popup!"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder_text",
+      "label": "Search Bar Placeholder Keyword",
+      "default": "Smartwatches"
+    },
+    {
+      "type": "collection_list",
+      "id": "search_tags_collections",
+      "label": "Search Bar Collection Tag Pills",
+      "limit": 15
+    }
+  ],
+  "blocks": [
+    {
+      "type": "search_tag_item",
+      "name": "Search Tag Pill",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection"
+        },
+        {
+          "type": "text",
+          "id": "custom_label",
+          "label": "Custom Tag Label (Optional)"
+        },
+        {
+          "type": "url",
+          "id": "custom_url",
+          "label": "Custom Link (Optional)"
+        }
+      ]
+    },
+    {
+      "type": "search_category_card",
+      "name": "Search Category Card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Custom Title (Optional)"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom Icon / Image (Optional)"
+        },
+        {
+          "type": "url",
+          "id": "custom_url",
+          "label": "Custom Link (Optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Search Categories & Tags",
+      "blocks": [
+        {
+          "type": "search_category_card"
+        },
+        {
+          "type": "search_category_card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
