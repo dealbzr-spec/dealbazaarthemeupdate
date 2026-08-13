@@ -1,5 +1,5 @@
 {% doc %}
-  Renders the predictive search empty state with DYNAMIC store collections, customizer block support & standard Carousel Scroll (SS1 & SS2 style)
+  Renders the predictive search empty state with DYNAMIC store collections & Theme Settings collection lists
 {% enddoc %}
 
 <div
@@ -10,9 +10,10 @@
 >
   <div class="boat-search-modal-container" style="padding: 20px 24px;">
     
-    {% comment %} --- Standard Smooth Carousel Horizontal Tag Pills --- {% endcomment %}
+    {% comment %} --- Top Horizontal Search Tag Pills Carousel --- {% endcomment %}
+    {% assign tag_collections = settings.search_tags_collections | default: section.settings.search_tags_collections %}
     {% assign tag_blocks = section.blocks | where: 'type', 'search_tag_item' %}
-    
+
     <div class="boat-search-tags-carousel" id="BoatSearchTagsCarousel">
       {% if tag_blocks.size > 0 %}
         {% for block in tag_blocks %}
@@ -23,36 +24,39 @@
             {{ label }}
           </a>
         {% endfor %}
-      {% elsif section.settings.search_tags_collections != blank %}
-        {% for collection in section.settings.search_tags_collections %}
+      {% elsif tag_collections != blank and tag_collections.size > 0 %}
+        {% for collection in tag_collections %}
           <a href="{{ collection.url }}" class="boat-search-tag-pill">
             {{ collection.title }}
           </a>
         {% endfor %}
+      {% elsif settings.search_tags != blank %}
+        {% assign tags = settings.search_tags | split: ',' %}
+        {% for tag in tags %}
+          {% assign clean_tag = tag | strip %}
+          {% if clean_tag != blank %}
+            <a href="{{ routes.search_url }}?q={{ clean_tag | url_param_escape }}" class="boat-search-tag-pill">
+              {{ clean_tag }}
+            </a>
+          {% endif %}
+        {% endfor %}
       {% else %}
-        {% comment %} Default Auto Run: Real Store Collections & Sale Items {% endcomment %}
-        {% for collection in collections limit: 10 %}
+        {% for collection in collections limit: 8 %}
           {% unless collection.handle == 'frontpage' %}
             <a href="{{ collection.url }}" class="boat-search-tag-pill">
               {{ collection.title }}
             </a>
           {% endunless %}
-        {% else %}
-          <a href="{{ routes.search_url }}?q=official+warranty" class="boat-search-tag-pill">official warranty</a>
-          <a href="{{ routes.search_url }}?q=organizer" class="boat-search-tag-pill">organizer</a>
-          <a href="{{ routes.search_url }}?q=oven" class="boat-search-tag-pill">oven</a>
-          <a href="{{ routes.search_url }}?q=office" class="boat-search-tag-pill">office</a>
-          <a href="{{ routes.search_url }}?q=home+office" class="boat-search-tag-pill">home office</a>
-          <a href="{{ routes.search_url }}?q=office+school" class="boat-search-tag-pill">office school</a>
         {% endfor %}
       {% endif %}
     </div>
 
-    {% comment %} --- SS2 DYNAMIC Store Collections ("Most Searched And Bought") --- {% endcomment %}
+    {% comment %} --- Most Searched And Bought Categories --- {% endcomment %}
     <h3 class="boat-search-modal-title" style="font-size: 1.15rem; font-weight: 700; color: #1e293b; margin: 12px 0 20px 0; font-family: 'Plus Jakarta Sans', sans-serif;">
       Most Searched And Bought
     </h3>
 
+    {% assign modal_collections = settings.search_modal_categories | default: section.settings.search_modal_categories %}
     {% assign card_blocks = section.blocks | where: 'type', 'search_category_card' %}
 
     <div class="boat-search-modal-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 20px;">
@@ -71,6 +75,19 @@
               {% endif %}
             </div>
             <span>{{ title }}</span>
+          </a>
+        {% endfor %}
+      {% elsif modal_collections != blank and modal_collections.size > 0 %}
+        {% for collection in modal_collections %}
+          <a href="{{ collection.url }}" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);">
+              {% if collection.featured_image != blank %}
+                <img src="{{ collection.featured_image | image_url: width: 100 }}" alt="{{ collection.title | escape }}" loading="lazy" width="44" height="44" style="width:100%;height:100%;object-fit:cover;">
+              {% else %}
+                <span style="font-size: 1.2rem;">🛍️</span>
+              {% endif %}
+            </div>
+            <span>{{ collection.title }}</span>
           </a>
         {% endfor %}
       {% else %}
@@ -92,26 +109,6 @@
             {% endif %}
           {% endunless %}
         {% endfor %}
-
-        {% if count == 0 %}
-          {% comment %} Fallback items {% endcomment %}
-          <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-            <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">🎧</div>
-            <span>True Wireless Earphones</span>
-          </a>
-          <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-            <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">🎁</div>
-            <span>Personalized Products</span>
-          </a>
-          <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-            <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">⌚</div>
-            <span>Smart Watches</span>
-          </a>
-          <a href="/collections/all" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.9rem; font-family: 'Plus Jakarta Sans', sans-serif;">
-            <div style="width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem;">✨</div>
-            <span>Nirvana</span>
-          </a>
-        {% endif %}
       {% endif %}
     </div>
   </div>

@@ -57,6 +57,46 @@
     ]
   },
   {
+    "name": "Search Bar & Categories",
+    "settings": [
+      {
+        "type": "header",
+        "content": "SEARCH POPUP TAG PILLS"
+      },
+      {
+        "type": "collection_list",
+        "id": "search_tags_collections",
+        "label": "Search Bar Tag Pills (Select Collections)",
+        "limit": 15,
+        "info": "Select collections to display as top clickable tag pills inside search popup."
+      },
+      {
+        "type": "text",
+        "id": "search_tags",
+        "label": "Search Bar Tag Pills (Comma Separated Fallback Text)",
+        "default": "westpoint, westpoint wf 1253, westpoint wf 2064, official warranty, organizer, oven",
+        "info": "Used if no collections are selected above"
+      },
+      {
+        "type": "header",
+        "content": "MOST SEARCHED AND BOUGHT CATEGORIES"
+      },
+      {
+        "type": "collection_list",
+        "id": "search_modal_categories",
+        "label": "Most Searched And Bought (Select Collections)",
+        "limit": 14,
+        "info": "Select collections to display in the 2-column grid under 'Most Searched And Bought'."
+      },
+      {
+        "type": "text",
+        "id": "search_placeholder_text",
+        "label": "Search Bar Placeholder Keyword",
+        "default": "Smartwatches"
+      }
+    ]
+  },
+  {
     "name": "t:names.colors",
     "settings": [
       {
