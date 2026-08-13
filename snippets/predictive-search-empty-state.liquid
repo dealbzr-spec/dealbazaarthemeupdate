@@ -11,13 +11,17 @@
   <div class="boat-search-modal-container" style="padding: 20px 24px;">
     
     {% comment %} --- Top 2-Row Search Tag Pills --- {% endcomment %}
-    {% assign tag_collections = settings.search_tags_collections %}
+    {% assign tag_blocks = section.blocks | where: 'type', 'search_tag_item' %}
+    
+    {% assign tag_collections = section.settings.search_tags_collections %}
     {% if tag_collections == blank or tag_collections.size == 0 %}
-      {% assign tag_collections = section.settings.search_tags_collections %}
+      {% assign tag_collections = settings.search_tags_collections %}
     {% endif %}
 
-    {% assign tag_blocks = section.blocks | where: 'type', 'search_tag_item' %}
-    {% assign text_tags = settings.search_tags | default: section.settings.search_tags %}
+    {% assign text_tags = section.settings.search_tags %}
+    {% if text_tags == blank %}
+      {% assign text_tags = settings.search_tags %}
+    {% endif %}
 
     <div class="boat-search-tags-carousel" id="BoatSearchTagsCarousel">
       {% if tag_blocks.size > 0 %}
@@ -55,9 +59,9 @@
 
     {% comment %} --- Parse Navigation Menu --- {% endcomment %}
     {% assign menu_links = nil %}
-    {% assign target_menu = settings.search_menu %}
+    {% assign target_menu = section.settings.search_menu %}
     {% if target_menu == blank %}
-      {% assign target_menu = section.settings.search_menu %}
+      {% assign target_menu = settings.search_menu %}
     {% endif %}
 
     {% if target_menu != blank %}
@@ -68,12 +72,16 @@
       {% endif %}
     {% endif %}
 
-    {% assign modal_collections = settings.search_modal_categories %}
+    {% assign modal_collections = section.settings.search_modal_categories %}
     {% if modal_collections == blank or modal_collections.size == 0 %}
-      {% assign modal_collections = section.settings.search_modal_categories %}
+      {% assign modal_collections = settings.search_modal_categories %}
     {% endif %}
 
-    {% assign text_categories = settings.search_modal_categories_text | default: section.settings.search_modal_categories_text %}
+    {% assign text_categories = section.settings.search_modal_categories_text %}
+    {% if text_categories == blank %}
+      {% assign text_categories = settings.search_modal_categories_text %}
+    {% endif %}
+
     {% assign card_blocks = section.blocks | where: 'type', 'search_category_card' %}
 
     {% comment %} --- STRICT 2 COLUMNS x 2 ROWS GRID (Max 4 Items Total) --- {% endcomment %}
