@@ -1328,7 +1328,7 @@
     },
     {
       "type": "header",
-      "content": "MOST SEARCHED AND BOUGHT CATEGORIES"
+      "content": "MOST SEARCHED AND BOUGHT CATEGORIES (2 ROWS MAX)"
     },
     {
       "type": "text",
@@ -1337,17 +1337,23 @@
       "default": "Most Searched And Bought"
     },
     {
-      "type": "text",
-      "id": "search_modal_categories_text",
-      "label": "Custom Category Names (Comma Separated Text)",
-      "default": "Appliances, Baby Care, Clearance Sale, Health & Beauty, Home & Living, Smart Accessories",
-      "info": "Type custom category names separated by commas (e.g. Appliances, Smartwatches, Earbuds, Sale)"
+      "type": "link_list",
+      "id": "search_menu",
+      "label": "Select Navigation Menu (Select Menu)",
+      "info": "Select any Navigation Menu from Shopify Admin (Max 4 items displayed for 2 rows)"
     },
     {
       "type": "collection_list",
       "id": "search_modal_categories",
-      "label": "Select Collections (Collection List Picker)",
-      "limit": 6
+      "label": "Select Collections (Max 4 Items for 2 Rows)",
+      "limit": 4
+    },
+    {
+      "type": "text",
+      "id": "search_modal_categories_text",
+      "label": "Custom Category Names (Comma Separated Text)",
+      "default": "Appliances, Baby Care, Clearance Sale, Health & Beauty",
+      "info": "Type custom category names separated by commas (Max 4 items for 2 rows)"
     },
     {
       "type": "header",

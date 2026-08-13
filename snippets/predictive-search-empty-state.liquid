@@ -1,5 +1,5 @@
 {% doc %}
-  Renders the predictive search empty state with Top Tag Pills, DYNAMIC custom text/collections & 2-row category grid (SS1, SS2 & SS3 style)
+  Renders the predictive search empty state with Top Tag Pills, Navigation Menu support, and STRICTLY 2-Row Category Grid (4 items max)
 {% enddoc %}
 
 <div
@@ -59,14 +59,15 @@
       {{ section.settings.search_modal_heading | default: settings.search_modal_heading | default: 'Most Searched And Bought' }}
     </h3>
 
+    {% assign nav_menu = section.settings.search_menu | default: settings.search_menu %}
     {% assign modal_collections = section.settings.search_modal_categories | default: settings.search_modal_categories %}
     {% assign text_categories = settings.search_modal_categories_text | default: section.settings.search_modal_categories_text %}
     {% assign card_blocks = section.blocks | where: 'type', 'search_category_card' %}
 
-    {% comment %} --- 2-Row Maximum Grid (Max 6 items) --- {% endcomment %}
+    {% comment %} --- STRICT 2-ROW MAXIMUM GRID (Max 4 items = 2 columns x 2 rows) --- {% endcomment %}
     <div class="boat-search-modal-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 20px;">
       {% if card_blocks.size > 0 %}
-        {% for block in card_blocks limit: 6 %}
+        {% for block in card_blocks limit: 4 %}
           {% assign col = block.settings.collection %}
           {% assign url = block.settings.custom_url | default: col.url | default: '#' %}
           {% assign title = block.settings.custom_title | default: col.title | default: 'Category' %}
@@ -82,8 +83,22 @@
             <span>{{ title }}</span>
           </a>
         {% endfor %}
+      {% elsif nav_menu != blank and linklists[nav_menu].links.size > 0 %}
+        {% for link in linklists[nav_menu].links limit: 4 %}
+          {% assign link_col = link.object %}
+          <a href="{{ link.url }}" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+            <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);">
+              {% if link_col.featured_image != blank %}
+                <img src="{{ link_col.featured_image | image_url: width: 100 }}" alt="{{ link.title | escape }}" loading="lazy" width="42" height="42" style="width:100%;height:100%;object-fit:cover;">
+              {% else %}
+                <span style="font-size: 1.2rem;">🛍️</span>
+              {% endif %}
+            </div>
+            <span>{{ link.title }}</span>
+          </a>
+        {% endfor %}
       {% elsif modal_collections != blank and modal_collections.size > 0 %}
-        {% for collection in modal_collections limit: 6 %}
+        {% for collection in modal_collections limit: 4 %}
           <a href="{{ collection.url }}" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
             <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);">
               {% if collection.featured_image != blank %}
@@ -97,7 +112,7 @@
         {% endfor %}
       {% elsif text_categories != blank %}
         {% assign cat_array = text_categories | split: ',' %}
-        {% for cat in cat_array limit: 6 %}
+        {% for cat in cat_array limit: 4 %}
           {% assign clean_cat = cat | strip %}
           {% if clean_cat != blank %}
             {% assign matched_col = collections[clean_cat | handleize] %}
@@ -118,7 +133,7 @@
         {% for collection in collections %}
           {% unless collection.handle == 'frontpage' %}
             {% assign count = count | plus: 1 %}
-            {% if count <= 6 %}
+            {% if count <= 4 %}
               <a href="{{ collection.url }}" class="boat-search-modal-card" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 0.88rem; font-family: 'Plus Jakarta Sans', sans-serif;">
                 <div style="width: 42px; height: 42px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);">
                   {% if collection.featured_image != blank %}
