@@ -279,9 +279,45 @@ header.header,
   color: #d8232a !important;
 }
 
+/* --- Mega Menu Hover Bridge & Mouse Cursor Retention Fix --- */
+.menu-list__list-item {
+  position: relative !important;
+}
+
+/* Invisible hover bridge extending from link down into dropdown */
+.menu-list__list-item::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  bottom: -24px !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: transparent !important;
+  pointer-events: auto !important;
+  z-index: 99;
+}
+
+.menu-list__submenu {
+  margin-top: -12px !important;
+  padding-top: 12px !important;
+  pointer-events: auto !important;
+}
+
+/* Retain mega menu visibility whenever mouse is over item, bridge, or dropdown */
+.menu-list__list-item:hover > .menu-list__submenu,
+.menu-list__list-item:focus-within > .menu-list__submenu,
+.menu-list__submenu:hover {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
 /* --- Category Hero Banner (SS2 Style: Dynamic Layout & Sidebar Flyout) --- */
 .category-hero-section {
-  padding: 20px 0;
+  padding: 24px 0 !important;
+  margin-top: 0 !important;
+  clear: both !important;
   background: #f7f8fa;
   position: relative;
   z-index: 1;
