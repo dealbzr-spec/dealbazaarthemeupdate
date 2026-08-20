@@ -195,55 +195,64 @@ header.header,
   }
 }
 
-/* --- Mega Menu Overlay, Top Divider Line & Center Aligned Sub-Collection Grid --- */
-.menu-list__submenu,
-.menu-list__submenu-inner,
-.mega-menu {
-  border-top: 2px solid #e2e8f0 !important;
-  border-bottom: 1px solid #e2e8f0 !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05) !important;
+/* --- Mega Menu Overlay (Red Mark: 1px Top Border, Orange Mark: Centered Left-Aligned Items, Green Mark: No Bottom Shadow) --- */
+.menu-list__submenu {
+  border-top: 1px solid #e5e7eb !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  outline: none !important;
   margin-top: 0 !important;
   padding-top: 0 !important;
   background-color: #ffffff !important;
   background: #ffffff !important;
+  width: 100vw !important;
+  margin-left: calc(-50vw + 50%) !important;
 }
 
+.menu-list__submenu-inner,
 .mega-menu {
-  padding: 12px 0 16px 0 !important;
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  outline: none !important;
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  padding: 16px 0 20px 0 !important;
   width: 100% !important;
   opacity: 1 !important;
 }
 
 .mega-menu__grid {
   display: flex !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   align-items: center !important;
   width: 100% !important;
-  max-width: 100% !important;
+  max-width: 1280px !important;
   margin: 0 auto !important;
-  padding: 0 !important;
-  text-align: center !important;
+  padding: 0 16px !important;
 }
 
 .boat-megamenu-wrapper {
   width: 100% !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
+  max-width: 1280px !important;
   margin: 0 auto !important;
+  display: flex !important;
+  justify-content: flex-start !important;
 }
 
 .boat-megamenu-grid {
   display: flex !important;
   flex-wrap: wrap !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   align-items: center !important;
-  gap: 14px 32px !important;
+  gap: 16px 36px !important;
   list-style: none !important;
-  margin: 0 auto !important;
+  margin: 0 !important;
   padding: 0 !important;
   width: 100% !important;
-  max-width: 1200px !important;
 }
 
 .boat-megamenu-card {
@@ -251,19 +260,18 @@ header.header,
   align-items: center !important;
   justify-content: flex-start !important;
   gap: 12px !important;
-  padding: 8px 14px !important;
+  padding: 6px 12px !important;
   text-decoration: none !important;
   color: #121212 !important;
   transition: all 0.2s ease !important;
-  border: 1px solid transparent !important;
-  border-radius: 8px !important;
+  border: none !important;
   background: transparent !important;
 }
 
 .boat-megamenu-card:hover {
   background: #f8fafc !important;
-  border-color: #e2e8f0 !important;
-  transform: translateY(-2px) !important;
+  border-radius: 8px !important;
+  transform: translateY(-1px) !important;
 }
 
 .boat-megamenu-card:hover {
