@@ -498,8 +498,8 @@
   {% comment %} --- Section Header & Tabs --- {% endcomment %}
   <div class="boat-top-picks__header">
     {% comment %} --- Top Row: Heading on Left & View All on Right --- {% endcomment %}
-    <div class="boat-top-picks__heading-row">
-      <h2 class="boat-top-picks__heading">
+    <div class="boat-top-picks__heading-row" style="display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; flex-wrap: nowrap !important; gap: 8px !important; margin-bottom: 8px !important;">
+      <h2 class="boat-top-picks__heading" style="margin: 0 !important; font-size: 1.3rem !important; font-weight: 800 !important; color: #0f172a !important; line-height: 1.2 !important; white-space: nowrap !important; flex-shrink: 1 !important;">
         {% if underline_word != blank and title contains underline_word %}
           {% assign title_parts = title | split: underline_word %}
           {{ title_parts[0] }}<span class="underline-red">{{ underline_word }}</span>{{ title_parts[1] }}
@@ -509,7 +509,7 @@
       </h2>
 
       {% if view_all_text != blank %}
-        <a href="{{ view_all_link }}" class="boat-top-picks__view-all">
+        <a href="{{ view_all_link }}" class="boat-top-picks__view-all" style="display: inline-flex !important; align-items: center !important; gap: 5px !important; font-size: 0.85rem !important; font-weight: 700 !important; color: #1e293b !important; text-decoration: none !important; white-space: nowrap !important; flex-shrink: 0 !important; margin-left: auto !important;">
           <span>{{ view_all_text }}</span>
           <span class="boat-top-picks__view-all-arrow">➔</span>
         </a>
