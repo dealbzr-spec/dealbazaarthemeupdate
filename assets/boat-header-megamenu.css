@@ -802,7 +802,12 @@ header.header,
     display: none !important;
   }
 
-  /* --- Hide Blue Pill Search Icon Box in Mobile Header Left Column --- */
+  /* --- Hide Red-Circled Box in Mobile Header Left Column (Keep Hamburger = & Right Search Icon) --- */
+  .header__column--left .header-logo,
+  .header__column--left .header__logo,
+  .header__column--left a[class*="logo"],
+  .header__column--left div[class*="logo"],
+  .header__column--left .logo-wrapper,
   .header__column--left .boat-search-action-wrapper,
   .header__column--left .boat-search-pill-button,
   .header__column--left .search-action--hidden-on-drawer {
