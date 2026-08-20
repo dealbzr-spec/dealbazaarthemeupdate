@@ -38,21 +38,25 @@
   }
 
   .boat-top-picks__heading-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    gap: 1rem;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
   }
 
   .boat-top-picks__heading {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 800;
     color: #0f172a;
     margin: 0;
     line-height: 1.2;
     letter-spacing: -0.4px;
     font-family: 'Plus Jakarta Sans', sans-serif;
+    white-space: nowrap;
+    flex-shrink: 1;
   }
 
   .boat-top-picks__heading span.underline-red {
@@ -72,15 +76,16 @@
   }
 
   .boat-top-picks__view-all {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: #1e293b;
-    text-decoration: none;
-    white-space: nowrap;
-    flex-shrink: 0;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    margin-left: auto !important;
     transition: color 0.2s ease, transform 0.2s ease;
   }
 
@@ -142,15 +147,6 @@
     cursor: pointer;
     white-space: nowrap;
     flex-shrink: 0;
-    transition: all 0.2s ease;
-    font-family: inherit;
-  }
-    font-size: 0.84rem;
-    font-weight: 700;
-    padding: 6px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    white-space: nowrap;
     transition: all 0.2s ease;
     font-family: inherit;
   }
@@ -237,18 +233,30 @@
   }
 
   @media (max-width: 768px) {
+    .boat-top-picks__heading-row {
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      width: 100% !important;
+      flex-wrap: nowrap !important;
+    }
     .boat-top-picks__heading {
-      font-size: 1.25rem !important;
+      font-size: 1.2rem !important;
+      white-space: nowrap !important;
     }
     .boat-top-picks__view-all {
-      font-size: 0.82rem !important;
+      font-size: 0.8rem !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      margin-left: auto !important;
     }
     .boat-top-picks__tabs {
       gap: 0.5rem !important;
     }
     .boat-top-picks__tab-btn {
-      font-size: 0.8rem !important;
-      padding: 6px 14px !important;
+      font-size: 0.78rem !important;
+      padding: 6px 12px !important;
     }
     .boat-top-picks__slider-nav {
       display: none !important;
