@@ -279,31 +279,44 @@ header.header,
   color: #d8232a !important;
 }
 
-/* --- Mega Menu Hover Bridge & Mouse Cursor Retention Fix --- */
+/* --- Header Navigation & Sub-Collection Clickability & Hover Fix --- */
 .menu-list__list-item {
   position: relative !important;
 }
 
-/* Invisible hover bridge extending from link down into dropdown */
-.menu-list__list-item::after {
+/* Ensure ALL menu links and sub-collection cards are 100% clickable and redirect on click */
+a.menu-list__link,
+a.boat-megamenu-card,
+a.category-hero__sidebar-link,
+a.category-hero__flyout-link,
+.menu-list__link,
+.boat-megamenu-card {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* Top Padding Bridge ON SUBMENU (Sits BEHIND links so it NEVER blocks clicks) */
+.menu-list__submenu {
+  margin-top: -10px !important;
+  padding-top: 10px !important;
+  pointer-events: auto !important;
+}
+
+.menu-list__submenu::before {
   content: '' !important;
   position: absolute !important;
-  top: 0 !important;
-  bottom: -24px !important;
+  top: -15px !important;
   left: 0 !important;
   right: 0 !important;
+  height: 20px !important;
   background: transparent !important;
   pointer-events: auto !important;
-  z-index: 99;
+  z-index: -1 !important;
 }
 
-.menu-list__submenu {
-  margin-top: -12px !important;
-  padding-top: 12px !important;
-  pointer-events: auto !important;
-}
-
-/* Retain mega menu visibility whenever mouse is over item, bridge, or dropdown */
+/* Retain mega menu visibility when mouse is over item or dropdown */
 .menu-list__list-item:hover > .menu-list__submenu,
 .menu-list__list-item:focus-within > .menu-list__submenu,
 .menu-list__submenu:hover {
