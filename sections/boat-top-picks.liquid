@@ -28,20 +28,21 @@
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
-  /* --- Section Header Row --- */
+  /* --- Section Header Row & Mobile Alignment --- */
   .boat-top-picks__header {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-bottom: 1.2rem;
+    width: 100%;
   }
 
-  .boat-top-picks__title-group {
+  .boat-top-picks__heading-row {
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
   }
 
   .boat-top-picks__heading {
@@ -73,11 +74,13 @@
   .boat-top-picks__view-all {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     font-size: 0.88rem;
     font-weight: 700;
     color: #1e293b;
     text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
     transition: color 0.2s ease, transform 0.2s ease;
   }
 
@@ -102,14 +105,28 @@
     border-color: #d8232a;
   }
 
-  /* --- Filter Tabs Bar --- */
+  /* --- Filter Tabs Bar (Draggable Swipe Carousel) --- */
+  .boat-top-picks__tabs-row {
+    width: 100%;
+    overflow: hidden;
+  }
+
   .boat-top-picks__tabs {
     display: flex;
-    gap: 0.6rem;
+    align-items: center;
+    gap: 0.65rem;
     overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
     scrollbar-width: none;
-    padding-bottom: 2px;
+    -ms-overflow-style: none;
+    padding-bottom: 4px;
+    padding-top: 2px;
+    width: 100%;
+    user-select: none;
   }
+
   .boat-top-picks__tabs::-webkit-scrollbar {
     display: none;
   }
@@ -118,6 +135,16 @@
     background: #f1f5f9;
     color: #475569;
     border: 1px solid #e2e8f0;
+    font-size: 0.84rem;
+    font-weight: 700;
+    padding: 7px 18px;
+    border-radius: 24px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
     font-size: 0.84rem;
     font-weight: 700;
     padding: 6px 16px;
@@ -210,12 +237,25 @@
   }
 
   @media (max-width: 768px) {
+    .boat-top-picks__heading {
+      font-size: 1.25rem !important;
+    }
+    .boat-top-picks__view-all {
+      font-size: 0.82rem !important;
+    }
+    .boat-top-picks__tabs {
+      gap: 0.5rem !important;
+    }
+    .boat-top-picks__tab-btn {
+      font-size: 0.8rem !important;
+      padding: 6px 14px !important;
+    }
     .boat-top-picks__slider-nav {
       display: none !important;
     }
     .boat-top-picks__grid {
-      grid-template-columns: repeat({{ section.settings.columns_mobile | default: 3 }}, minmax(0, 1fr)) !important;
-      gap: 0.5rem !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 0.6rem !important;
     }
   }
 
@@ -299,7 +339,12 @@
 
   .boat-pick-card__hover-atc:hover {
     background: #d8232a !important;
-    transform: scale(1.1) !important;
+  }
+
+  .boat-pick-card__hover-atc svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
   }
 
   @media (max-width: 768px) {
@@ -309,169 +354,127 @@
     }
   }
 
-  .boat-pick-card__hover-atc svg {
-    width: 15px !important;
-    height: 15px !important;
-    fill: #ffffff !important;
-  }
-
-  /* --- Top Badge Tag --- */
-  .boat-pick-card__badge {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    z-index: 2;
-    background: #000000;
-    color: #ffffff;
-    font-size: 0.65rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    padding: 3px 7px;
-    border-radius: 4px;
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  }
-
-  /* --- Yellow Feature Banner Bar --- */
-  .boat-pick-card__yellow-bar {
-    background: #ffc107;
-    color: #000000;
-    font-size: 0.72rem;
-    font-weight: 800;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    padding: 4px 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    letter-spacing: -0.2px;
-  }
-
-  .boat-pick-card__rating {
-    background: #ffffff;
-    color: #000000;
-    font-size: 0.7rem;
-    font-weight: 800;
-    padding: 1px 6px;
-    border-radius: 10px;
-    display: inline-flex;
-    align-items: center;
-    gap: 2px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  }
-
-  /* --- Card Details --- */
-  .boat-pick-card__details {
-    padding: 10px;
+  /* --- Card Content --- */
+  .boat-pick-card__content {
+    padding: 10px 12px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    gap: 6px;
+  }
+
+  .boat-pick-card__badge-row {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+
+  .boat-pick-card__category {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .boat-pick-card__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 10px;
+  }
+
+  .boat-pick-card__rating-star {
+    color: #f59e0b;
+    font-size: 0.7rem;
   }
 
   .boat-pick-card__title {
-    font-size: 0.85rem;
-    font-weight: 800;
+    font-size: 0.88rem;
+    font-weight: 700;
     color: #0f172a;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    line-height: 1.3;
-    margin: 0 0 6px 0;
+    line-height: 1.25;
+    margin: 0;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 2.2em;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .boat-pick-card__title a {
+    color: inherit;
     text-decoration: none;
   }
-  .boat-pick-card__title:hover {
+
+  .boat-pick-card__title a:hover {
     color: #d8232a;
   }
 
-  /* --- Price & Discount Section --- */
   .boat-pick-card__price-row {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 4px;
-    margin-top: auto;
-    padding-top: 5px;
-    border-top: 1px dashed #e2e8f0;
-  }
-
-  .boat-pick-card__price-wrap {
-    display: flex;
     align-items: baseline;
-    gap: 4px;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 4px;
     flex-wrap: wrap;
   }
 
   .boat-pick-card__price {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     font-weight: 800;
-    color: #000000;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #0f172a;
   }
 
   .boat-pick-card__compare-price {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 600;
     color: #94a3b8;
     text-decoration: line-through;
-    font-weight: 500;
   }
 
-  .boat-pick-card__discount {
-    font-size: 0.75rem;
+  .boat-pick-card__discount-badge {
+    font-size: 0.7rem;
     font-weight: 800;
-    color: #00b853;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #16a34a;
+    background: #dcfce7;
+    padding: 1px 5px;
+    border-radius: 4px;
   }
 
-  /* --- Dynamic Swatches (Color Dots & Size Pills) --- */
+  /* Color Swatches Row */
   .boat-pick-card__swatches {
     display: flex;
     align-items: center;
     gap: 4px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #64748b;
+    margin-top: 4px;
   }
 
-  .boat-swatch-dot {
+  .boat-swatch-circle {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: 1.5px solid #cbd5e1;
+    border: 1px solid #cbd5e1;
+    display: inline-block;
     cursor: pointer;
     transition: transform 0.15s ease, border-color 0.15s ease;
-    padding: 0;
-    outline: none;
   }
 
-  .boat-swatch-dot:hover,
-  .boat-swatch-dot.active {
-    transform: scale(1.25);
-    border-color: #0f172a;
-    box-shadow: 0 0 0 2px #38bdf8;
-  }
-
-  .boat-swatch-pill {
-    font-size: 0.65rem;
-    font-weight: 800;
-    padding: 1px 5px;
-    border-radius: 4px;
-    background: #f1f5f9;
-    color: #334155;
-    border: 1px solid #cbd5e1;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-
-  .boat-swatch-pill.active,
-  .boat-swatch-pill:hover {
-    background: #0f172a;
-    color: #ffffff;
+  .boat-swatch-circle:hover,
+  .boat-swatch-circle.active {
+    transform: scale(1.2);
     border-color: #0f172a;
   }
 
@@ -486,7 +489,8 @@
   
   {% comment %} --- Section Header & Tabs --- {% endcomment %}
   <div class="boat-top-picks__header">
-    <div class="boat-top-picks__title-group">
+    {% comment %} --- Top Row: Heading on Left & View All on Right --- {% endcomment %}
+    <div class="boat-top-picks__heading-row">
       <h2 class="boat-top-picks__heading">
         {% if underline_word != blank and title contains underline_word %}
           {% assign title_parts = title | split: underline_word %}
@@ -496,9 +500,19 @@
         {% endif %}
       </h2>
 
-      {% assign blocks_tabs = section.blocks | where: 'type', 'tab_block' %}
-      {% if blocks_tabs.size > 0 %}
-        <div class="boat-top-picks__tabs">
+      {% if view_all_text != blank %}
+        <a href="{{ view_all_link }}" class="boat-top-picks__view-all">
+          <span>{{ view_all_text }}</span>
+          <span class="boat-top-picks__view-all-arrow">➔</span>
+        </a>
+      {% endif %}
+    </div>
+
+    {% comment %} --- Tab Pills Bar (Draggable Swipe Carousel on Mobile) --- {% endcomment %}
+    {% assign blocks_tabs = section.blocks | where: 'type', 'tab_block' %}
+    {% if blocks_tabs.size > 0 %}
+      <div class="boat-top-picks__tabs-row">
+        <div class="boat-top-picks__tabs" id="BoatTabs-{{ section.id }}">
           {% for block in blocks_tabs %}
             <button 
               type="button" 
@@ -510,14 +524,7 @@
             </button>
           {% endfor %}
         </div>
-      {% endif %}
-    </div>
-
-    {% if view_all_text != blank %}
-      <a href="{{ view_all_link }}" class="boat-top-picks__view-all">
-        <span>{{ view_all_text }}</span>
-        <span class="boat-top-picks__view-all-arrow">➔</span>
-      </a>
+      </div>
     {% endif %}
   </div>
 
