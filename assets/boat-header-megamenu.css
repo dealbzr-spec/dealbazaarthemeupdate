@@ -802,28 +802,11 @@ header.header,
     display: none !important;
   }
 
-  /* --- Hide Red-Circled Box in Mobile Header Left Column (Keep Hamburger = & Right Search Icon) --- */
-  .header__column--left .shopify-block-_header-logo,
-  .header__column--left .shopify-block-header-logo,
-  .header__column--left [class*="_header-logo"],
-  .header__column--left [class*="header-logo"],
-  .header__column--left [id*="header-logo"],
-  .header__column--left .header-logo,
-  .header__column--left .header__logo,
-  .header__column--left a[class*="logo"],
-  .header__column--left div[class*="logo"],
-  .header__column--left .logo-wrapper,
-  .header__column--left .boat-search-action-wrapper,
-  .header__column--left .boat-search-pill-button,
-  .header__column--left .search-action--hidden-on-drawer {
-    display: none !important;
-  }
-
-  /* Ensure Hamburger Menu icon stays 100% visible */
-  .header__column--left header-drawer,
-  .header__column--left .menu-drawer-container,
-  .header__column--left .header__icon--menu,
-  .header__column--left summary {
+  /* --- Ensure Main Logo, Hamburger Menu, and Search Icon are 100% Visible & Centered on Mobile --- */
+  .header-logo,
+  .header__logo,
+  .shopify-block-_header-logo,
+  .header-logo__image {
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
