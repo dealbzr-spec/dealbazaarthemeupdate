@@ -195,27 +195,26 @@ header.header,
   }
 }
 
-/* --- Mega Menu Overlay (Dynamic Height, Auto-Adjusting Responsive Grid) --- */
+/* --- SAME TO SAME boAt Mega Menu (5-Column Grid, Zero Scrollbar) --- */
 .menu-list__submenu {
   position: absolute !important;
   left: 0 !important;
   right: 0 !important;
   top: 100% !important;
-  width: 100% !important;
-  min-width: 100vw !important;
+  width: 100vw !important;
   margin-left: calc(-50vw + 50%) !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
   border-top: 1px solid #e5e7eb !important;
   border-bottom: 1px solid #e5e7eb !important;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08) !important;
-  padding: 24px 0 !important;
+  padding: 28px 0 36px 0 !important;
   margin-top: 0 !important;
   z-index: 9999999 !important;
   box-sizing: border-box !important;
   height: auto !important;
-  max-height: 85vh !important;
-  overflow-y: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
 }
 
 /* Inner containers are 100% transparent and borderless */
@@ -234,27 +233,21 @@ header.header,
   width: 100% !important;
 }
 
-.mega-menu__grid {
+.mega-menu__grid,
+.boat-megamenu-wrapper {
   display: block !important;
   width: 100% !important;
-  max-width: 1380px !important;
+  max-width: 1400px !important;
   margin: 0 auto !important;
   padding: 0 40px !important;
   box-sizing: border-box !important;
 }
 
-.boat-megamenu-wrapper {
-  width: 100% !important;
-  max-width: 1380px !important;
-  margin: 0 auto !important;
-  box-sizing: border-box !important;
-}
-
 .boat-megamenu-grid {
   display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)) !important;
-  gap: 16px 28px !important;
-  align-items: center !important;
+  grid-template-columns: repeat(5, 1fr) !important;
+  gap: 20px 32px !important;
+  align-items: start !important;
   list-style: none !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -265,12 +258,30 @@ header.header,
   box-sizing: border-box !important;
 }
 
+@media (max-width: 1200px) {
+  .boat-megamenu-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .boat-megamenu-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .boat-megamenu-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
 .boat-megamenu-card {
   display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
   gap: 12px !important;
-  padding: 8px 12px !important;
+  padding: 8px 10px !important;
   text-decoration: none !important;
   color: #121212 !important;
   transition: all 0.2s ease !important;
