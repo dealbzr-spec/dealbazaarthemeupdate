@@ -973,17 +973,35 @@ header.header,
   }
 
   .boat-search-products-grid {
-    grid-template-columns: 1fr !important;
-    gap: 8px !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px 6px !important;
   }
 
   .boat-search-product-card {
-    padding: 8px 10px !important;
+    padding: 6px 8px !important;
+    gap: 8px !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }
 
+  .boat-search-product-thumb {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 6px !important;
+  }
+
   .boat-search-product-title {
-    font-size: 0.82rem !important;
+    font-size: 0.76rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .boat-search-product-price-row {
+    font-size: 0.76rem !important;
+    flex-wrap: wrap !important;
+    gap: 3px !important;
+  }
+
+  .boat-search-product-compare {
+    font-size: 0.7rem !important;
   }
 }
