@@ -823,3 +823,167 @@ header.header,
     opacity: 1 !important;
   }
 }
+
+/* --- Search Modal Dialog & Trending Products Responsive Styling --- */
+.boat-search-modal-container {
+  padding: 20px 24px;
+}
+
+.boat-search-tags-carousel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.boat-search-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 16px;
+  background: #f1f5f9;
+  color: #1e293b;
+  font-size: 0.84rem;
+  font-weight: 600;
+  border-radius: 20px;
+  text-decoration: none;
+  border: 1px solid #e2e8f0;
+  white-space: nowrap;
+  transition: background 0.2s ease, transform 0.15s ease;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.boat-search-tag-pill:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+  transform: translateY(-1px);
+}
+
+.boat-search-modal-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 16px 0 14px 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.boat-search-products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 16px;
+}
+
+.boat-search-product-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 10px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+}
+
+.boat-search-product-card:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.boat-search-product-thumb {
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.boat-search-product-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.boat-search-product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow: hidden;
+  flex: 1;
+}
+
+.boat-search-product-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0f172a;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.boat-search-product-price-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #d8232a;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.boat-search-product-compare {
+  font-size: 0.75rem;
+  text-decoration: line-through;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .boat-search-modal-container {
+    padding: 12px 14px !important;
+  }
+
+  .boat-search-tags-carousel {
+    display: flex !important;
+    gap: 6px 8px !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 4px !important;
+  }
+
+  .boat-search-tags-carousel::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .boat-search-tag-pill {
+    padding: 6px 12px !important;
+    font-size: 0.76rem !important;
+    border-radius: 16px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .boat-search-products-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .boat-search-product-card {
+    padding: 8px 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .boat-search-product-title {
+    font-size: 0.82rem !important;
+  }
+}
