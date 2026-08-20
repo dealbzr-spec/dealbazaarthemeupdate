@@ -811,4 +811,15 @@ header.header,
     visibility: visible !important;
     opacity: 1 !important;
   }
+
+  /* --- Search Bar IDs: SH1 (First/Pill Search) & SH2 (Second/Right Icon Search) --- */
+  #SH1 {
+    display: none !important;
+  }
+
+  #SH2 {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
 }
