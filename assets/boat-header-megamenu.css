@@ -801,4 +801,19 @@ header.header,
   .hero-hide-mobile {
     display: none !important;
   }
+
+  /* --- Hide Extra Logo / Blue Icon Box in Mobile Header Left Column --- */
+  .header__column--left > .header__logo,
+  .header__column--left > a[class*="logo"],
+  .header__column--left > div[class*="logo"],
+  .header__column--left > header-logo,
+  .header__column--left > .logo-wrapper,
+  .header__column--left > search-component,
+  .header__column--left > .search-action,
+  .header__column--left > .search-action--hidden-on-menu,
+  .header__column--left > svg,
+  .header__column--left > img,
+  .header__column--left > *:not(header-drawer):not(.menu-drawer-container):not(.header__icon--menu):not(summary) {
+    display: none !important;
+  }
 }
