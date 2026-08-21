@@ -523,8 +523,18 @@
         {% endif %}
       </h2>
 
+      {% assign blocks_tabs = section.blocks | where: 'type', 'tab_block' %}
+      {% assign first_tab_block = blocks_tabs | first %}
+      {% assign initial_col_url = view_all_link %}
+      {% if first_tab_block != blank %}
+        {% assign first_tab_col = collections[first_tab_block.settings.collection] %}
+        {% if first_tab_col.url != blank %}
+          {% assign initial_col_url = first_tab_col.url %}
+        {% endif %}
+      {% endif %}
+
       {% if view_all_text != blank %}
-        <a href="{{ view_all_link }}" class="boat-top-picks__view-all" style="display: inline-flex !important; align-items: center !important; gap: 5px !important; font-size: 0.85rem !important; font-weight: 700 !important; color: #1e293b !important; text-decoration: none !important; white-space: nowrap !important; flex-shrink: 0 !important; margin-left: auto !important;">
+        <a href="{{ initial_col_url }}" class="boat-top-picks__view-all" style="display: inline-flex !important; align-items: center !important; gap: 5px !important; font-size: 0.85rem !important; font-weight: 700 !important; color: #1e293b !important; text-decoration: none !important; white-space: nowrap !important; flex-shrink: 0 !important; margin-left: auto !important;">
           <span>{{ view_all_text }}</span>
           <span class="boat-top-picks__view-all-arrow">➔</span>
         </a>
@@ -532,14 +542,17 @@
     </div>
 
     {% comment %} --- Tab Pills Bar (Draggable Swipe Carousel on Mobile) --- {% endcomment %}
-    {% assign blocks_tabs = section.blocks | where: 'type', 'tab_block' %}
     {% if blocks_tabs.size > 0 %}
       <div class="boat-top-picks__tabs-row">
         <div class="boat-top-picks__tabs" id="BoatTabs-{{ section.id }}">
           {% for block in blocks_tabs %}
+            {% assign tab_col = collections[block.settings.collection] %}
+            {% assign tab_col_url = tab_col.url %}
+            {% if tab_col_url == blank %}{% assign tab_col_url = view_all_link %}{% endif %}
             <button 
               type="button" 
               class="boat-top-picks__tab-btn{% if forloop.first %} active{% endif %}"
+              data-collection-url="{{ tab_col_url }}"
               onclick="switchBoatTab('{{ section.id }}', 'tab-{{ block.id }}', this)"
               {{ block.shopify_attributes }}
             >
@@ -603,7 +616,7 @@
 </div>
 
 <script>
-  // Tab Switcher JS
+  // Tab Switcher JS & Dynamic View All Collection Link Synchronizer
   function switchBoatTab(sectionId, tabId, btnElement) {
     const container = btnElement.closest('.boat-top-picks');
     const contents = container.querySelectorAll('.boat-top-picks__tab-content');
@@ -615,6 +628,13 @@
     const targetContent = document.getElementById('boat-tab-' + sectionId + '-' + tabId);
     if (targetContent) targetContent.style.display = 'block';
     btnElement.classList.add('active');
+
+    // Update View All link href to match the selected tab's collection URL
+    const collectionUrl = btnElement.getAttribute('data-collection-url');
+    const viewAllLink = container.querySelector('.boat-top-picks__view-all');
+    if (viewAllLink && collectionUrl) {
+      viewAllLink.setAttribute('href', collectionUrl);
+    }
   }
 
   // Desktop Grid Horizontal Scroll Handler
