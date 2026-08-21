@@ -20,11 +20,13 @@
 
   /* --- Top Picks Section Wrapper --- */
   .boat-top-picks {
-    width: 100%;
-    max-width: var(--page-width, 1400px);
-    margin: 0 auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    width: 100% !important;
+    max-width: var(--page-width, 1400px) !important;
+    margin: 0 auto !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
@@ -32,9 +34,10 @@
   .boat-top-picks__header {
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
-    margin-bottom: 1.2rem;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .boat-top-picks__heading-row {
@@ -45,6 +48,7 @@
     width: 100% !important;
     flex-wrap: nowrap !important;
     gap: 8px !important;
+    box-sizing: border-box !important;
   }
 
   .boat-top-picks__heading {
@@ -110,30 +114,31 @@
     border-color: #d8232a;
   }
 
-  /* --- Filter Tabs Bar (Draggable Swipe Carousel) --- */
+  /* --- Filter Tabs Bar (Draggable Touch Swipe Carousel) --- */
   .boat-top-picks__tabs-row {
-    width: 100%;
-    overflow: hidden;
+    width: 100% !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
   }
 
   .boat-top-picks__tabs {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding-bottom: 4px;
-    padding-top: 2px;
-    width: 100%;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    scroll-behavior: smooth !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    padding: 4px 2px 8px 2px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
     user-select: none;
   }
 
   .boat-top-picks__tabs::-webkit-scrollbar {
-    display: none;
+    display: none !important;
   }
 
   .boat-top-picks__tab-btn {
@@ -166,6 +171,7 @@
   .boat-top-picks__grid-wrapper {
     position: relative;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .boat-top-picks__grid {
@@ -173,6 +179,8 @@
     grid-template-columns: repeat({{ columns_desktop }}, minmax(0, 1fr));
     gap: {{ card_gap }}px;
     margin-top: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   {% if enable_desktop_slider %}
@@ -225,14 +233,18 @@
   }
 
   .boat-top-picks__slider-nav--prev {
-    left: -18px;
+    left: 0px;
   }
 
   .boat-top-picks__slider-nav--next {
-    right: -18px;
+    right: 0px;
   }
 
   @media (max-width: 768px) {
+    .boat-top-picks {
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
     .boat-top-picks__heading-row {
       display: flex !important;
       flex-direction: row !important;
@@ -252,18 +264,35 @@
       margin-left: auto !important;
     }
     .boat-top-picks__tabs {
-      gap: 0.5rem !important;
+      gap: 8px !important;
+      padding-bottom: 6px !important;
     }
     .boat-top-picks__tab-btn {
       font-size: 0.78rem !important;
-      padding: 6px 12px !important;
+      padding: 6px 14px !important;
     }
     .boat-top-picks__slider-nav {
       display: none !important;
     }
     .boat-top-picks__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-      gap: 0.6rem !important;
+      display: flex !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      scroll-behavior: smooth !important;
+      -webkit-overflow-scrolling: touch !important;
+      touch-action: pan-x !important;
+      scrollbar-width: none !important;
+      gap: 12px !important;
+      padding-bottom: 12px !important;
+      margin-top: 0.5rem !important;
+    }
+    .boat-top-picks__grid::-webkit-scrollbar {
+      display: none !important;
+    }
+    .boat-top-picks__grid > * {
+      flex: 0 0 72% !important;
+      min-width: 72% !important;
+      scroll-snap-align: start !important;
     }
   }
 
